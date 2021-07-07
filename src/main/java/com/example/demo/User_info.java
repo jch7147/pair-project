@@ -15,9 +15,11 @@ public class User_info {
 	private String email;
 	private String password;
 
-	public User_info(int id, int job_code, String name, int age, String email, String password) {
-		super();
-		this.id = id;
+	public User_info() {
+
+	}
+
+	public User_info(int job_code, String name, int age, String email, String password) {
 		this.job_code = job_code;
 		this.name = name;
 		this.age = age;
@@ -25,8 +27,13 @@ public class User_info {
 		this.password = password;
 	}
 
-	public User_info() {
-
+	public User_info(int id, int job_code, String name, int age, String email, String password) {
+		this.id = id;
+		this.job_code = job_code;
+		this.name = name;
+		this.age = age;
+		this.email = email;
+		this.password = password;
 	}
 
 	public int getId() {

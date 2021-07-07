@@ -21,6 +21,9 @@ public class AccountController {
 	@Autowired
 	UserRepository userRepository;
 
+	@Autowired
+	JobsRepository jobsRepository;
+
 	/**
 	 * ログイン.サインアップ画面を表示
 	 */
@@ -44,6 +47,7 @@ public class AccountController {
 			@RequestParam("email") String email,
 			@RequestParam("password") String password,
 			ModelAndView mv) {
+
 		// 空の場合にエラーとする
 		if (email == null || email.length() == 0 || password == null || password.length() == 0) {
 			mv.addObject("message", "メールアドレス又はパスワードを入力してください");
@@ -53,19 +57,19 @@ public class AccountController {
 
 		List<User_info> list = userRepository.findByEmailAndPassword(email, password);
 
-					if (list.size() == 0) {
-						mv.addObject("message", "Emailまたはパスワードが一致しませんでした");
-						mv.setViewName("login");
-						return mv;
-					}
+		if (list.size() == 0) {
+			mv.addObject("message", "Emailまたはパスワードが一致しませんでした");
+			mv.setViewName("login");
+			return mv;
+		}
 
-					User_info user = list.get(0);
+		User_info user = list.get(0);
 
-					session.setAttribute("userInfo", user);
-					session.setAttribute("name", user.getName());
+		session.setAttribute("userInfo", user);
+		session.setAttribute("name", user.getName());
 
-					// top.htmlを表示する
-					mv.setViewName("main");
+		// top.htmlを表示する
+		mv.setViewName("main");
 
 		return mv;
 	}
@@ -75,6 +79,13 @@ public class AccountController {
 	@PostMapping("/signup")
 	public ModelAndView moveToSignUp(ModelAndView mv) {
 
+		//Jobsカテゴリを呼び出す
+		List<Jobs> job = jobsRepository.findAll();
+
+		//jobsのレコードを格納
+		mv.addObject("job", job);
+
+		//signup.htmlに移動
 		mv.setViewName("/signup");
 
 		return mv;

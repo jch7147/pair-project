@@ -24,9 +24,7 @@
 
 		<label for="job">Job:</label>
 		<select id="job" name="job">
-			 <option value="学生">学生</option>
-			 <option value="主婦">主婦</option>
-			 <option value="会社員">会社員</option>
+			 <option th:each="j : ${job}" th:value="${j.code}" th:text="${j.job}"></option>
 		</select>
 		<br>
 

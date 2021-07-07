@@ -11,11 +11,12 @@
 	<h3>If you have MINEMINE Account,</h3>
 	<h3>login with your email</h3>
 
+	<span th:text="${message}" style="color:red"></span>
+
 	<form action="/login" method="post">
 		<input type="email" name="email" placeholder="Email"> <br>
-		<input type="password" name="password" placeholder="Password">
-		<br> <input type="submit" value="LOGIN">
-		<br><span th:text="${message}" style="color:red"></span>
+		<input type="password" name="password" placeholder="Password"><br>
+		<input type="submit" value="LOGIN"><br>
 	</form>
 
 	<form action="/signup" method="post">
