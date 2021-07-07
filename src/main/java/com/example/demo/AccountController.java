@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +24,9 @@ public class AccountController {
 	/**
 	 * ログイン.サインアップ画面を表示
 	 */
+
+	//初期画面
+	//http://localhost:8080/
 	@RequestMapping("/")
 	public String login() {
 		// セッション情報はクリアする
@@ -33,23 +37,39 @@ public class AccountController {
 	/**
 	 * ログインを実行
 	 */
+
+	//login画面でlogin
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ModelAndView doLogin(
 			@RequestParam("email") String email,
 			@RequestParam("password") String password,
 			ModelAndView mv) {
 
-		List<User_info> user_info = userRepository.findByEmailAndPassword(email, password);
-		//		if (customers.size() > 0) {
-		//			// メールアドレスとパスワードがDBにあるやつと一致したらログインOK
-		//			// リストの1件目をログインユーザとして取得する
-		//			Customer customer = customers.get(0);
-		//			session.setAttribute("customerInfo", customer);
-		//
-		//			// セッションスコープにカテゴリ情報を格納する
-		//			session.setAttribute("categories", categoryRepository.findAll());
-		//			// top.htmlを表示する
-		//			mv.setViewName("top");
+		List<User_info> list = userRepository.findByEmailAndPassword(email, password);
+
+					if (list.size() == 0) {
+						mv.addObject("message", "Emailまたはパスワードが一致しませんでした");
+						mv.setViewName("login");
+						return mv;
+					}
+
+					User_info user = list.get(0);
+
+					session.setAttribute("userInfo", user);
+					session.setAttribute("name", user.getName());
+
+					// top.htmlを表示する
+					mv.setViewName("main");
+
+		return mv;
+	}
+
+	//login画面で新規登録
+	//http://localhost:8080/signup
+	@PostMapping("/signup")
+	public ModelAndView moveToSignUp(ModelAndView mv) {
+
+		mv.setViewName("/signup");
 
 		return mv;
 	}

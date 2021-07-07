@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Welcome to MINEMINE</title>
+</head>
+<body>
+
+	<h1>MINEMINE</h1>
+	<br>
+	<h3>Welcome to MINEMINE</h3>
+	<h3>Please enter the information</h3>
+	<h3>to create MINEMINE account</h3>
+	<br>
+
+	<form action="/signup_new" method="post">
+		<label for="name">Name (4 to 8 characters):</label>
+		<input id="name" type="text" name="name" required  minlength="4" maxlength="8">
+		<br>
+
+		<label for="age">Age:</label>
+		<input id="age" type="text" name="age" required>
+		<br>
+
+		<label for="job">Job:</label>
+		<select id="job" name="job">
+			 <option value="学生">学生</option>
+			 <option value="主婦">主婦</option>
+			 <option value="会社員">会社員</option>
+		</select>
+		<br>
+
+		<label for="email">Eamil:</label>
+		<input id="email" type="email" name="email" required>
+		<br>
+
+		<label for="password">password (minimum 6 characters):</label>
+		<input id="password" type="text" name="password" required minlength="6">
+		<br>
+
+		<input type="submit" value="make account">
+	</form>
+
+
+
+
+</body>
+</html>
