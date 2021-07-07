@@ -90,4 +90,27 @@ public class AccountController {
 
 		return mv;
 	}
+
+	@PostMapping("/signup_new")
+	public ModelAndView makeAccount(
+			ModelAndView mv,
+			@RequestParam("name") String name,
+			@RequestParam("age") int age,
+			@RequestParam("job") int job,
+			@RequestParam("email") String email,
+			@RequestParam("password") String password) {
+
+		// パラメータからオブジェクトを生成
+		 User_info userNew = new User_info(job, name, age, email, password);
+
+		// customerテーブルへの登録
+		userRepository.saveAndFlush(userNew);
+
+		// login.html(ログイン画面)を表示
+		mv.setViewName("login");
+
+		return mv;
+	}
+
+
 }

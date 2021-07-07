@@ -36,6 +36,8 @@ public class User_info {
 		this.password = password;
 	}
 
+
+
 	public int getId() {
 		return id;
 	}
