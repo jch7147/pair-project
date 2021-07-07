@@ -106,6 +106,17 @@ public class AccountController {
 		// customerテーブルへの登録
 		userRepository.saveAndFlush(userNew);
 
+		//email情報が一致するユーザ情報を探す（既にアカウントがあるかどうか確認）
+		List<User_info> list = userRepository.findByEmail(email);
+
+		if (list.size() != 0) {
+			mv.addObject("message", "すでに登録されてあるemailです");
+			mv.setViewName("signup");
+			return mv;
+		}
+
+		mv.addObject("message", "登録が完了しました");
+
 		// login.html(ログイン画面)を表示
 		mv.setViewName("login");
 

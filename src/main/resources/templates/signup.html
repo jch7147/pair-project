@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<link rel="shortcut icon" href="/images/bird.png">
 <title>Welcome to MINEMINE</title>
 </head>
 <body>
@@ -12,6 +13,8 @@
 	<h3>Please enter the information</h3>
 	<h3>to create MINEMINE account</h3>
 	<br>
+
+	<span th:text="${message}" style="color:red"></span>
 
 	<form action="/signup_new" method="post">
 		<label for="name">Name (4 to 8 characters):</label>
@@ -33,7 +36,7 @@
 		<br>
 
 		<label for="password">password (minimum 6 characters):</label>
-		<input id="password" type="text" name="password" required minlength="6">
+		<input id="password" type="text" name="password" required minle	ngth="6">
 		<br>
 
 		<input type="submit" value="make account">
