@@ -38,6 +38,12 @@ public class AccountController {
 			@RequestParam("email") String email,
 			@RequestParam("password") String password,
 			ModelAndView mv) {
+		// 空の場合にエラーとする
+		if (email == null || email.length() == 0 || password == null || password.length() == 0) {
+			mv.addObject("message", "メールアドレス又はパスワードを入力してください");
+			mv.setViewName("login");
+			return mv;
+		}
 
 		List<User_info> user_info = userRepository.findByEmailAndPassword(email, password);
 		//		if (customers.size() > 0) {
