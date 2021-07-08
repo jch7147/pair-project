@@ -24,6 +24,9 @@ public class AccountController {
 	@Autowired
 	JobsRepository jobsRepository;
 
+	@Autowired
+	HistoryRepository historyRepository;
+
 	/**
 	 * ログイン.サインアップ画面を表示
 	 */
@@ -48,15 +51,17 @@ public class AccountController {
 			@RequestParam("password") String password,
 			ModelAndView mv) {
 
-		// 空の場合にエラーとする
+		// 空の場合にエラーメッセージを出す。
 		if (email == null || email.length() == 0 || password == null || password.length() == 0) {
 			mv.addObject("message", "メールアドレス又はパスワードを入力してください");
 			mv.setViewName("login");
 			return mv;
 		}
 
+		//email,passwordで登録情報を探す
 		List<User_info> list = userRepository.findByEmailAndPassword(email, password);
 
+		//該当情報がなかったらエラーメッセージ
 		if (list.size() == 0) {
 			mv.addObject("message", "Emailまたはパスワードが一致しませんでした");
 			mv.setViewName("login");
@@ -64,6 +69,8 @@ public class AccountController {
 		}
 
 		User_info user = list.get(0);
+
+
 
 		session.setAttribute("userInfo", user);
 		session.setAttribute("name", user.getName());
@@ -91,6 +98,8 @@ public class AccountController {
 		return mv;
 	}
 
+
+	//signup.htmlで新たなアカウントを登録
 	@PostMapping("/signup_new")
 	public ModelAndView makeAccount(
 			ModelAndView mv,
