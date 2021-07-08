@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -217,5 +218,24 @@ public class AccountController {
 		}
 		return mv;
 	}
+	
+	//試験日から逆算する処理
+		@RequestMapping("/compute")
+		public ModelAndView computing(
+				@RequestParam("xday") LocalDate xday,
+				ModelAndView mv) {
+
+			//LocalDate xday = LocalDate.of("xday");
+			LocalDate today = LocalDate.now();
+
+			Duration duration = Duration.between(today,xday);
+
+			mv.addObject("duration", duration);
+
+			mv.addObject("xday", xday);
+			mv.setViewName("compute");
+
+			return mv;
+		}
 
 }
