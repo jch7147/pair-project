@@ -13,4 +13,7 @@ public interface UserRepository extends JpaRepository<User_info, Integer> {
 
 	//email情報が一致するユーザ情報を探す
 	List<User_info> findByEmail(String email);
+
+	//パスワード変更の際に使用する
+	List<User_info> findByEmailAndAnswer(String email, String answer);
 }

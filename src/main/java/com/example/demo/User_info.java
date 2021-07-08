@@ -17,29 +17,38 @@ public class User_info {
 	private int age;
 	private String email;
 	private String password;
+	private String answer;
 
 	public User_info() {
 
 	}
 
-	public User_info(int job_code, String name, int age, String email, String password) {
+	public User_info(int job_code, String name, int age, String email, String password, String answer) {
 		this.job_code = job_code;
 		this.name = name;
 		this.age = age;
 		this.email = email;
 		this.password = password;
+		this.answer = answer;
 	}
 
-	public User_info(int id, int job_code, String name, int age, String email, String password) {
+	public User_info(int id, int job_code, String name, int age, String email, String password, String answer) {
 		this.id = id;
 		this.job_code = job_code;
 		this.name = name;
 		this.age = age;
 		this.email = email;
 		this.password = password;
+		this.answer = answer;
 	}
 
+	public String getAnswer() {
+		return answer;
+	}
 
+	public void setAnswer(String answer) {
+		this.answer = answer;
+	}
 
 	public int getId() {
 		return id;

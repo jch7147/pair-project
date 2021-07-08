@@ -70,8 +70,6 @@ public class AccountController {
 
 		User_info user = list.get(0);
 
-
-
 		session.setAttribute("userInfo", user);
 		session.setAttribute("name", user.getName());
 
@@ -98,7 +96,6 @@ public class AccountController {
 		return mv;
 	}
 
-
 	//signup.htmlで新たなアカウントを登録
 	@PostMapping("/signup_new")
 	public ModelAndView makeAccount(
@@ -107,10 +104,11 @@ public class AccountController {
 			@RequestParam("age") int age,
 			@RequestParam("job") int job,
 			@RequestParam("email") String email,
-			@RequestParam("password") String password) {
+			@RequestParam("password") String password,
+			@RequestParam("answer") String answer) {
 
 		// パラメータからオブジェクトを生成
-		 User_info userNew = new User_info(job, name, age, email, password);
+		User_info userNew = new User_info(job, name, age, email, password, answer);
 
 		// customerテーブルへの登録
 		userRepository.saveAndFlush(userNew);
@@ -132,5 +130,32 @@ public class AccountController {
 		return mv;
 	}
 
+	//パスワードを忘れた場合の対処
+	@RequestMapping("/forgot")
+	public ModelAndView forgotPass(
+			ModelAndView mv) {
+		mv.setViewName("forgot");
+		return mv;
+	}
+
+	@RequestMapping("/confirmation")
+	public ModelAndView forgotPass2(
+			ModelAndView mv,
+			@RequestParam("email") String email,
+			@RequestParam("answer") String answer) {
+
+		//email,answerで登録情報を探す
+		List<User_info> list = userRepository.findByEmailAndAnswer(email, answer);
+
+		//一致する情報がなかったらエラーを出す
+		if(list.size() == 0) {
+		mv.addObject("message", "EmailまたはAnswerが一致しませんでした");
+		mv.setViewName("forgot");
+		return mv;
+		}
+
+
+		return mv;
+	}
 
 }

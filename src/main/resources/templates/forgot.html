@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<link rel="shortcut icon" href="/images/bird.png">
+<title>Welcome to MINEMINE</title>
+</head>
+<body>
+	<h1>MINEMINE</h1>
+	<br>
+	<h3>Welcome to MINEMINE</h3>
+	<h3>Answer the question</h3>
+
+	<span th:text="${message}" style="color: red"></span>
+
+	<form action="/confirmation" method="post">
+	    <label for="email">Eamil:</label>
+		<input id="email" type="email" name="email" required>
+		<br>
+
+		<label for="answer">What's your favorite food?</label>
+		<input type="text" name="answer" placeholder="answer"><br>
+		<input type="submit" value="confirmation"><br>
+	</form>
+
+
+</body>
+</html>
