@@ -107,12 +107,6 @@ public class AccountController {
 			@RequestParam("password") String password,
 			@RequestParam("answer") String answer) {
 
-		// パラメータからオブジェクトを生成
-		User_info userNew = new User_info(job, name, age, email, password, answer);
-
-		// customerテーブルへの登録
-		userRepository.saveAndFlush(userNew);
-
 		//email情報が一致するユーザ情報を探す（既にアカウントがあるかどうか確認）
 		List<User_info> list = userRepository.findByEmail(email);
 
@@ -120,6 +114,13 @@ public class AccountController {
 			mv.addObject("message", "すでに登録されてあるemailです");
 			mv.setViewName("signup");
 			return mv;
+
+		} else {
+			// パラメータからオブジェクトを生成
+			User_info userNew = new User_info(job, name, age, email, password, answer);
+
+			// customerテーブルへの登録
+			userRepository.saveAndFlush(userNew);
 		}
 
 		mv.addObject("message", "登録が完了しました");
