@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -73,6 +74,18 @@ public class AccountController {
 		session.setAttribute("userInfo", user);
 		session.setAttribute("name", user.getName());
 
+		//今日の日付の情報
+		LocalDate today = LocalDate.now();
+
+		//Month month = today.getMonth();
+		//Day day = today.getDayOfMonth();
+
+		//日付のフォーマット変更
+		//today.format(DateTimeFormatter.ofPattern("MM.dd.E"));
+
+		//今日の日付をセッションに格納
+		session.setAttribute("today", today);
+
 		// top.htmlを表示する
 		mv.setViewName("main");
 
@@ -99,13 +112,13 @@ public class AccountController {
 	//signup.htmlで新たなアカウントを登録
 	@PostMapping("/signup_new")
 	public ModelAndView makeAccount(
-			ModelAndView mv,
 			@RequestParam("name") String name,
 			@RequestParam("age") int age,
 			@RequestParam("job") int job,
 			@RequestParam("email") String email,
 			@RequestParam("password") String password,
-			@RequestParam("answer") String answer) {
+			@RequestParam("answer") String answer,
+			ModelAndView mv) {
 
 		//email情報が一致するユーザ情報を探す（既にアカウントがあるかどうか確認）
 		List<User_info> list = userRepository.findByEmail(email);
@@ -135,7 +148,9 @@ public class AccountController {
 	@RequestMapping("/forgot")
 	public ModelAndView forgotPass(
 			ModelAndView mv) {
+
 		mv.setViewName("forgot");
+
 		return mv;
 	}
 
@@ -149,12 +164,15 @@ public class AccountController {
 		List<User_info> list = userRepository.findByEmailAndAnswer(email, answer);
 
 		//一致する情報がなかったらエラーを出す
-		if(list.size() == 0) {
-		mv.addObject("message", "EmailまたはAnswerが一致しませんでした");
-		mv.setViewName("forgot");
-		return mv;
-		}
+		if (list.size() == 0) {
 
+			mv.addObject("message", "EmailまたはAnswerが一致しませんでした");
+
+			mv.setViewName("forgot");
+
+			return mv;
+
+		}
 
 		return mv;
 	}

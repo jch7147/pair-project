@@ -5,34 +5,39 @@
 <title>MINEMINE</title>
 </head>
 <body>
-<header></header>
+	<header></header>
 
-<div>
+	<div></div>
 
-</div>
-
-<div>
-<h1>WELCOME <span th:text="${session.name}"></span></h1>
-</div>
-
-<div>
 	<div>
-		<h2>2021.07.08</h2>
-		<h1>00:00</h1>
+		<h1>
+			WELCOME <span th:text="${session.name}"></span>
+		</h1>
 	</div>
-	<div>
-		<input type="text" name="todo" placeholder="Make TO DO">
-		<input type="submit" value="ADD">
-	</div>
-	<div>
-		<input type="submit" value="START">
-		<span>TODO</span>
-		<input type="submit" value="X">
-	</div>
-	<div>
 
+	<div>
+		<div>
+			<h2 th:text="${session.today}"></h2>
+			<h1>00:00</h1>
+		</div>
+		<div>
+			<form action="/add_todo" method="post">
+				<input type="text" name="todo" placeholder="Make TODOLIST">
+				<input type="submit" value="ADD">
+			</form>
+		</div>
+		<div>
+			<table border="1">
+				<tr>
+					<td><input type="submit" value="START"></td>
+					<td><span>TODO</span></td>
+					<td><span>00:00</span></td>
+					<td><input type="submit" value="X"></td>
+				</tr>
+			</table>
+		</div>
+		<div></div>
 	</div>
-</div>
 
 </body>
 </html>

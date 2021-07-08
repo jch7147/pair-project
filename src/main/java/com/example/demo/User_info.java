@@ -42,6 +42,7 @@ public class User_info {
 		this.answer = answer;
 	}
 
+	//setter & getter
 	public String getAnswer() {
 		return answer;
 	}

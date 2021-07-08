@@ -23,6 +23,10 @@ public class History {
 
 	}
 
+	public History(String todo) {
+		this.todo = todo;
+	}
+
 	public History(int uid, String todo, Date date, int time) {
 		this.uid = uid;
 		this.todo = todo;
