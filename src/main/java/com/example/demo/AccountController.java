@@ -154,11 +154,13 @@ public class AccountController {
 		return mv;
 	}
 
+	//
 	@RequestMapping("/confirmation")
 	public ModelAndView forgotPass2(
-			ModelAndView mv,
 			@RequestParam("email") String email,
-			@RequestParam("answer") String answer) {
+			@RequestParam("answer") String answer,
+			ModelAndView mv
+			) {
 
 		//email,answerで登録情報を探す
 		List<User_info> list = userRepository.findByEmailAndAnswer(email, answer);
@@ -172,8 +174,42 @@ public class AccountController {
 
 			return mv;
 
-		}
+		//一致する情報があればmakeNewPass.htmlへ移動
+		} else {
 
+			User_info user = userRepository.findByEmailAndAnswer(email, answer).get(0);
+
+			session.setAttribute("user_byEmail", user);
+
+			mv.setViewName("makeNewPass");
+
+			return mv;
+		}
+	}
+    //新しくパスワードを生成する
+	@PostMapping("/decision")
+	public ModelAndView remakePass(
+			@RequestParam("password1") String password1,
+			@RequestParam("password2") String password2,
+			ModelAndView mv
+			) {
+
+		if (password1.equals(password2)) {
+
+			User_info user = (User_info) session.getAttribute("user_byEmail");
+
+			User_info user_changepw = new User_info(user.getId(), user.getJob_code(), user.getName(), user.getAge(), user.getEmail(), password1, user.getAnswer());
+
+			userRepository.saveAndFlush(user_changepw);
+
+			mv.addObject("message", "パスワードを変更しました。");
+			mv.setViewName("login");
+			return mv;
+
+		} else {
+			mv.addObject("message", "パスワードが一致しません。");
+			mv.setViewName("makeNewPass");
+		}
 		return mv;
 	}
 

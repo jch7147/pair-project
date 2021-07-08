@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<link rel="shortcut icon" href="/images/bird.png">
+<title>Welcome to MINEMINE</title>
+</head>
+<body>
+	<h1>MINEMINE</h1>
+	<br>
+	<h3>Welcome to MINEMINE</h3>
+	<h3>Remake to Password</h3>
+
+    <span th:text="${message}" style="color: red"></span>
+
+	<form action="/decision" method="post">
+	    <label for="password">password:</label>
+		<input type="text" name="password1" placeholder="new_password"><br>
+
+
+		<label for="password">again</label>
+		<input type="text" name="password2" placeholder="new_password"><br>
+
+		<input type="submit" value="decision"><br>
+	</form>
+
+
+
+
+</body>
+</html>
