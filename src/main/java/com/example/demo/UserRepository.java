@@ -16,4 +16,7 @@ public interface UserRepository extends JpaRepository<User_info, Integer> {
 
 	//パスワード変更の際に使用する
 	List<User_info> findByEmailAndAnswer(String email, String answer);
+
+	//パスワードで一致する情報を探す
+	List<User_info> findByPassword(String password);
 }
