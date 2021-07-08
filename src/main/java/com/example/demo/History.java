@@ -1,6 +1,6 @@
 package com.example.demo;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,7 +16,7 @@ public class History {
 	private int code;
 	private int uid;
 	private String todo;
-	private Date date;
+	private LocalDate date;
 	private int time;
 
 	public History() {
@@ -27,7 +27,7 @@ public class History {
 		this.todo = todo;
 	}
 
-	public History(int uid, String todo, Date date, int time) {
+	public History(int uid, String todo, LocalDate date, int time) {
 		this.uid = uid;
 		this.todo = todo;
 		this.date = date;
@@ -60,11 +60,11 @@ public class History {
 		this.todo = todo;
 	}
 
-	public Date getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 
@@ -75,9 +75,5 @@ public class History {
 	public void setTime(int time) {
 		this.time = time;
 	}
-
-
-
-
 
 }

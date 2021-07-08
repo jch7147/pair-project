@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="shortcut icon" href="/images/bird.png">
 <title>MINEMINE</title>
 </head>
 <body>
@@ -29,9 +30,15 @@
 		<div>
 			<table border="1">
 				<tr>
+					<th>START</th>
+					<th>..TODO..</th>
+					<th>TIME</th>
+					<th>DELETE</th>
+				</tr>
+				<tr th:each="todo : ${todo_list}">
 					<td><input type="submit" value="START"></td>
-					<td><span>TODO</span></td>
-					<td><span>00:00</span></td>
+					<td th:text="${todo.todo}"></td>
+					<td th:text="${todo.time}"></td>
 					<td><input type="submit" value="X"></td>
 				</tr>
 			</table>
