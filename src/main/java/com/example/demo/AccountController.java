@@ -1,7 +1,7 @@
 package com.example.demo;
 
-import java.time.Duration;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -218,20 +218,24 @@ public class AccountController {
 		}
 		return mv;
 	}
-	
+
 	//試験日から逆算する処理
 		@RequestMapping("/compute")
 		public ModelAndView computing(
-				@RequestParam("xday") LocalDate xday,
+				@RequestParam("xday") String xday,
 				ModelAndView mv) {
 
 			//LocalDate xday = LocalDate.of("xday");
 			LocalDate today = LocalDate.now();
+			LocalDate dday = LocalDate.parse(xday);
 
-			Duration duration = Duration.between(today,xday);
+			//String today_ = today.toString();
 
-			mv.addObject("duration", duration);
+			Period period = Period.between(today,dday);
 
+			mv.addObject("period", period.getDays());
+
+			mv.addObject("today", today);
 			mv.addObject("xday", xday);
 			mv.setViewName("compute");
 
