@@ -87,24 +87,19 @@ public class MainController {
 	//試験日から逆算する処理
 	@RequestMapping("/work")
 	public ModelAndView work(
-			@RequestParam("bookName") String bookName,
 			@RequestParam("pages") int pages,
 			@RequestParam("laps") int laps,
 			@RequestParam("date") int date,
-			ModelAndView mv) {
+			ModelAndView mv
+			) {
 
-		int a = pages;
-		int b = laps;
-		int ans = 0;
-		int d = date;
-		int ans2 = 0;
+		//ページ数×周回数でトータル勉強量
+		int total_study = pages * laps;
 
-		//ページ数×周回数
-		ans = a * b;
 		//総ページ数÷日数
-		ans2 = ans / date;
+		int study_day = total_study / date;
 
-        mv.addObject("ans", ans2);
+        mv.addObject("study_day", study_day);
         mv.setViewName("compute");
 		return mv;
 	}
