@@ -68,16 +68,19 @@ public class MainController {
 		//type="date"で選択したString型をLocalDate型へ変換
 		LocalDate dday = LocalDate.parse(xday);
 
-		//今日の日付
+		//残りの日数
 		Period period = Period.between(today, dday);
 
-		mv.addObject("period", period.getDays());
+		//残りの日数をセッションに格納
+		session.setAttribute("period", period.getDays());
+
+		//指定した日付をセッションに格納
+		session.setAttribute("xday", xday);
+
+		//資格・試験名を格納
+		session.setAttribute("test", test);
 
 		mv.addObject("today", today);
-
-		mv.addObject("xday", xday);
-		//資格・試験名を格納
-		mv.addObject("test", test);
 
 		mv.setViewName("compute");
 
@@ -90,8 +93,7 @@ public class MainController {
 			@RequestParam("pages") int pages,
 			@RequestParam("laps") int laps,
 			@RequestParam("date") int date,
-			ModelAndView mv
-			) {
+			ModelAndView mv) {
 
 		//ページ数×周回数でトータル勉強量
 		int total_study = pages * laps;
@@ -99,8 +101,18 @@ public class MainController {
 		//総ページ数÷日数
 		int study_day = total_study / date;
 
-        mv.addObject("study_day", study_day);
-        mv.setViewName("compute");
+		mv.addObject("study_day", study_day);
+		mv.setViewName("compute");
+		return mv;
+	}
+
+	//カレンダーページへ飛ぶ処理
+	@RequestMapping("/calender")
+	public ModelAndView goCalender(
+			ModelAndView mv) {
+
+		mv.setViewName("calender");
+
 		return mv;
 	}
 

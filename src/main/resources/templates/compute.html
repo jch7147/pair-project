@@ -29,12 +29,12 @@
 
 
 	<form action="/work">
-	<input type="hidden" name="date" th:value="${period}">
-	<span th:text="${test}"></span>
+	<input type="hidden" name="date" th:value="${session.period}">
+	<span th:text="${session.test}"></span>
 	<br>
-	希望日：<span th:text="${xday}"></span>
+	希望日：<span th:text="${session.xday}"></span>
 	<br>
-	残り：<span th:text="${period}"></span>日
+	残り：<span th:text="${session.period}"></span>日
 	<br>
 
 		<div>
@@ -42,14 +42,15 @@
 			ページ数：<input type="text" name="pages">ページ<br>
 			周回数：<input type="text" name="laps">回<br>
 			---------------------------------------------------
-			<input type="button" value="＋">
-			<input type="button" value="－">
+			<input type="button" value="＋" class="add pluralBtn">
+			<input type="button" value="－" class="del pluralBtn">
 		</div>
 
 		<br>
 		<input type="submit" value="算出">
 	</form>
 
+<div th:text="${study_day}"></div>
 
 </body>
 </html>
