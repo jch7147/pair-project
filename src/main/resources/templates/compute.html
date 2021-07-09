@@ -1,3 +1,16 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).on("click", ".add", function() {
+    $(this).parent().clone(true).insertAfter($(this).parent());
+});
+$(document).on("click", ".del", function() {
+    var target = $(this).parent();
+    if (target.parent().children().length > 1) {
+        target.remove();
+    }
+});
+</script>
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -9,13 +22,27 @@
 	<br>
 	<h3>Welcome to MINEMINE</h3>
 	<h3>Please enter the information</h3>
-	<h3>calculation soft</h3>
+	<h3>試験・資格対策ソフト</h3>
+	<h4>一日の勉強量を把握しよう！</h4>
 	<br>
 
 
+    <form action="/work">
+	<span th:text="${test}"></span><br>
+	<label for="date">希望日：<span th:text="${xday}"></span></label><br>
+	<label for="date">残り：<span th:text="${period}" name="date"></span>日</label><br>
 
-	<label for="date">希望日：<span th:text="${xday}"></span></label>
-	<label for="date">残り：<span th:text="${period}"></span></label>
+
+    <div>
+	テキスト名：<input type="text" name="bookName"><br>
+	ページ数：<input type="text" name="pages">ページ<br>
+	周回数：<input type="text" name="laps">回<br>
+	---------------------------------------------------
+	<input type="button" value="＋" class="add pluralBtn">
+    <input type="button" value="－" class="del pluralBtn">
+    </div><br>
+	<input type="submit" value="算出">
+	</form>
 
 
 </body>

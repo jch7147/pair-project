@@ -55,10 +55,11 @@ public class MainController {
 		return mv;
 	}
 
-	//試験日から逆算する処理
+	//試験日から逆算する処理をするページへ遷移
 	@RequestMapping("/compute")
 	public ModelAndView computing(
 			@RequestParam("xday") String xday,
+			@RequestParam("test") String test,
 			ModelAndView mv) {
 
 		//今日の日付
@@ -73,9 +74,39 @@ public class MainController {
 		mv.addObject("period", period.getDays());
 
 		mv.addObject("today", today);
+
 		mv.addObject("xday", xday);
+		//資格・試験名を格納
+		mv.addObject("test", test);
+
 		mv.setViewName("compute");
 
 		return mv;
 	}
+
+	//試験日から逆算する処理
+	@RequestMapping("/work")
+	public ModelAndView work(
+			@RequestParam("bookName") String bookName,
+			@RequestParam("pages") int pages,
+			@RequestParam("laps") int laps,
+			@RequestParam("date") int date,
+			ModelAndView mv) {
+
+		int a = pages;
+		int b = laps;
+		int ans = 0;
+		int d = date;
+		int ans2 = 0;
+
+		//ページ数×周回数
+		ans = a * b;
+		//総ページ数÷日数
+		ans2 = ans / date;
+
+        mv.addObject("ans", ans2);
+        mv.setViewName("compute");
+		return mv;
+	}
+
 }
