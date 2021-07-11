@@ -4,34 +4,48 @@
 <meta charset="UTF-8">
 <link rel="shortcut icon" href="/images/bird.png">
 <title>MINEMINE</title>
+
 </head>
 <body>
-	<header></header>
-
-	<div>
-	<form action="/compute">
-	<input type="text" name="test" placeholder="試験・資格名"><br>
-	<input type="date" name="xday">
-    <input type="submit" value="決定">
-    </form>
-    </div>
-
-
-    <a href="/calender">カレンダー</a>
-
-
-
-	<div>
+	<header>
 		<h1>
 			WELCOME <span th:text="${session.name}"></span>
 		</h1>
+	</header>
+
+	<div>
+		<form action="/compute">
+			<input type="text" name="test" placeholder="試験・資格名"><br>
+			<input type="date" name="xday"> <input type="submit"
+				value="決定">
+		</form>
 	</div>
+
+	<a href="/calender">カレンダー</a>
+
+	<main></main>
 
 	<div>
 		<div>
+			<!-- TIMERの中の日付 -->
 			<h2 th:text="${session.today}"></h2>
-			<h1>00:00</h1>
+
+			<!-- TIMER HOUR:MINUTES:SECONDS -->
+			<h1>
+				<span id="hours">00</span>:
+				<span id="minutes">00</span>:
+				<span id="seconds">00</span>
+			</h1>
+
+			<!-- TIMER BUTTONS -->
+			<button id="btn_start">START</button>
+			<button id="btn_stop">STOP</button>
+			<button id="btn_reset">RESET</button>
 		</div>
+
+		<!-- TIMER JavaScript -->
+		<script src="/timer.js"></script>
+
 		<div>
 			<form action="/add_todo" method="post">
 				<input type="text" name="todo" placeholder="Make TODOLIST">
@@ -40,16 +54,20 @@
 		</div>
 		<div>
 			<table border="1">
-				<tr>
-					<th>START</th>
-					<th>..TODO..</th>
-					<th>TIME</th>
-					<th>DELETE</th>
+				<tr class="todo_head">
+					<th colspan="2">..TODO..</th>
+					<th colspan="2">TIME</th>
+
 				</tr>
-				<tr th:each="todo : ${todo_list}">
+				<tr class="todo_head" th:each="todo : ${todo_list}">
 					<td><input type="submit" value="START"></td>
 					<td th:text="${todo.todo}"></td>
-					<td th:text="${todo.time}"></td>
+					<td>
+					<span id="hours">00</span>:
+					<span id="minutes">00</span>:
+					<span id="seconds">00</span>
+					</td>
+					<!-- <td th:text="${todo.time}"></td> -->
 					<td><input type="submit" value="X"></td>
 				</tr>
 			</table>
