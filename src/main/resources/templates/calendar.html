@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <title>カレンダー</title>
-<link rel="stylesheet" href="style.css">
 <script src="script.js"></script>
 </head>
 <body>
@@ -15,7 +14,7 @@
 			<button id="prev" onclick="prev()">‹</button>
 			<button id="next" onclick="next()">›</button>
 		</div>
-		<div id="calendar"></div>
+		<div id="calendar" name="calendar"></div>
 	</div>
 
     <br>
@@ -34,7 +33,7 @@
 	<span th:text="${message}" style="color: red"></span>
 
     <br>
-	<a href="main.html">戻る</a>
+	<a href="">戻る</a>
 	<br>
 	<a href="/reviewSchedule">review</a>
 
@@ -64,6 +63,7 @@
 
 	// カレンダー表示
 	function showProcess(date) {
+
 		var year = date.getFullYear();
 		var month = date.getMonth();
 		document.querySelector('#header').innerHTML = year + "年 " + (month + 1)
@@ -76,7 +76,7 @@
 	// カレンダー作成
 	function createProcess(year, month) {
 		// 曜日
-		var calendar = "<table><tr class='dayOfWeek'>";
+		var calendar = "<table><tr>";
 		for (var i = 0; i < week.length; i++) {
 			calendar += "<th>" + week[i] + "</th>";
 		}
@@ -95,23 +95,24 @@
 			for (var j = 0; j < week.length; j++) {
 				if (i == 0 && j < startDayOfWeek) {
 					// 1行目で1日まで先月の日付を設定
-					calendar += "<td class='disabled'>"
+					calendar += "<td>"+"<a href='/dateSchedule'>"
 							+ (lastMonthEndDate - startDayOfWeek + j + 1)
-							+ "</td>";
+							+ "</a></td>";
 				} else if (count >= endDate) {
 					// 最終行で最終日以降、翌月の日付を設定
 					count++;
-					calendar += "<td class='disabled'>" + (count - endDate)
-							+ "</td>";
+					calendar += "<td>"+"<a href='/dateSchedule'>"
+					        + (count - endDate)
+							+ "</a></td>";
 				} else {
 					// 当月の日付を曜日に照らし合わせて設定
 					count++;
 					if (year == today.getFullYear()
 							&& month == (today.getMonth())
 							&& count == today.getDate()) {
-						calendar += "<td class='today'>" + count + "</td>";
+						calendar += "<td>"+"<a href='/dateSchedule'>" + count + "</a></td>";
 					} else {
-						calendar += "<td>" + count + "</td>";
+						calendar += "<td>"+"<a href='/dateSchedule'>" + count + "</a></td>";
 					}
 				}
 			}
@@ -120,6 +121,4 @@
 		return calendar;
 	}
 </script>
-
-
 </html>
