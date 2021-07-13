@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div>
+		<table border="1">
+			<tr>
+				<th>plan</th>
+				<th>date</th>
+				<th>DELETE</th>
+			</tr>
+			<tr th:each="add:${schedule_list}">
+				<td th:text="${add.plan}"></td>
+				<td th:text="${add.date}"></td>
+				<td>
+					<form action="/schedule/delete">
+						<input type="hidden" name="code" th:value="${add.code}">
+						<input type="submit" value="削除">
+					</form>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<br>
+	<a href="main.html">戻る</a>
+</body>
+</html>

@@ -1,7 +1,6 @@
 package com.example.demo;
 
 import java.time.LocalDate;
-import java.time.Period;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -21,6 +20,9 @@ public class MainController {
 
 	@Autowired
 	HistoryRepository historyRepository;
+
+	@Autowired
+	AddScheduleRepository addscheduleRepository;
 
 	@PostMapping("/add_todo")
 	public ModelAndView addTodo(
@@ -55,64 +57,139 @@ public class MainController {
 		return mv;
 	}
 
-	//試験日から逆算する処理をするページへ遷移
-	@RequestMapping("/compute")
-	public ModelAndView computing(
-			@RequestParam("xday") String xday,
-			@RequestParam("test") String test,
-			ModelAndView mv) {
-
-		//今日の日付
-		LocalDate today = LocalDate.now();
-
-		//type="date"で選択したString型をLocalDate型へ変換
-		LocalDate dday = LocalDate.parse(xday);
-
-		//残りの日数
-		Period period = Period.between(today, dday);
-
-		//残りの日数をセッションに格納
-		session.setAttribute("period", period.getDays());
-
-		//指定した日付をセッションに格納
-		session.setAttribute("xday", xday);
-
-		//資格・試験名を格納
-		session.setAttribute("test", test);
-
-		mv.addObject("today", today);
-
-		mv.setViewName("compute");
-
-		return mv;
-	}
-
-	//試験日から逆算する処理
-	@RequestMapping("/work")
-	public ModelAndView work(
-			@RequestParam("pages") int pages,
-			@RequestParam("laps") int laps,
-			@RequestParam("date") int date,
-			ModelAndView mv) {
-
-		//ページ数×周回数でトータル勉強量
-		int total_study = pages * laps;
-
-		//総ページ数÷日数
-		int study_day = total_study / date;
-
-		mv.addObject("study_day", study_day);
-		mv.setViewName("compute");
-		return mv;
-	}
+	//	//試験日から逆算する処理をするページへ遷移
+	//	@RequestMapping("/compute")
+	//	public ModelAndView computing(
+	//			@RequestParam("xday") String xday,
+	//			@RequestParam("test") String test,
+	//			ModelAndView mv) {
+	//
+	//		//今日の日付
+	//		LocalDate today = LocalDate.now();
+	//
+	//		//type="date"で選択したString型をLocalDate型へ変換
+	//		LocalDate dday = LocalDate.parse(xday);
+	//
+	//		//残りの日数
+	//		Period period = Period.between(today, dday);
+	//
+	//		//残りの日数をセッションに格納
+	//		session.setAttribute("period", period.getDays());
+	//
+	//		//指定した日付をセッションに格納
+	//		session.setAttribute("xday", xday);
+	//
+	//		//資格・試験名を格納
+	//		session.setAttribute("test", test);
+	//
+	//		mv.addObject("today", today);
+	//
+	//		mv.setViewName("compute");
+	//
+	//		return mv;
+	//	}
+	//
+	//	//試験日から逆算する処理
+	//	@RequestMapping("/work")
+	//	public ModelAndView work(
+	//			@RequestParam("pages") int pages,
+	//			@RequestParam("laps") int laps,
+	//			@RequestParam("date") int date,
+	//			ModelAndView mv) {
+	//
+	//		//ページ数×周回数でトータル勉強量
+	//		int total_study = pages * laps;
+	//
+	//		//総ページ数÷日数
+	//		int study_day = total_study / date;
+	//
+	//		mv.addObject("study_day", study_day);
+	//		mv.setViewName("compute");
+	//		return mv;
+	//	}
 
 	//カレンダーページへ飛ぶ処理
-	@RequestMapping("/calender")
+	@RequestMapping("/calendar")
 	public ModelAndView goCalender(
 			ModelAndView mv) {
 
-		mv.setViewName("calender");
+		mv.setViewName("calendar");
 
+		return mv;
+	}
+
+	//カレンダーに追加する処理
+	@RequestMapping("/addSchedule")
+	public ModelAndView addSchedule(
+			@RequestParam("plan") String plan,
+			@RequestParam("date") String date,
+			ModelAndView mv) {
+
+		//<input type="date">で指定したString型をLocalDate型へ変換
+		LocalDate schedule = LocalDate.parse(date);
+
+		//指定した日付をセッションに格納
+		session.setAttribute("schedule", schedule);
+
+		//ログインしているユーザ情報
+		User_info user = (User_info) session.getAttribute("userInfo");
+
+		//指定日の日付
+		LocalDate schedule_x = (LocalDate) session.getAttribute("schedule");
+
+		//todo_planテーブルにtodoの情報を登録するためのインスタンス
+		AddSchedule schedule_new = new AddSchedule(user.getId(), plan, schedule_x);
+
+		//todo_planテーブルにtodoの情報を登録
+		addscheduleRepository.saveAndFlush(schedule_new);
+
+//		//uidでtodoリスト検索
+//		List<AddSchedule> schedule_list = addscheduleRepository.findByUid(user.getId());
+//
+//		mv.addObject("schedule_list", schedule_list);
+    	mv.addObject("message", "追加されました");
+
+		mv.setViewName("calendar");
+		return mv;
+	}
+
+	/**
+	 * reviewを表示
+	 */
+	@RequestMapping("/reviewSchedule")
+	public ModelAndView showReview(
+			ModelAndView mv) {
+
+		//ログインしているユーザ情報
+		User_info user = (User_info) session.getAttribute("userInfo");
+
+		//uidでtodoリスト検索
+		List<AddSchedule> schedule_list = addscheduleRepository.findByUid(user.getId());
+
+		mv.addObject("schedule_list", schedule_list);
+
+		mv.setViewName("reviewSchedule");
+		return mv;
+	}
+
+	/**
+	 * 指定したスケジュールを削除
+	 */
+	@RequestMapping("/schedule/delete")
+	public ModelAndView deleteCart(
+			@RequestParam("code") Integer code,
+			ModelAndView mv) {
+
+		addscheduleRepository.deleteById(code);
+
+		//ログインしているユーザ情報
+		User_info user = (User_info) session.getAttribute("userInfo");
+
+		//uidでtodoリスト検索
+		List<AddSchedule> schedule_list = addscheduleRepository.findByUid(user.getId());
+
+		mv.addObject("schedule_list", schedule_list);
+		mv.setViewName("reviewSchedule");
 		return mv;
 	}
 
