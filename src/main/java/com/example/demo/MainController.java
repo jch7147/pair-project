@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -22,6 +23,36 @@ public class MainController {
 
 	@Autowired
 	AddScheduleRepository addscheduleRepository;
+
+	@RequestMapping("/main")
+	public ModelAndView moveToMain(ModelAndView mv) {
+
+		//ログインしているユーザ情報
+		User_info user = (User_info) session.getAttribute("userInfo");
+
+		//今日の日付
+		LocalDate today = (LocalDate) session.getAttribute("today");
+
+		//uidでtodoリスト検索
+		List<History> todo_list = historyRepository.findByUidAndDate(user.getId(), today);
+
+		//todoの内容を..
+		mv.addObject("todo_list", todo_list);
+
+		//uidとDATEを条件にスケジュールを検索
+		List<AddSchedule> schedule_today = addscheduleRepository.findByUidAndDate(user.getId(), today);
+
+		//
+		mv.addObject("schedule_today", schedule_today);
+		//セッションtodo_listを呼び出す
+		//List<History> todo_list = (List<History>) session.getAttribute("todo_list");
+
+		//セッションtodo_listを呼び出す
+
+		mv.setViewName("main");
+
+		return mv;
+	}
 
 	@PostMapping("/add_todo")
 	public ModelAndView addTodo(
@@ -45,6 +76,9 @@ public class MainController {
 
 		//uidでtodoリスト検索
 		List<History> todo_list = historyRepository.findByUidAndDate(user.getId(), today);
+
+		//todo_listをセッションに格納
+		//session.setAttribute("todo_list", todo_list);
 
 		//todoの内容を..
 		mv.addObject("todo_list", todo_list);

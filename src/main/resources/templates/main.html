@@ -3,6 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <link rel="shortcut icon" href="/images/bird.png">
+<link href="{main.css}" rel="stylesheet">
+<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/ui-lightness/jquery-ui.css" rel="stylesheet" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/i18n/jquery.ui.datepicker-ja.min.js"></script>
+
 <title>MINEMINE</title>
 
 </head>
@@ -28,31 +34,28 @@
 
 	<main></main>
 
-	<div>
-		<div>
+	<div class="todo">
+		<div class="todo_header">
 			<!-- TIMERの中の日付 -->
 			<h2 th:text="${session.today}"></h2>
 
 			<!-- TIMER HOUR:MINUTES:SECONDS -->
 			<h1>
-				<span id="hours_total">00</span>: <span id="minutes_total">00</span>:
+				<span id="hours_total">00</span>:
+				<span id="minutes_total">00</span>:
 				<span id="seconds_total">00</span>
 			</h1>
 		</div>
 
 		<!-- STARTが押されたら -->
-		<div>
+		<div class="todo_timer">
 			<h2>勉強した時間</h2>
 
 			<!-- TIMER HOUR:MINUTES:SECONDS -->
 			<h1>
-				<!--
-				<input type="hidden" id="hours" value="00:">
-				<input type="hidden" id="minutes" value="00:">
-				<input type="hidden" id="seconds" value="00">
-				 -->
-				<span id="hours">00</span>: <span id="minutes">00</span>: <span
-					id="seconds">00</span>
+				<span id="hours">00</span>:
+				<span id="minutes">00</span>:
+				<span id="seconds">00</span>
 			</h1>
 
 			<!-- TIMER BUTTONS <button id="btn_start">START</button>-->
@@ -65,33 +68,68 @@
 
 		</div>
 
-		<div>
-			<form action="/add_todo" method="post">
-				<input type="text" name="todo" placeholder="Make TODOLIST">
-				<input type="submit" value="ADD">
-			</form>
-		</div>
-		<div>
-			<table border="1">
-				<tr class="todo_head">
-					<th colspan="2">..TODO..</th>
-					<th colspan="2">TIME</th>
+		<!-- TODO with TIMER -->
+		<main class="todo_container_time">
+			<!-- タイマーつきのTODOに追加 -->
+			<div>
+				<form action="/add_todo" method="post">
+					<input type="text" name="todo" placeholder="Make TODOLIST">
+					<input type="submit" value="ADD">
+				</form>
+			</div>
 
-				</tr>
-				<tr class="todo_head" th:each="todo,status : ${todo_list}">
+			<!-- タイマーつきのTODOのLIST -->
+			<div>
+				<table border="1">
+					<tr class="todo_timer_list_head">
+						<th colspan="2">..TODO..</th>
+						<th colspan="2">TIME</th>
 
-					<td><button class="btn_start" th:value="${status.index}">START</button></td>
+					</tr>
+					<tr class="todo_timer_list_body" th:each="todo,status : ${todo_list}">
 
-					<td th:text="${todo.todo}"></td>
+						<td><button class="btn_start" th:value="${status.index}">START</button></td>
 
-					<td><span class="time_todo" th:value="${status.index}"></span>
-					</td>
+						<td th:text="${todo.todo}"></td>
 
-					<td><input type="submit" value="X"></td>
-				</tr>
-			</table>
-		</div>
-		<div></div>
+						<td><span class="time_todo" th:value="${status.index}"></span></td>
+
+						<td><input type="submit" value="X"></td>
+					</tr>
+				</table>
+			</div>
+		</main>
+
+		<!-- TODO withOUT TIMER -->
+		<main class="todo_container_schedule">
+			<!-- タイマー無しのTODOに追加 -->
+			<div>
+				<form action="/add_schedule" method="post">
+					<input type="text" name="plan" placeholder="スケジュールを追加">
+					<input type="submit" value="ADD">
+				</form>
+			</div>
+
+			<!-- タイマー無しのTODOのLIST -->
+			<div>
+				<table border="1">
+
+					<tr class="todo_schedule_list_head">
+						<th colspan="1">今日やるべきこと</th>
+						<th colspan="1">削除</th>
+					</tr>
+
+					<tr class="todo_schedule_list_body" th:each="schedule : ${schedule_today}">
+
+						<td th:text="${schedule.plan}"></td>
+
+						<td><input type="submit" value="X"></td>
+					</tr>
+
+				</table>
+			</div>
+		</main>
+
 	</div>
 
 	<!-- TIMER JavaScript -->

@@ -10,16 +10,16 @@ let seconds = 0;
 const appendHours = document.getElementById("hours");
 const appendMinutes = document.getElementById("minutes");
 const appendSeconds = document.getElementById("seconds");
-const appendTime_todo = document.getElementsByClassName("time_todo");
+//const appendTime_todo = document.getElementsByClassName("time_todo");
 
 //const buttonStart = document.getElementsByClassName("btn_start");
 const buttonStop = document.getElementById("btn_stop");
 const buttonReset = document.getElementById("btn_reset");
 let intervalId;
 
-$(function(){
-	$(".btn_start").click(function(){
-		var selectNo = $(this).val();
+$(function() {
+	$(".btn_start").click(function() {
+		//var selectNo = $(this).val();
 
 		clearInterval(intervalId);
 		intervalId = setInterval(operateTimer, 1000);
@@ -31,18 +31,30 @@ $(function(){
 //	intervalId = setInterval(operateTimer, 1000);
 //};
 
-buttonStop.onclick = function() {
-	clearInterval(intervalId);
-	var h = appendHours.innerHTML;
-	var m = appendHours.innerHTML;
-	var s = appendSeconds.innerHTML;
+$(function() {
+	$("#btn_stop").click(function() {
+		//var selectNo_ = $(this).val();
+		var selectNo_ = $(".time_todo").val();
 
-	var i = appendTime_todo.nodeValue;
+		clearInterval(intervalId);
+		var h = appendHours.innerHTML;
+		var m = appendHours.innerHTML;
+		var s = appendSeconds.innerHTML;
 
-	var studyTime = appendTime_todo.innerHTML;
-	studyTime = h + ":" + m + ":" + s;
+		$(".time_todo").text(selectNo_);
+		//$(".time_todo").text(h + ":" + m + ":" + s);
+		//$(".time_todo").innerHTML = h + ":" + m + ":" + s;
+	});
+});
 
-};
+//buttonStop.onclick = function() {
+//	clearInterval(intervalId);
+//	var h = appendHours.innerHTML;
+//	var m = appendHours.innerHTML;
+//	var s = appendSeconds.innerHTML;
+//	var i = appendTime_todo.nodeValue;
+//	appendTime_todo.innerHTML = h + ":" + m + ":" + s;
+//};
 
 buttonReset.onclick = function() {
 	clearInterval(intervalId);

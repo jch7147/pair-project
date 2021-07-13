@@ -12,9 +12,12 @@ public interface AddScheduleRepository extends JpaRepository<AddSchedule, Intege
 	//uidと日付けを条件にスケジュール履歴を検索
 	List<AddSchedule> findByUidAndPlanAndDate(int uid, String plan,LocalDate date);
 
-	//uidで検索
+	//uidを条件にスケジュールを検索
 	List<AddSchedule> findByUid(int uid);
 
+	//PLANとDATEを条件にスケジュールを検索
 	List<AddSchedule> findByPlanAndDate(String plan, LocalDate date);
 
+	//uidとDATEを条件にスケジュールを検索
+	List<AddSchedule> findByUidAndDate(int uid, LocalDate date);
 }

@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -49,7 +50,7 @@ public class ScheduleController {
 		//指定日の日付
 		LocalDate schedule_x = (LocalDate) session.getAttribute("schedule");
 
-	//	if(もし同じ日にち、内容のスケジュールがあったらエラーにする) {}
+		//	if(もし同じ日にち、内容のスケジュールがあったらエラーにする) {}
 
 		//todo_planテーブルにtodoの情報を登録するためのインスタンス
 		AddSchedule schedule_new = new AddSchedule(user.getId(), plan, schedule_x);
@@ -111,12 +112,43 @@ public class ScheduleController {
 			//@RequestParam("calendar") LocalDate date,
 			ModelAndView mv) {
 
-
-
-
-//mv.addObject("",);
+		//mv.addObject("",);
 		mv.setViewName("calendar");
 		return mv;
 
+	}
+
+	/**
+	 * TODOLIST without TIMERから追加
+	 */
+	@PostMapping("/add_schedule")
+	public ModelAndView addToScheduleList(
+			@RequestParam("plan") String plan,
+			ModelAndView mv) {
+
+		//ログインしているユーザ情報
+		User_info user = (User_info) session.getAttribute("userInfo");
+
+		//今日の日付
+		LocalDate today = (LocalDate) session.getAttribute("today");
+
+		//todo_planのテーブルに新たなスケジュールを追加するためのインスタンス
+		AddSchedule add_schedule = new AddSchedule (user.getId(), plan, today);
+
+		//todo_planのテーブルに新たなスケジュールを追加
+		addscheduleRepository.saveAndFlush(add_schedule);
+
+		//uidとDATEを条件にスケジュールを検索
+		List<AddSchedule> schedule_today = addscheduleRepository.findByUidAndDate(user.getId(), today);
+
+		//schedule_todayをセッションに格納
+		//session.setAttribute("schedule_today", schedule_today);
+
+		//
+		mv.addObject("schedule_today",schedule_today);
+
+		mv.setViewName("main");
+
+		return mv;
 	}
 }
