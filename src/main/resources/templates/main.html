@@ -36,20 +36,37 @@
 
 			<!-- TIMER HOUR:MINUTES:SECONDS -->
 			<h1>
+				<span id="hours_total">00</span>:
+				<span id="minutes_total">00</span>:
+				<span id="seconds_total">00</span>
+			</h1>
+		</div>
+
+		<!-- STARTが押されたら -->
+		<div>
+			<h2>勉強した時間</h2>
+
+			<!-- TIMER HOUR:MINUTES:SECONDS -->
+			<h1>
+			<!--
+				<input type="hidden" id="hours" value="00:">
+				<input type="hidden" id="minutes" value="00:">
+				<input type="hidden" id="seconds" value="00">
+				 -->
 				<span id="hours">00</span>:
 				<span id="minutes">00</span>:
 				<span id="seconds">00</span>
 			</h1>
 
-			<!-- TIMER BUTTONS -->
-			<button id="btn_start">START</button>
+			<!-- TIMER BUTTONS <button id="btn_start">START</button>-->
+			<!--<form action="time_stop" method="post">
+			<input type="hidden" name="time_study" value="">-->
 			<button id="btn_stop">STOP</button>
-			<button id="btn_reset">RESET</button>
-			<button id="btn_reset">RESET</button>
-		</div>
+			<!--</form>-->
 
-		<!-- TIMER JavaScript -->
-		<script src="/timer.js"></script>
+			<button id="btn_reset">RESET</button>
+
+		</div>
 
 		<div>
 			<form action="/add_todo" method="post">
@@ -64,15 +81,16 @@
 					<th colspan="2">TIME</th>
 
 				</tr>
-				<tr class="todo_head" th:each="todo : ${todo_list}">
-					<td><input type="submit" value="START"></td>
+				<tr class="todo_head" th:each="todo,status : ${todo_list}">
+
+					<td><button class="btn_start" th:value="${status.index}">START</button></td>
+
 					<td th:text="${todo.todo}"></td>
+
 					<td>
-					<span id="hours">00</span>:
-					<span id="minutes">00</span>:
-					<span id="seconds">00</span>
+					<span class="time_todo" th:value="${status.index}"></span>
 					</td>
-					<!-- <td th:text="${todo.time}"></td> -->
+
 					<td><input type="submit" value="X"></td>
 				</tr>
 			</table>
@@ -80,5 +98,7 @@
 		<div></div>
 	</div>
 
+		<!-- TIMER JavaScript -->
+		<script src="/timer.js"></script>
 </body>
 </html>

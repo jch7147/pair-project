@@ -10,8 +10,9 @@ let seconds = 0;
 const appendHours = document.getElementById("hours");
 const appendMinutes = document.getElementById("minutes");
 const appendSeconds = document.getElementById("seconds");
+const appendTime_todo = document.getElementsByClassName("time_todo");
 
-const buttonStart = document.getElementById("btn_start");
+const buttonStart = document.getElementsByClassName("btn_start");
 const buttonStop = document.getElementById("btn_stop");
 const buttonReset = document.getElementById("btn_reset");
 let intervalId;
@@ -23,6 +24,15 @@ buttonStart.onclick = function() {
 
 buttonStop.onclick = function() {
 	clearInterval(intervalId);
+	var h = appendHours.innerHTML;
+	var m = appendHours.innerHTML;
+	var s = appendSeconds.innerHTML;
+
+	var i = appendTime_todo.nodeValue;
+
+	appendTime_todo.innerHTML = h + ":" + m + ":" + s;
+
+
 };
 
 buttonReset.onclick = function() {
