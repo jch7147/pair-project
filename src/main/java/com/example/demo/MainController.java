@@ -24,6 +24,9 @@ public class MainController {
 	@Autowired
 	AddScheduleRepository addscheduleRepository;
 
+	/**
+	 * TODOLIST with TIMERに追加
+	 */
 	@PostMapping("/add_todo")
 	public ModelAndView addTodo(
 			@RequestParam("todo") String todo,
@@ -108,6 +111,9 @@ public class MainController {
 	//		return mv;
 	//	}
 
+	/**
+	 * カレンダーへ移動
+	 */
 	//カレンダーページへ飛ぶ処理
 	@RequestMapping("/calendar")
 	public ModelAndView goCalender(
@@ -118,6 +124,9 @@ public class MainController {
 		return mv;
 	}
 
+	/**
+	 * カレンダーからスケジュールを追加
+	 */
 	//カレンダーに追加する処理
 	@RequestMapping("/addSchedule")
 	public ModelAndView addSchedule(
@@ -192,5 +201,7 @@ public class MainController {
 		mv.setViewName("reviewSchedule");
 		return mv;
 	}
+
+
 
 }
