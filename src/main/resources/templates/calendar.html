@@ -14,7 +14,7 @@
 			<button id="prev" onclick="prev()">‹</button>
 			<button id="next" onclick="next()">›</button>
 		</div>
-		<div id="calendar" name="calendar"></div>
+		<div id="calendar"></div>
 	</div>
 
     <br>
@@ -33,10 +33,11 @@
 	<span th:text="${message}" style="color: red"></span>
 
     <br>
-	<a href="">戻る</a>
+	<a href="../../main.html">戻る</a>
 	<br>
 	<a href="/reviewSchedule">review</a>
 
+<span th:text="${schedule_ymd}"></span>
 </body>
 <script>
 	const week = [ "日", "月", "火", "水", "木", "金", "土" ];
@@ -95,13 +96,13 @@
 			for (var j = 0; j < week.length; j++) {
 				if (i == 0 && j < startDayOfWeek) {
 					// 1行目で1日まで先月の日付を設定
-					calendar += "<td>"+"<a href='/dateSchedule'>"
+					calendar += "<td>"+"<a href='/dateSchedule?ymd=" + ("" + year + month + (lastMonthEndDate - startDayOfWeek + j + 1)) + "'>"
 							+ (lastMonthEndDate - startDayOfWeek + j + 1)
 							+ "</a></td>";
 				} else if (count >= endDate) {
 					// 最終行で最終日以降、翌月の日付を設定
 					count++;
-					calendar += "<td>"+"<a href='/dateSchedule'>"
+					calendar += "<td>"+"<a href='/dateSchedule?ymd=" + ("" + year + (month + 2) + (count - endDate)) + "'>"
 					        + (count - endDate)
 							+ "</a></td>";
 				} else {
@@ -110,9 +111,9 @@
 					if (year == today.getFullYear()
 							&& month == (today.getMonth())
 							&& count == today.getDate()) {
-						calendar += "<td>"+"<a href='/dateSchedule'>" + count + "</a></td>";
+						calendar += "<td>"+"<a href='/dateSchedule?ymd=" + ("" + year + (month + 1) + count) + "'>" + count + "</a></td>";
 					} else {
-						calendar += "<td>"+"<a href='/dateSchedule'>" + count + "</a></td>";
+						calendar += "<td>"+"<a href='/dateSchedule?ymd=" + ("" + year + (month + 1) + count) + "'>" + count + "</a></td>";
 					}
 				}
 			}

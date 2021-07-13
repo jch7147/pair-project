@@ -109,10 +109,14 @@ public class ScheduleController {
 	 */
 	@RequestMapping("/dateSchedule")
 	public ModelAndView dateSchedule(
-			//@RequestParam("calendar") LocalDate date,
+			@RequestParam("ymd") String ymd,
 			ModelAndView mv) {
 
-		//mv.addObject("",);
+		//String型をLocalDate型へ変換
+		//LocalDate schedule_ymd = LocalDate.parse(ymd);
+
+		mv.addObject("schedule_ymd",ymd);
+
 		mv.setViewName("calendar");
 		return mv;
 
