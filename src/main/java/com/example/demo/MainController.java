@@ -113,7 +113,6 @@ public class MainController {
 		//uidとDATEを条件にスケジュールを検索
 		List<AddSchedule> schedule_today = addscheduleRepository.findByUidAndDate(user.getId(), today);
 
-
 		//勉強時間の合算
 		//Time time_toal =  Time.valueOf(time);
 
