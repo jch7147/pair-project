@@ -116,10 +116,15 @@ public class ScheduleController {
 			ModelAndView mv) {
 
 		//String型をLocalDate型へ変換
-		//LocalDate schedule_ymd = LocalDate.parse(ymd);
+		LocalDate schedule = LocalDate.parse(ymd);
 
-		mv.addObject("schedule_ymd", ymd);
+		List<AddSchedule> schedule_ymd = addscheduleRepository.findByDate(schedule);
 
+		//		if (schedule_ymd.equals(null)) {
+		//			mv.addObject("message", "予定はありません。");
+		//		} else {
+		mv.addObject("schedule_ymd", schedule_ymd);
+		//}
 		mv.setViewName("calendar");
 		return mv;
 
@@ -156,7 +161,6 @@ public class ScheduleController {
 
 		//todoの内容を..
 		mv.addObject("todo_list", todo_list);
-
 
 		mv.setViewName("main");
 

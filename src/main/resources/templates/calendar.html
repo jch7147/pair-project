@@ -7,7 +7,7 @@
 </head>
 <body>
 
-    <!-- カレンダー -->
+	<!-- カレンダー -->
 	<div class="wrapper">
 		<h1 id="header"></h1>
 		<div id="next-prev-button">
@@ -17,27 +17,36 @@
 		<div id="calendar"></div>
 	</div>
 
-    <br>
+	<br>
 
 	<!-- スケジュールを追加 -->
 	<form action="/addSchedule">
-	<div>
-		<input type="date" name="date">
-	</div>
-	<div>
-		<input type="text" name="plan" required><br>
-    </div>
+		<div>
+			<input type="date" name="date">
+		</div>
+		<div>
+			<input type="text" name="plan" required><br>
+		</div>
 		<input type="submit" value="追加">
 	</form>
 
 	<span th:text="${message}" style="color: red"></span>
 
-    <br>
+	<br>
 	<a href="../../main.html">戻る</a>
 	<br>
 	<a href="/reviewSchedule">review</a>
 
-<span th:text="${schedule_ymd}"></span>
+
+	<br>
+
+	<table border="1">
+	<tr th:each="add:${schedule_ymd}">
+				<td th:text="${add.date}"></td>
+				<td th:text="${add.plan}"></td>
+	<tr>
+	</table>
+
 </body>
 <script>
 	const week = [ "日", "月", "火", "水", "木", "金", "土" ];
@@ -90,30 +99,65 @@
 		var row = Math.ceil((startDayOfWeek + endDate) / week.length);
 
 		// 1行ずつ設定
+
 		for (var i = 0; i < row; i++) {
+
 			calendar += "<tr>";
 			// 1colum単位で設定
 			for (var j = 0; j < week.length; j++) {
+
+				var y = "";
+				var m = "";
+				var d = "";
+
 				if (i == 0 && j < startDayOfWeek) {
+					y = "" + year;
+					m = "" + month;
+					d = "" + (lastMonthEndDate - startDayOfWeek + j + 1);
+
+					m = m.length == 1 ? "0" + m : m;
+					d = d.length == 1 ? "0" + d : d;
+
 					// 1行目で1日まで先月の日付を設定
-					calendar += "<td>"+"<a href='/dateSchedule?ymd=" + ("" + year + month + (lastMonthEndDate - startDayOfWeek + j + 1)) + "'>"
+					calendar += "<td>" + "<a href='/dateSchedule?ymd="
+							+ (y + "-" + m + "-" + d) + "'>"
 							+ (lastMonthEndDate - startDayOfWeek + j + 1)
 							+ "</a></td>";
 				} else if (count >= endDate) {
 					// 最終行で最終日以降、翌月の日付を設定
 					count++;
-					calendar += "<td>"+"<a href='/dateSchedule?ymd=" + ("" + year + (month + 2) + (count - endDate)) + "'>"
-					        + (count - endDate)
-							+ "</a></td>";
+
+					y = "" + year;
+					m = "" + (month + 2);
+					d = "" + (count - endDate);
+
+					m = m.length == 1 ? "0" + m : m;
+					d = d.length == 1 ? "0" + d : d;
+
+					calendar += "<td>" + "<a href='/dateSchedule?ymd="
+							+ (y + "-" + m + "-" + d) + "'>"
+							+ (count - endDate) + "</a></td>";
 				} else {
 					// 当月の日付を曜日に照らし合わせて設定
 					count++;
+
+					y = "" + year;
+					m = "" + (month + 1);
+					d = "" + count;
+
+					m = m.length == 1 ? "0" + m : m;
+					d = d.length == 1 ? "0" + d : d;
 					if (year == today.getFullYear()
 							&& month == (today.getMonth())
 							&& count == today.getDate()) {
-						calendar += "<td>"+"<a href='/dateSchedule?ymd=" + ("" + year + (month + 1) + count) + "'>" + count + "</a></td>";
+
+						calendar += "<td>" + "<a href='/dateSchedule?ymd="
+								+ (y + "-" + m + "-" + d) + "'>" + count
+								+ "</a></td>";
 					} else {
-						calendar += "<td>"+"<a href='/dateSchedule?ymd=" + ("" + year + (month + 1) + count) + "'>" + count + "</a></td>";
+						calendar += "<td>" + "<a href='/dateSchedule?ymd="
+								+ (y + "-" + m + "-" + d) + "'>" + count
+								+ "</a></td>";
 					}
 				}
 			}
