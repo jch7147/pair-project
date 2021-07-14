@@ -7,10 +7,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AddScheduleRepository extends JpaRepository<AddSchedule, Integer>{
+public interface AddScheduleRepository extends JpaRepository<AddSchedule, Integer> {
 
 	//uidと日付けを条件にスケジュール履歴を検索
-	List<AddSchedule> findByUidAndPlanAndDate(int uid, String plan,LocalDate date);
+	List<AddSchedule> findByUidAndPlanAndDate(int uid, String plan, LocalDate date);
 
 	//uidを条件にスケジュールを検索
 	List<AddSchedule> findByUid(int uid);
@@ -20,4 +20,7 @@ public interface AddScheduleRepository extends JpaRepository<AddSchedule, Intege
 
 	//uidとDATEを条件にスケジュールを検索
 	List<AddSchedule> findByUidAndDate(int uid, LocalDate date);
+
+	//指定したdateの情報を検索
+	List<AddSchedule> findByDate(LocalDate date);
 }
