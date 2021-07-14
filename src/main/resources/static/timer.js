@@ -42,11 +42,29 @@ $(function() {
 		var m = appendHours.innerHTML;
 		var s = appendSeconds.innerHTML;
 
-		$(".time_todo").text(h + ":" + m + ":" + s);
+		//var time_add = h + ":" + m + ":" + s;
+
+		//$(".time_todo").text(h + ":" + m + ":" + s);
 
 		location.href="/time_stop?time="+ h + ":" + m + ":" + s +"&start_value=" + start_value;
 	});
 });
+
+//$(function() {
+//	$("#btn_stop").click(function() {
+//		//var selectNo_ = $(this).val();
+	//	//var selectNo_ = $(".time_todo").val();
+//
+//		clearInterval(intervalId);
+//		var h = appendHours.innerHTML;
+//		var m = appendHours.innerHTML;
+//		var s = appendSeconds.innerHTML;
+//
+//		$(".time_todo").text(h + ":" + m + ":" + s);
+//
+//		location.href="/time_stop?time="+ h + ":" + m + ":" + s +"&start_value=" + start_value;
+//	});
+//});
 
 //buttonStop.onclick = function() {
 //	clearInterval(intervalId);

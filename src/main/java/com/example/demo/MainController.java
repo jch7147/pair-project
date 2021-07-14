@@ -1,14 +1,18 @@
 package com.example.demo;
 
 import java.sql.Time;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -63,23 +67,72 @@ public class MainController {
 		return mv;
 	}
 
-//	@RequestMapping("/time_stop")
-//	public ModelAndView StopAndSave(
-//			@RequestParam("time") String time,
-//			@RequestParam("start_value") String start_value,
-//			ModelAndView mv) {
-//
-//		//ログインしているユーザ情報
-//		User_info user = (User_info) session.getAttribute("userInfo");
-//
-//		//今日の日付
-//		LocalDate today = (LocalDate) session.getAttribute("today");
-//
-//		//historyテーブルにtodoの情報を登録するためのインスタンス
-//		History todo_new = new History(user.getId(), todo, today, time);
-//
-//		return mv;
-//	}
+	@RequestMapping("/time_stop")
+	public ModelAndView StopAndSave(
+			@RequestParam("time") String time,
+			@RequestParam("start_value") String start_value,
+			ModelAndView mv) {
+
+		//ログインしているユーザ情報
+		User_info user = (User_info) session.getAttribute("userInfo");
+
+		//今日の日付
+		LocalDate today = (LocalDate) session.getAttribute("today");
+
+		//JSから持ってきたstart_value（CODE）をint型に変換
+		int start_value_code = Integer.parseInt(start_value);
+
+		//変換したstart_valueを条件で検索
+		Optional<History> start_info = historyRepository.findById(start_value_code);
+
+		History start = start_info.get();
+
+		//勉強時間の加算
+
+		LocalTime localTimeStart = start.getTime().toLocalTime();
+
+		Time temp = Time.valueOf(time);
+		LocalTime localTimeTemp = temp.toLocalTime();
+
+		localTimeStart = localTimeStart.plus(Duration.ofHours(localTimeTemp.getHour()));
+		localTimeStart = localTimeStart.plus(Duration.ofMinutes(localTimeTemp.getMinute()));
+		localTimeStart = localTimeStart.plus(Duration.ofSeconds(localTimeTemp.getSecond()));
+
+		Time result = Time.valueOf(localTimeStart);
+
+		//時間を更新するためのインスタンス生成
+		History todo_list_edit = new History(start_value_code, start.getUid(), start.getTodo(), start.getDate(),
+				result);
+
+		//データベース上時間を更新
+		historyRepository.saveAndFlush(todo_list_edit);
+
+		//uidでtodoリスト検索
+		List<History> todo_list = historyRepository.findByUidAndDate(user.getId(), today);
+
+		//uidとDATEを条件にスケジュールを検索
+		List<AddSchedule> schedule_today = addscheduleRepository.findByUidAndDate(user.getId(), today);
+
+		//勉強時間の合算
+		//Time time_toal =  Time.valueOf(time);
+
+		//		//ログインしているユーザ情報
+		//		User_info user = (User_info) session.getAttribute("userInfo");
+		//
+		//		//今日の日付
+		//		LocalDate today = (LocalDate) session.getAttribute("today");
+		//
+		//		//historyテーブルにtodoの情報を登録するためのインスタンス
+		//		History todo_new = new History(user.getId(), todo, today, Time.valueOf(time));
+
+		//
+		mv.addObject("schedule_today", schedule_today);
+		mv.addObject("todo_list", todo_list);
+		//mv.addObject("flug",0);
+		mv.setViewName("main");
+
+		return mv;
+	}
 
 	//	//試験日から逆算する処理をするページへ遷移
 	//	@RequestMapping("/compute")

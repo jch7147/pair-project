@@ -28,6 +28,14 @@ public class History {
 		this.todo = todo;
 	}
 
+	public History(int code, int uid, String todo, LocalDate date, Time time) {
+		this.code = code;
+		this.uid = uid;
+		this.todo = todo;
+		this.date = date;
+		this.time = time;
+	}
+
 	public History(int uid, String todo, LocalDate date, Time time) {
 		this.uid = uid;
 		this.todo = todo;
