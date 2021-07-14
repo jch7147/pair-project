@@ -30,7 +30,7 @@
 		<input type="submit" value="追加">
 	</form>
 
-	<span th:text="${message}" style="color: red"></span>
+	<span th:text="${message1}" style="color: red"></span>
 
 	<br>
 	<a href="../../main.html">戻る</a>
@@ -46,17 +46,21 @@
 				<td th:text="${add.plan}"></td>
 	<tr>
 	</table>
-
+    <span th:text="${message2}" style="color: red"></span>
 </body>
-<script>
+<script th:inline="javascript">
 	const week = [ "日", "月", "火", "水", "木", "金", "土" ];
 	const today = new Date();
+	/*<![CDATA[*/
+	const currentDay = new Date(/*[[${yyyy}]]*/,/*[[${MM - 1}]]*/,/*[[${dd}]]*/);
+	/*]]>*/
+
 	// 月末だとずれる可能性があるため、1日固定で取得
 	var showDate = new Date(today.getFullYear(), today.getMonth(), 1);
 
 	// 初期表示
 	window.onload = function() {
-		showProcess(today, calendar);
+		showProcess(currentDay, calendar);
 	};
 
 	// 前の月表示

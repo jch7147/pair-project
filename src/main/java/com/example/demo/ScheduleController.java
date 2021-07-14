@@ -29,6 +29,10 @@ public class ScheduleController {
 	public ModelAndView goCalender(
 			ModelAndView mv) {
 
+		LocalDate now = LocalDate.now();
+		mv.addObject("yyyy", now.getYear());
+		mv.addObject("MM", now.getMonthValue());
+		mv.addObject("dd", now.getDayOfMonth());
 		mv.setViewName("calendar");
 
 		return mv;
@@ -53,16 +57,18 @@ public class ScheduleController {
 		//指定日の日付
 		LocalDate schedule_x = (LocalDate) session.getAttribute("schedule");
 
-		//	if(もし同じ日にち、内容のスケジュールがあったらエラーにする) {}
-
 		//todo_planテーブルにtodoの情報を登録するためのインスタンス
 		AddSchedule schedule_new = new AddSchedule(user.getId(), plan, schedule_x);
 
+		//もし同じ日にち＆＆同じ内容のスケジュールを追加したら「もうある」メッセージを送る
+		//if(schedule_x==schedule_x&&plan==plan) {
+		//  mv.addObject("message","既に追加してあります。");
+		//} else {
 		//todo_planテーブルにtodoの情報を登録
 		addscheduleRepository.saveAndFlush(schedule_new);
 
-		mv.addObject("message", "追加されました");
-
+		mv.addObject("message1", "追加されました");
+		//}
 		mv.setViewName("calendar");
 		return mv;
 	}
@@ -80,8 +86,12 @@ public class ScheduleController {
 		//uidでtodoリスト検索
 		List<AddSchedule> schedule_list = addscheduleRepository.findByUid(user.getId());
 
-		mv.addObject("schedule_list", schedule_list);
-
+		//もしレビューが空なら「レビューなし」メッセージを送る
+		if (schedule_list.size() == 0) {
+			mv.addObject("message3", "レビューは空です。");
+		} else {
+			mv.addObject("schedule_list", schedule_list);
+		}
 		mv.setViewName("reviewSchedule");
 		return mv;
 	}
@@ -120,11 +130,15 @@ public class ScheduleController {
 
 		List<AddSchedule> schedule_ymd = addscheduleRepository.findByDate(schedule);
 
-		//		if (schedule_ymd.equals(null)) {
-		//			mv.addObject("message", "予定はありません。");
-		//		} else {
-		mv.addObject("schedule_ymd", schedule_ymd);
-		//}
+		//指定した日にちにのデータベースが空だったらメッセージを、あれば表示
+		if (schedule_ymd.size() == 0) {
+			mv.addObject("message2", "予定はありません。");
+		} else {
+			mv.addObject("schedule_ymd", schedule_ymd);
+		}
+		mv.addObject("yyyy", schedule.getYear());
+		mv.addObject("MM", schedule.getMonthValue());
+		mv.addObject("dd", schedule.getDayOfMonth());
 		mv.setViewName("calendar");
 		return mv;
 
@@ -167,3 +181,4 @@ public class ScheduleController {
 		return mv;
 	}
 }
+
