@@ -28,6 +28,9 @@ public class AccountController {
 	@Autowired
 	HistoryRepository historyRepository;
 
+	@Autowired
+	AddScheduleRepository addscheduleRepository;
+
 	/**
 	 * ログイン.サインアップ画面を表示
 	 */
@@ -82,14 +85,20 @@ public class AccountController {
 		//今日の日付の情報
 		LocalDate today = LocalDate.now();
 
-		//Month month = today.getMonth();
-		//Day day = today.getDayOfMonth();
-
-		//日付のフォーマット変更
-		//today.format(DateTimeFormatter.ofPattern("MM.dd.E"));
-
 		//今日の日付をセッションに格納
 		session.setAttribute("today", today);
+
+		//uidでtodoリスト検索
+		List<History> todo_list = historyRepository.findByUidAndDate(user.getId(), today);
+
+		//todoの内容を..
+		mv.addObject("todo_list", todo_list);
+
+		//uidとDATEを条件にスケジュールを検索
+		List<AddSchedule> schedule_today = addscheduleRepository.findByUidAndDate(user.getId(), today);
+
+		//
+		mv.addObject("schedule_today", schedule_today);
 
 		// top.htmlを表示する
 		mv.setViewName("main");
@@ -164,8 +173,7 @@ public class AccountController {
 	public ModelAndView forgotPass2(
 			@RequestParam("email") String email,
 			@RequestParam("answer") String answer,
-			ModelAndView mv
-			) {
+			ModelAndView mv) {
 
 		//email,answerで登録情報を探す
 		List<User_info> list = userRepository.findByEmailAndAnswer(email, answer);
@@ -179,7 +187,7 @@ public class AccountController {
 
 			return mv;
 
-		//一致する情報があればmakeNewPass.htmlへ移動
+			//一致する情報があればmakeNewPass.htmlへ移動
 		} else {
 
 			User_info user = userRepository.findByEmailAndAnswer(email, answer).get(0);
@@ -191,19 +199,20 @@ public class AccountController {
 			return mv;
 		}
 	}
-    //新しくパスワードを生成する
+
+	//新しくパスワードを生成する
 	@PostMapping("/decision")
 	public ModelAndView remakePass(
 			@RequestParam("password1") String password1,
 			@RequestParam("password2") String password2,
-			ModelAndView mv
-			) {
+			ModelAndView mv) {
 
 		if (password1.equals(password2)) {
 
 			User_info user = (User_info) session.getAttribute("user_byEmail");
 
-			User_info user_changepw = new User_info(user.getId(), user.getJob_code(), user.getName(), user.getAge(), user.getEmail(), password1, user.getAnswer());
+			User_info user_changepw = new User_info(user.getId(), user.getJob_code(), user.getName(), user.getAge(),
+					user.getEmail(), password1, user.getAnswer());
 
 			userRepository.saveAndFlush(user_changepw);
 
@@ -217,7 +226,5 @@ public class AccountController {
 		}
 		return mv;
 	}
-
-
 
 }

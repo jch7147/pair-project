@@ -15,11 +15,12 @@ const appendSeconds = document.getElementById("seconds");
 //const buttonStart = document.getElementsByClassName("btn_start");
 const buttonStop = document.getElementById("btn_stop");
 const buttonReset = document.getElementById("btn_reset");
+let start_value;
 let intervalId;
 
 $(function() {
 	$(".btn_start").click(function() {
-		//var selectNo = $(this).val();
+		start_value = $(this).val();
 
 		clearInterval(intervalId);
 		intervalId = setInterval(operateTimer, 1000);
@@ -34,16 +35,16 @@ $(function() {
 $(function() {
 	$("#btn_stop").click(function() {
 		//var selectNo_ = $(this).val();
-		var selectNo_ = $(".time_todo").val();
+		//var selectNo_ = $(".time_todo").val();
 
 		clearInterval(intervalId);
 		var h = appendHours.innerHTML;
 		var m = appendHours.innerHTML;
 		var s = appendSeconds.innerHTML;
 
-		$(".time_todo").text(selectNo_);
-		//$(".time_todo").text(h + ":" + m + ":" + s);
-		//$(".time_todo").innerHTML = h + ":" + m + ":" + s;
+		$(".time_todo").text(h + ":" + m + ":" + s);
+
+		location.href="/time_stop?time="+ h + ":" + m + ":" + s +"&start_value=" + start_value;
 	});
 });
 

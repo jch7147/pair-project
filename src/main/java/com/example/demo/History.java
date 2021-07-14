@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import java.sql.Time;
 import java.time.LocalDate;
 
 import javax.persistence.Entity;
@@ -17,7 +18,7 @@ public class History {
 	private int uid;
 	private String todo;
 	private LocalDate date;
-	private int time;
+	private Time time;
 
 	public History() {
 
@@ -27,7 +28,7 @@ public class History {
 		this.todo = todo;
 	}
 
-	public History(int uid, String todo, LocalDate date, int time) {
+	public History(int uid, String todo, LocalDate date, Time time) {
 		this.uid = uid;
 		this.todo = todo;
 		this.date = date;
@@ -68,11 +69,11 @@ public class History {
 		this.date = date;
 	}
 
-	public int getTime() {
+	public Time getTime() {
 		return time;
 	}
 
-	public void setTime(int time) {
+	public void setTime(Time time) {
 		this.time = time;
 	}
 

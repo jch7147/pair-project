@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import java.sql.Time;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -8,7 +9,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -24,36 +24,6 @@ public class MainController {
 	@Autowired
 	AddScheduleRepository addscheduleRepository;
 
-	@RequestMapping("/main")
-	public ModelAndView moveToMain(ModelAndView mv) {
-
-		//ログインしているユーザ情報
-		User_info user = (User_info) session.getAttribute("userInfo");
-
-		//今日の日付
-		LocalDate today = (LocalDate) session.getAttribute("today");
-
-		//uidでtodoリスト検索
-		List<History> todo_list = historyRepository.findByUidAndDate(user.getId(), today);
-
-		//todoの内容を..
-		mv.addObject("todo_list", todo_list);
-
-		//uidとDATEを条件にスケジュールを検索
-		List<AddSchedule> schedule_today = addscheduleRepository.findByUidAndDate(user.getId(), today);
-
-		//
-		mv.addObject("schedule_today", schedule_today);
-		//セッションtodo_listを呼び出す
-		//List<History> todo_list = (List<History>) session.getAttribute("todo_list");
-
-		//セッションtodo_listを呼び出す
-
-		mv.setViewName("main");
-
-		return mv;
-	}
-
 	@PostMapping("/add_todo")
 	public ModelAndView addTodo(
 			@RequestParam("todo") String todo,
@@ -66,7 +36,7 @@ public class MainController {
 		LocalDate today = (LocalDate) session.getAttribute("today");
 
 		//勉強した時間の初期値
-		int time = 0;
+		Time time = Time.valueOf("00:00:00");
 
 		//historyテーブルにtodoの情報を登録するためのインスタンス
 		History todo_new = new History(user.getId(), todo, today, time);
@@ -77,8 +47,11 @@ public class MainController {
 		//uidでtodoリスト検索
 		List<History> todo_list = historyRepository.findByUidAndDate(user.getId(), today);
 
-		//todo_listをセッションに格納
-		//session.setAttribute("todo_list", todo_list);
+		//uidとDATEを条件にスケジュールを検索
+		List<AddSchedule> schedule_today = addscheduleRepository.findByUidAndDate(user.getId(), today);
+
+		//
+		mv.addObject("schedule_today", schedule_today);
 
 		//todoの内容を..
 		mv.addObject("todo_list", todo_list);
@@ -89,6 +62,24 @@ public class MainController {
 
 		return mv;
 	}
+
+//	@RequestMapping("/time_stop")
+//	public ModelAndView StopAndSave(
+//			@RequestParam("time") String time,
+//			@RequestParam("start_value") String start_value,
+//			ModelAndView mv) {
+//
+//		//ログインしているユーザ情報
+//		User_info user = (User_info) session.getAttribute("userInfo");
+//
+//		//今日の日付
+//		LocalDate today = (LocalDate) session.getAttribute("today");
+//
+//		//historyテーブルにtodoの情報を登録するためのインスタンス
+//		History todo_new = new History(user.getId(), todo, today, time);
+//
+//		return mv;
+//	}
 
 	//	//試験日から逆算する処理をするページへ遷移
 	//	@RequestMapping("/compute")

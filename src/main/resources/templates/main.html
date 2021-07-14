@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="shortcut icon" href="/images/bird.png">
-<link href="{main.css}" rel="stylesheet">
+<link th:href="@{css/main.css}" rel="stylesheet">
 <link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/ui-lightness/jquery-ui.css" rel="stylesheet" />
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
@@ -19,6 +19,7 @@
 		</h1>
 	</header>
 
+<main>
 	<div>
 		<form action="/compute">
 			<input type="text" name="test" placeholder="試験・資格名"><br>
@@ -31,8 +32,6 @@
 	<a href="/calendar">カレンダー</a>
 	<br>
 	<br>
-
-	<main></main>
 
 	<div class="todo">
 		<div class="todo_header">
@@ -59,7 +58,7 @@
 			</h1>
 
 			<!-- TIMER BUTTONS <button id="btn_start">START</button>-->
-			<!--<form action="time_stop" method="post">
+			<!--<form action="time_stop">
 			<input type="hidden" name="time_study" value="">-->
 			<button id="btn_stop">STOP</button>
 			<!--</form>-->
@@ -69,7 +68,7 @@
 		</div>
 
 		<!-- TODO with TIMER -->
-		<main class="todo_container_time">
+		<div class="todo_container_time">
 			<!-- タイマーつきのTODOに追加 -->
 			<div>
 				<form action="/add_todo" method="post">
@@ -82,26 +81,27 @@
 			<div>
 				<table border="1">
 					<tr class="todo_timer_list_head">
+
 						<th colspan="2">..TODO..</th>
 						<th colspan="2">TIME</th>
 
 					</tr>
-					<tr class="todo_timer_list_body" th:each="todo,status : ${todo_list}">
+					<tr class="todo_timer_list_body" th:each="todo : ${todo_list}">
 
-						<td><button class="btn_start" th:value="${status.index}">START</button></td>
+						<td><button class="btn_start" th:value="${todo.code}">START</button></td>
 
 						<td th:text="${todo.todo}"></td>
 
-						<td><span class="time_todo" th:value="${status.index}"></span></td>
+						<td ><span class="time_todo" th:text="${todo.time}"></span></td>
 
 						<td><input type="submit" value="X"></td>
 					</tr>
 				</table>
 			</div>
-		</main>
+		</div>
 
 		<!-- TODO withOUT TIMER -->
-		<main class="todo_container_schedule">
+		<div class="todo_container_schedule">
 			<!-- タイマー無しのTODOに追加 -->
 			<div>
 				<form action="/add_schedule" method="post">
@@ -128,10 +128,10 @@
 
 				</table>
 			</div>
-		</main>
+		</div>
 
 	</div>
-
+</main>
 	<!-- TIMER JavaScript -->
 	<script src="/timer.js"></script>
 </body>

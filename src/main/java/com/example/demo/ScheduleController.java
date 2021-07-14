@@ -19,6 +19,9 @@ public class ScheduleController {
 	HttpSession session;
 
 	@Autowired
+	HistoryRepository historyRepository;
+
+	@Autowired
 	AddScheduleRepository addscheduleRepository;
 
 	//カレンダーページへ飛ぶ処理
@@ -115,7 +118,7 @@ public class ScheduleController {
 		//String型をLocalDate型へ変換
 		//LocalDate schedule_ymd = LocalDate.parse(ymd);
 
-		mv.addObject("schedule_ymd",ymd);
+		mv.addObject("schedule_ymd", ymd);
 
 		mv.setViewName("calendar");
 		return mv;
@@ -137,7 +140,7 @@ public class ScheduleController {
 		LocalDate today = (LocalDate) session.getAttribute("today");
 
 		//todo_planのテーブルに新たなスケジュールを追加するためのインスタンス
-		AddSchedule add_schedule = new AddSchedule (user.getId(), plan, today);
+		AddSchedule add_schedule = new AddSchedule(user.getId(), plan, today);
 
 		//todo_planのテーブルに新たなスケジュールを追加
 		addscheduleRepository.saveAndFlush(add_schedule);
@@ -145,11 +148,15 @@ public class ScheduleController {
 		//uidとDATEを条件にスケジュールを検索
 		List<AddSchedule> schedule_today = addscheduleRepository.findByUidAndDate(user.getId(), today);
 
-		//schedule_todayをセッションに格納
-		//session.setAttribute("schedule_today", schedule_today);
-
 		//
-		mv.addObject("schedule_today",schedule_today);
+		mv.addObject("schedule_today", schedule_today);
+
+		//uidでtodoリスト検索
+		List<History> todo_list = historyRepository.findByUidAndDate(user.getId(), today);
+
+		//todoの内容を..
+		mv.addObject("todo_list", todo_list);
+
 
 		mv.setViewName("main");
 
