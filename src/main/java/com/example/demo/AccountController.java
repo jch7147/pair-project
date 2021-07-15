@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import java.sql.Time;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -30,6 +31,9 @@ public class AccountController {
 
 	@Autowired
 	AddScheduleRepository addscheduleRepository;
+
+	@Autowired
+	StudyTimeTotalRepository studytimetotalRepository;
 
 	/**
 	 * ログイン.サインアップ画面を表示
@@ -88,20 +92,8 @@ public class AccountController {
 		//今日の日付をセッションに格納
 		session.setAttribute("today", today);
 
-		//uidでtodoリスト検索
-		List<History> todo_list = historyRepository.findByUidAndDate(user.getId(), today);
-
-		//todoの内容を..
-		mv.addObject("todo_list", todo_list);
-
-		//uidとDATEを条件にスケジュールを検索
-		List<AddSchedule> schedule_today = addscheduleRepository.findByUidAndDate(user.getId(), today);
-
-		//
-		mv.addObject("schedule_today", schedule_today);
-
-		// top.htmlを表示する
-		mv.setViewName("main");
+		// 一覧表示画面にリダイレクト（画面遷移する）
+		mv.setViewName("redirect:/show_todo");
 
 		return mv;
 	}
@@ -149,6 +141,28 @@ public class AccountController {
 			// customerテーブルへの登録
 			userRepository.saveAndFlush(userNew);
 		}
+
+		////                               ////
+		//userstudytimeテーブルに初期値を登録//
+		////                               ////
+
+		//名前で検索し、uidを取り出す
+		List<User_info> userNew_studytime = userRepository.findByName(name);
+
+		int userId = userNew_studytime.get(0).getId();
+
+		//今日の日付の情報
+		LocalDate today = LocalDate.now();
+
+		//時間の初期値
+		Time time_initial = Time.valueOf("00:00:00");
+
+		UserStudyTime user_study_time = new UserStudyTime(userId, today, time_initial);
+
+		UserStudyTime user_study_time_ = new UserStudyTime(user_study_time.getCode(), userId, today,
+				time_initial);
+
+		studytimetotalRepository.saveAndFlush(user_study_time_);
 
 		mv.addObject("message", "登録が完了しました");
 

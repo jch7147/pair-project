@@ -28,6 +28,54 @@ public class MainController {
 	@Autowired
 	AddScheduleRepository addscheduleRepository;
 
+	@Autowired
+	StudyTimeTotalRepository studytimetotalRepository;
+
+	/**
+	 * 一覧表示画面
+	 */
+	@RequestMapping("/show_todo")
+	public ModelAndView show(ModelAndView mv) {
+
+		//ログインしているユーザ情報
+		User_info user = (User_info) session.getAttribute("userInfo");
+
+		//今日の日付
+		LocalDate today = (LocalDate) session.getAttribute("today");
+
+		////              ////
+		//ToDoListを呼び出す//
+		////     ↓↓     ////
+
+		List<History> todo_list = historyRepository.findByUidAndDate(user.getId(), today);
+
+		mv.addObject("todo_list", todo_list);
+
+		////                  ////
+		//スケジュールを呼び出す//
+		////       ↓↓       ////
+
+		List<AddSchedule> schedule_today = addscheduleRepository.findByUidAndDate(user.getId(), today);
+
+		mv.addObject("schedule_today", schedule_today);
+
+		////                             ////
+		//userstudytimeテーブルから呼び出す//
+		////            ↓↓             ////
+
+		List<UserStudyTime> user_study_time_info = studytimetotalRepository.findByUidAndDate(user.getId(), today);
+
+		mv.addObject("user_study_time_info", user_study_time_info);
+
+		// top.htmlを表示する
+		mv.setViewName("main");
+
+		return mv;
+	}
+
+	/**
+	 * タイマー付きのTODOLISTに項目追加
+	 */
 	@PostMapping("/add_todo")
 	public ModelAndView addTodo(
 			@RequestParam("todo") String todo,
@@ -48,25 +96,18 @@ public class MainController {
 		//historyテーブルにtodoの情報を登録
 		historyRepository.saveAndFlush(todo_new);
 
-		//uidでtodoリスト検索
-		List<History> todo_list = historyRepository.findByUidAndDate(user.getId(), today);
-
-		//uidとDATEを条件にスケジュールを検索
-		List<AddSchedule> schedule_today = addscheduleRepository.findByUidAndDate(user.getId(), today);
-
-		//
-		mv.addObject("schedule_today", schedule_today);
-
 		//todoの内容を..
-		mv.addObject("todo_list", todo_list);
 		mv.addObject("time", time);
 
 		//遷移先
-		mv.setViewName("main");
+		mv.setViewName("redirect:/show_todo");
 
 		return mv;
 	}
 
+	/**
+	 * STOPボタンが押された時の処理
+	 */
 	@RequestMapping("/time_stop")
 	public ModelAndView StopAndSave(
 			@RequestParam("time") String time,
@@ -87,7 +128,9 @@ public class MainController {
 
 		History start = start_info.get();
 
-		//勉強時間の加算
+		////                               ////
+		//勉強時間の加算(同じ項目だった場合）//
+		////             ↓↓              ////
 
 		LocalTime localTimeStart = start.getTime().toLocalTime();
 
@@ -107,29 +150,75 @@ public class MainController {
 		//データベース上時間を更新
 		historyRepository.saveAndFlush(todo_list_edit);
 
-		//uidでtodoリスト検索
-		List<History> todo_list = historyRepository.findByUidAndDate(user.getId(), today);
+		////                ////
+		//一日の勉強時間の合算//
+		////      ↓↓      ////
 
-		//uidとDATEを条件にスケジュールを検索
-		List<AddSchedule> schedule_today = addscheduleRepository.findByUidAndDate(user.getId(), today);
+		Time study_time_total = sumUpStudyTime();
 
-		//勉強時間の合算
-		//Time time_toal =  Time.valueOf(time);
-
-		//		//ログインしているユーザ情報
-		//		User_info user = (User_info) session.getAttribute("userInfo");
+		//		////            ////
+		//		//時間の合計を表示//
+		//		////    ↓↓    ////
 		//
-		//		//今日の日付
-		//		LocalDate today = (LocalDate) session.getAttribute("today");
+		//		String total_hour = String.valueOf(localTimeTotal.getHour());
+		//		String total_minute = String.valueOf(localTimeTotal.getMinute());
+		//		String total_second = String.valueOf(localTimeTotal.getSecond());
 		//
-		//		//historyテーブルにtodoの情報を登録するためのインスタンス
-		//		History todo_new = new History(user.getId(), todo, today, Time.valueOf(time));
+		//		mv.addObject("total_hour", total_hour);
+		//		mv.addObject("total_minute", total_minute);
+		//		mv.addObject("total_second", total_second);
 
-		//
-		mv.addObject("schedule_today", schedule_today);
-		mv.addObject("todo_list", todo_list);
+		////              ////
+		//データベースへ格納//
+		////     ↓↓     ////
+
+		List<UserStudyTime> user_study_time_info = studytimetotalRepository.findByUidAndDate(user.getId(), today);
+
+		int user_code = user_study_time_info.get(0).getCode();
+
+		UserStudyTime user_study_time = new UserStudyTime(user_code, user.getId(), today, study_time_total);
+
+		studytimetotalRepository.saveAndFlush(user_study_time);
+
+		mv.addObject("user_study_time_info", user_study_time_info);
+
 		//mv.addObject("flug",0);
-		mv.setViewName("main");
+		mv.setViewName("redirect:/show_todo");
+
+		return mv;
+	}
+
+	@RequestMapping("/delete_todo")
+	public ModelAndView delete_todo(
+			@RequestParam("todo_code") int code,
+			ModelAndView mv) {
+
+		//codeで検索し、削除
+		historyRepository.deleteById(code);
+
+		Time study_time_total = sumUpStudyTime();
+
+		//ログインしているユーザ情報
+		User_info user = (User_info) session.getAttribute("userInfo");
+
+		//今日の日付
+		LocalDate today = (LocalDate) session.getAttribute("today");
+
+		////              ////
+		//データベースへ格納//
+		////     ↓↓     ////
+
+		List<UserStudyTime> user_study_time_info = studytimetotalRepository.findByUidAndDate(user.getId(), today);
+
+		int user_code = user_study_time_info.get(0).getCode();
+
+		UserStudyTime user_study_time = new UserStudyTime(user_code, user.getId(), today, study_time_total);
+
+		studytimetotalRepository.saveAndFlush(user_study_time);
+
+		mv.addObject("user_study_time_info", user_study_time_info);
+
+		mv.setViewName("redirect:/show_todo");
 
 		return mv;
 	}
@@ -184,4 +273,37 @@ public class MainController {
 	//		mv.setViewName("compute");
 	//		return mv;
 	//	}
+
+	private Time sumUpStudyTime() {
+		////                ////
+		//一日の勉強時間の合算//
+		////      ↓↓      ////
+
+		//ログインしているユーザ情報
+		User_info user = (User_info) session.getAttribute("userInfo");
+
+		//今日の日付
+		LocalDate today = (LocalDate) session.getAttribute("today");
+
+		List<History> todo_list = historyRepository.findByUidAndDate(user.getId(), today);
+
+		Time time_total = Time.valueOf("00:00:00");
+
+		LocalTime localTimeTotal = time_total.toLocalTime();
+
+		for (int t = 0; t < todo_list.size(); t++) {
+
+			LocalTime localTimeHistory = todo_list.get(t).getTime().toLocalTime();
+
+			localTimeTotal = localTimeTotal.plus(Duration.ofHours(localTimeHistory.getHour()));
+			localTimeTotal = localTimeTotal.plus(Duration.ofMinutes(localTimeHistory.getMinute()));
+			localTimeTotal = localTimeTotal.plus(Duration.ofSeconds(localTimeHistory.getSecond()));
+		}
+
+		//TIME型に変換
+		Time study_time_total = Time.valueOf(localTimeTotal);
+
+		return study_time_total;
+	}
+
 }

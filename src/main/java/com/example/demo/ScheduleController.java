@@ -24,7 +24,9 @@ public class ScheduleController {
 	@Autowired
 	AddScheduleRepository addscheduleRepository;
 
-	//カレンダーページへ飛ぶ処理
+	/**
+	 * カレンダーページへ飛ぶ処理
+	 */
 	@RequestMapping("/calendar")
 	public ModelAndView goCalender(
 			ModelAndView mv) {
@@ -38,7 +40,9 @@ public class ScheduleController {
 		return mv;
 	}
 
-	//カレンダーに追加する処理
+	/**
+	 * カレンダーに追加する処理
+	 */
 	@RequestMapping("/addSchedule")
 	public ModelAndView addSchedule(
 			@RequestParam("plan") String plan,

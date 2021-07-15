@@ -39,11 +39,9 @@
 			<!-- TIMERの中の日付 -->
 			<h2 th:text="${session.today}"></h2>
 
-			<!-- TIMER HOUR:MINUTES:SECONDS -->
-			<h1>
-				<span id="hours_total">00</span>:
-				<span id="minutes_total">00</span>:
-				<span id="seconds_total">00</span>
+			<!-- TIMER HOUR:MINUTES:SECONDS TOTAL/DAY -->
+			<h1 th:each="time : ${user_study_time_info}">
+				<span th:text="${time.time}"></span>
 			</h1>
 		</div>
 
@@ -58,18 +56,14 @@
 				<span id="seconds">00</span>
 			</h1>
 
-			<!-- TIMER BUTTONS <button id="btn_start">START</button>-->
-			<!--<form action="time_stop">
-			<input type="hidden" name="time_study" value="">-->
 			<button id="btn_stop">STOP</button>
-			<!--</form>-->
-
 			<button id="btn_reset">RESET</button>
 
 		</div>
 
 		<!-- TODO with TIMER -->
 		<div class="todo_container_time">
+
 			<!-- タイマーつきのTODOに追加 -->
 			<div>
 				<form action="/add_todo" method="post">
@@ -95,7 +89,12 @@
 
 						<td ><span class="time_todo" th:text="${todo.time}"></span></td>
 
-						<td><input type="submit" value="X"></td>
+						<td>
+						<form action="/delete_todo" >
+						<input type="hidden" name="todo_code" th:value="${todo.code}">
+						<input type="submit" value="X">
+						</form>
+						</td>
 					</tr>
 				</table>
 			</div>
