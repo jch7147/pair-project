@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,9 +25,7 @@ public class ScheduleController {
 	@Autowired
 	AddScheduleRepository addscheduleRepository;
 
-	/**
-	 * カレンダーページへ飛ぶ処理
-	 */
+	//カレンダーページへ飛ぶ処理
 	@RequestMapping("/calendar")
 	public ModelAndView goCalender(
 			ModelAndView mv) {
@@ -35,14 +34,13 @@ public class ScheduleController {
 		mv.addObject("yyyy", now.getYear());
 		mv.addObject("MM", now.getMonthValue());
 		mv.addObject("dd", now.getDayOfMonth());
+		mv.addObject("check", false);
 		mv.setViewName("calendar");
 
 		return mv;
 	}
 
-	/**
-	 * カレンダーに追加する処理
-	 */
+	//カレンダーに追加する処理
 	@RequestMapping("/addSchedule")
 	public ModelAndView addSchedule(
 			@RequestParam("plan") String plan,
@@ -52,27 +50,27 @@ public class ScheduleController {
 		//<input type="date">で指定したString型をLocalDate型へ変換
 		LocalDate schedule = LocalDate.parse(date);
 
-		//指定した日付をセッションに格納
-		session.setAttribute("schedule", schedule);
+		List<AddSchedule> list = addscheduleRepository.findByPlanAndDate(plan, schedule);
 
 		//ログインしているユーザ情報
 		User_info user = (User_info) session.getAttribute("userInfo");
 
-		//指定日の日付
-		LocalDate schedule_x = (LocalDate) session.getAttribute("schedule");
-
 		//todo_planテーブルにtodoの情報を登録するためのインスタンス
-		AddSchedule schedule_new = new AddSchedule(user.getId(), plan, schedule_x);
+		AddSchedule schedule_new = new AddSchedule(user.getId(), plan, schedule);
 
 		//もし同じ日にち＆＆同じ内容のスケジュールを追加したら「もうある」メッセージを送る
-		//if(schedule_x==schedule_x&&plan==plan) {
-		//  mv.addObject("message","既に追加してあります。");
-		//} else {
-		//todo_planテーブルにtodoの情報を登録
-		addscheduleRepository.saveAndFlush(schedule_new);
+		if (list.size() != 0) {
+			mv.addObject("message", "既に追加してあります。");
+		} else {
+			//todo_planテーブルにtodoの情報を登録
+			addscheduleRepository.saveAndFlush(schedule_new);
 
-		mv.addObject("message1", "追加されました");
-		//}
+			mv.addObject("message1", "追加されました");
+		}
+
+		mv.addObject("yyyy", schedule.getYear());
+		mv.addObject("MM", schedule.getMonthValue());
+		mv.addObject("dd", schedule.getDayOfMonth());
 		mv.setViewName("calendar");
 		return mv;
 	}
@@ -93,18 +91,48 @@ public class ScheduleController {
 		//もしレビューが空なら「レビューなし」メッセージを送る
 		if (schedule_list.size() == 0) {
 			mv.addObject("message3", "レビューは空です。");
+			mv.addObject("check", true);
 		} else {
 			mv.addObject("schedule_list", schedule_list);
+			mv.addObject("check", false);
 		}
 		mv.setViewName("reviewSchedule");
 		return mv;
 	}
 
 	/**
-	 * 指定したスケジュールを削除
+	 * reviewを表示(指定検索)
 	 */
-	@RequestMapping("/schedule/delete")
-	public ModelAndView deleteCart(
+	@GetMapping("/searchSchedule")
+	public ModelAndView searchSchedule(
+			@RequestParam(name = "lowDate") String lowDate,
+			@RequestParam(name = "highDate") String highDate,
+			ModelAndView mv) {
+
+		//<input type="date">で指定したString型をLocalDate型へ変換
+		LocalDate schedule_l = LocalDate.parse(lowDate);
+		LocalDate schedule_h = LocalDate.parse(highDate);
+
+		//todo_planテーブルから持ってくる
+		List<AddSchedule> schedule_ = addscheduleRepository.findByDateBetween(schedule_l, schedule_h);
+
+		if (schedule_.size() != 0) {
+			mv.addObject("schedule_list", schedule_);
+			mv.addObject("check", false);
+		} else if (schedule_.size() == 0) {
+			mv.addObject("message3", "レビューは空です。");
+			mv.addObject("check", true);
+		}
+
+		mv.setViewName("reviewSchedule");
+		return mv;
+	}
+
+	/**
+	 * 指定したスケジュールをreviewSchedule.html内で削除
+	 */
+	@RequestMapping("/schedule/delete/reviewSchedule")
+	public ModelAndView deleteReviewSchedule(
 			@RequestParam("code") Integer code,
 			ModelAndView mv) {
 
@@ -116,13 +144,49 @@ public class ScheduleController {
 		//uidでtodoリスト検索
 		List<AddSchedule> schedule_list = addscheduleRepository.findByUid(user.getId());
 
-		mv.addObject("schedule_list", schedule_list);
+		if (schedule_list.size() == 0) {
+			mv.addObject("message3", "レビューは空です。");
+		} else {
+			mv.addObject("schedule_list", schedule_list);
+		}
 		mv.setViewName("reviewSchedule");
 		return mv;
 	}
 
 	/**
-	 * 指定した曜日のスケジュールを閲覧
+	 * 指定したスケジュールをcalendar.html内で削除
+	 */
+	@RequestMapping("/schedule/delete/calendar")
+	public ModelAndView deleteCalendar(
+			@RequestParam("code") Integer code,
+			@RequestParam("date") String date,
+			ModelAndView mv) {
+
+		LocalDate date_x = LocalDate.parse(date);
+
+		addscheduleRepository.deleteById(code);
+
+		//ログインしているユーザ情報
+		User_info user = (User_info) session.getAttribute("userInfo");
+
+		//uidでtodoリスト検索
+		List<AddSchedule> schedule_list = addscheduleRepository.findByUid(user.getId());
+
+		if (schedule_list.size() == 0) {
+			mv.addObject("message2", "予定はありません。");
+		} else {
+			mv.addObject("schedule_list", schedule_list);
+		}
+
+		mv.addObject("yyyy", date_x.getYear());
+		mv.addObject("MM", date_x.getMonthValue());
+		mv.addObject("dd", date_x.getDayOfMonth());
+		mv.setViewName("calendar");
+		return mv;
+	}
+
+	/**
+	 * 指定した日のスケジュールを閲覧
 	 */
 	@RequestMapping("/dateSchedule")
 	public ModelAndView dateSchedule(
@@ -139,6 +203,7 @@ public class ScheduleController {
 			mv.addObject("message2", "予定はありません。");
 		} else {
 			mv.addObject("schedule_ymd", schedule_ymd);
+			mv.addObject("check", true);
 		}
 		mv.addObject("yyyy", schedule.getYear());
 		mv.addObject("MM", schedule.getMonthValue());
@@ -149,7 +214,7 @@ public class ScheduleController {
 	}
 
 	/**
-	 * TODOLIST without TIMERから追加
+	 * TODOLIST todayから追加
 	 */
 	@PostMapping("/add_schedule")
 	public ModelAndView addToScheduleList(
@@ -184,5 +249,10 @@ public class ScheduleController {
 
 		return mv;
 	}
+
+	/**
+	 * TODOLIST todayから削除
+	 */
 }
+
 

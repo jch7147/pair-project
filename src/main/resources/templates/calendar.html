@@ -29,23 +29,32 @@
 		</div>
 		<input type="submit" value="追加">
 	</form>
-
+    <span th:text="${message}" style="color: red"></span>
 	<span th:text="${message1}" style="color: red"></span>
 
-	<br>
-	<a href="../../main.html">戻る</a>
 	<br>
 	<a href="/reviewSchedule">review</a>
 
 
 	<br>
-
-	<table border="1">
-	<tr th:each="add:${schedule_ymd}">
-				<td th:text="${add.date}"></td>
+	<table border="1" th:if="${check == true}">
+			<tr>
+				<th>plan</th>
+				<th>date</th>
+				<th>DELETE</th>
+			</tr>
+			<tr th:each="add:${schedule_ymd}">
 				<td th:text="${add.plan}"></td>
-	<tr>
-	</table>
+				<td th:text="${add.date}"></td>
+				<td>
+					<form action="/schedule/delete/calendar">
+						<input type="hidden" name="code" th:value="${add.code}">
+						<input type="hidden" name="date" th:value="${add.date}">
+						<input type="submit" value="削除">
+					</form>
+				</td>
+			</tr>
+		</table>
     <span th:text="${message2}" style="color: red"></span>
 </body>
 <script th:inline="javascript">

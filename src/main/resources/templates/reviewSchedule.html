@@ -5,9 +5,16 @@
 <title>Insert title here</title>
 </head>
 <body>
-<span th:text="${message3}" style="color: red"></span>
+    <form action="/searchSchedule" method="get">
 	<div>
-		<table border="1">
+		期間：<input type="date" name="lowDate" th:value="${lowDate}" style="font-size: 3px;">～ <input
+			type="date" name="highDate" th:value="${highDate}" style="font-size: 3px;"> <input
+			type="submit" value="検索">
+	</div>
+    </form>
+    <span th:text="${message3}" style="color: red"></span>
+	<div>
+		<table border="1" th:if="${check == false}">
 			<tr>
 				<th>plan</th>
 				<th>date</th>
@@ -17,7 +24,7 @@
 				<td th:text="${add.plan}"></td>
 				<td th:text="${add.date}"></td>
 				<td>
-					<form action="/schedule/delete">
+					<form action="/schedule/delete/reviewSchedule">
 						<input type="hidden" name="code" th:value="${add.code}">
 						<input type="submit" value="削除">
 					</form>
