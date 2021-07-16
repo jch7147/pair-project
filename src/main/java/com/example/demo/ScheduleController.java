@@ -116,9 +116,8 @@ public class ScheduleController {
 		//ログインしているユーザ情報
 		User_info user = (User_info) session.getAttribute("userInfo");
 
-		//todo_planテーブルから持ってくる
-		List<AddSchedule> schedule_ = addscheduleRepository.findByUidAndDateBetween(user.getId(), schedule_l,
-				schedule_h);
+		//todo_planテーブルから選択した範囲の情報を昇順で持ってくる
+		List<AddSchedule> schedule_ = addscheduleRepository.findByUidAndDateBetweenOrderByDateAsc(user.getId(), schedule_l, schedule_h);
 
 		if (schedule_.size() != 0) {
 			mv.addObject("schedule_list", schedule_);
