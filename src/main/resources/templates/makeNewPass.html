@@ -3,27 +3,29 @@
 <head>
 <meta charset="UTF-8" />
 <link rel="shortcut icon" href="/images/bird.png">
+<link th:href="@{css/newPassword.css}" rel="stylesheet">
 <title>Welcome to MINEMINE</title>
 </head>
 <body>
-	<h1>MINEMINE</h1>
+<header class="newpassword_header">
+	<h1 class="newpassword_header_title">MINEMINE</h1>
 	<br>
-	<h3>Welcome to MINEMINE</h3>
-	<h3>Remake to Password</h3>
+	<p class="newpassword_header_text">Let's make New Password!</p>
+	<p class="newpassword_header_text">Remake to Password</p>
+</header>
 
+<main class="newpassword_form">
     <span th:text="${message}" style="color: red"></span>
 
-	<form action="/decision" method="post">
-	    <label for="password">password:</label>
-		<input type="text" name="password1" placeholder="new_password"><br>
+	<form class="newpassword_form_body" action="/decision" method="post">
+	    <label for="password">New Password</label>
+		<input class="newpassword_form_input" id="password" type="text" name="password1" placeholder="new password"><br>
 
+		<input class="newpassword_form_input" type="text" name="password2" placeholder="Re-enter new password"><br>
 
-		<label for="password">again</label>
-		<input type="text" name="password2" placeholder="new_password"><br>
-
-		<input type="submit" value="decision"><br>
+		<input class="btn" type="submit" value="decision"><br>
 	</form>
-
+</main>
 
 
 
