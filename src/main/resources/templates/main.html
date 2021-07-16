@@ -4,10 +4,15 @@
 <meta charset="UTF-8">
 <link rel="shortcut icon" href="/images/bird.png">
 <link th:href="@{css/main.css}" rel="stylesheet">
-<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/ui-lightness/jquery-ui.css" rel="stylesheet" />
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/i18n/jquery.ui.datepicker-ja.min.js"></script>
+<link type="text/css"
+	href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/ui-lightness/jquery-ui.css"
+	rel="stylesheet" />
+<script type="text/javascript"
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script type="text/javascript"
+	src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+<script type="text/javascript"
+	src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/i18n/jquery.ui.datepicker-ja.min.js"></script>
 
 <title>MINEMINE</title>
 
@@ -31,9 +36,10 @@
 	<a href="/calendar">カレンダー</a>
 	<br>
 
-	<a id="logo_bird" href="show_todo"><img src="/images/bird.png" width="50px" height="50px"></a>
+	<a id="logo_bird" href="show_todo"><img src="/images/bird.png"
+		width="50px" height="50px"></a>
 
-<!-- TIMER_TODOここから-->
+	<!-- TIMER_TODOここから-->
 	<main class="timer_todo">
 		<div class="timer_todo_header">
 
@@ -46,15 +52,14 @@
 			</h1>
 		</div>
 
-<!-- TIMER_TODO_タイマー機能 -->
+		<!-- TIMER_TODO_タイマー機能 -->
 		<div class="timer_todo_timer">
 			<h2>勉強した時間</h2>
 
 			<!-- TIMER HOUR:MINUTES:SECONDS -->
 			<h1>
-				<span id="hours">00</span>:
-				<span id="minutes">00</span>:
-				<span id="seconds">00</span>
+				<span id="hours">00</span>: <span id="minutes">00</span>: <span
+					id="seconds">00</span>
 			</h1>
 
 			<button id="btn_stop">STOP</button>
@@ -62,7 +67,7 @@
 
 		</div>
 
-<!-- TIMER_TODO_追加 -->
+		<!-- TIMER_TODO_追加 -->
 		<div class="timer_todo_add">
 
 			<div>
@@ -72,7 +77,7 @@
 				</form>
 			</div>
 
-<!-- TIMER_TODO_リスト -->
+			<!-- TIMER_TODO_リスト -->
 			<div class="timer_todo_list">
 				<table border="1">
 					<tr>
@@ -86,13 +91,13 @@
 
 						<td th:text="${todo.todo}"></td>
 
-						<td ><span th:text="${todo.time}"></span></td>
+						<td><span th:text="${todo.time}"></span></td>
 
 						<td>
-						<form action="/delete_todo" >
-						<input type="hidden" name="todo_code" th:value="${todo.code}">
-						<input type="submit" value="X">
-						</form>
+							<form action="/delete_todo">
+								<input type="hidden" name="todo_code" th:value="${todo.code}">
+								<input type="submit" value="X">
+							</form>
 						</td>
 					</tr>
 				</table>
@@ -100,35 +105,41 @@
 		</div>
 	</main>
 
-<!-- SCHEDULE_TODO_ここから -->
-		<div class="schedule_todo">
-<!-- SCHEDULE_TODO_追加 -->
-			<div class="schedule_todo_add">
-				<form action="/add_schedule" method="post">
-					<input type="text" name="plan" placeholder="スケジュールを追加">
-					<input type="submit" value="ADD">
-				</form>
-			</div>
-
-<!-- SCHEDULE_TODO_リスト -->
-			<div class="schedule_todo_list">
-				<table border="1">
-
-					<tr>
-						<th colspan="1">今日やるべきこと</th>
-						<th colspan="1">削除</th>
-					</tr>
-
-					<tr th:each="schedule : ${schedule_today}">
-
-						<td th:text="${schedule.plan}"></td>
-
-						<td><input type="submit" value="X"></td>
-					</tr>
-
-				</table>
-			</div>
+	<!-- SCHEDULE_TODO_ここから -->
+	<div class="schedule_todo">
+		<!-- SCHEDULE_TODO_追加 -->
+		<div class="schedule_todo_add">
+			<form action="/add_schedule" method="post">
+				<input type="text" name="plan" placeholder="スケジュールを追加"> <input
+					type="submit" value="ADD">
+			</form>
 		</div>
+
+		<!-- SCHEDULE_TODO_リスト -->
+		<div class="schedule_todo_list">
+			<table border="1">
+
+				<tr>
+					<th colspan="1">今日やるべきこと</th>
+					<th colspan="1">削除</th>
+				</tr>
+
+				<tr th:each="schedule : ${schedule_today}">
+
+					<td th:text="${schedule.plan}"></td>
+
+					<td>
+						<form action="/deleteScheduleToday">
+							<input type="hidden" name="code" th:value="${schedule.code}">
+							<input type="submit" value="X">
+						</form>
+					</td>
+
+				</tr>
+
+			</table>
+		</div>
+	</div>
 
 
 

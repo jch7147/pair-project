@@ -25,5 +25,12 @@ public interface AddScheduleRepository extends JpaRepository<AddSchedule, Intege
 	List<AddSchedule> findByDate(LocalDate date);
 
 	//指定した範囲の日付の情報を検索
-	List<AddSchedule> findByDateBetween(LocalDate date ,LocalDate date2);
+	List<AddSchedule> findByUidAndDateBetween(int uid, LocalDate date ,LocalDate date2);
+
+	//レビューの昇順
+	List<AddSchedule> findByUidOrderByDateAsc(int uid);
+
+	//レビューの降順
+	List<AddSchedule> findByUidOrderByDateDesc(int uid);
+
 }

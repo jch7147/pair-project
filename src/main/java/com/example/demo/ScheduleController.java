@@ -113,8 +113,12 @@ public class ScheduleController {
 		LocalDate schedule_l = LocalDate.parse(lowDate);
 		LocalDate schedule_h = LocalDate.parse(highDate);
 
+		//ログインしているユーザ情報
+		User_info user = (User_info) session.getAttribute("userInfo");
+
 		//todo_planテーブルから持ってくる
-		List<AddSchedule> schedule_ = addscheduleRepository.findByDateBetween(schedule_l, schedule_h);
+		List<AddSchedule> schedule_ = addscheduleRepository.findByUidAndDateBetween(user.getId(), schedule_l,
+				schedule_h);
 
 		if (schedule_.size() != 0) {
 			mv.addObject("schedule_list", schedule_);
@@ -214,6 +218,40 @@ public class ScheduleController {
 	}
 
 	/**
+		 * レビューの昇順、降順
+		 */
+	@RequestMapping("/sortingSchedule")
+	public ModelAndView SortingSchedule(
+			@RequestParam("date") String date,
+			@RequestParam("sort") String sort,
+			ModelAndView mv) {
+
+		//ログインしているユーザ情報
+		User_info user = (User_info) session.getAttribute("userInfo");
+
+		List<AddSchedule> schedule_list = null;
+
+		if (sort.equals("asc")) {
+			//昇順
+			schedule_list = addscheduleRepository.findByUidOrderByDateAsc(user.getId());
+		} else if (sort.equals("desc")) {
+			//降順
+			schedule_list = addscheduleRepository.findByUidOrderByDateDesc(user.getId());
+		}
+
+		//もしレビューが空なら「レビューなし」メッセージを送る
+		if (schedule_list.size() == 0) {
+			mv.addObject("message3", "レビューは空です。");
+			mv.addObject("check", true);
+		} else {
+			mv.addObject("schedule_list", schedule_list);
+			mv.addObject("check", false);
+		}
+		mv.setViewName("reviewSchedule");
+		return mv;
+	}
+
+	/**
 	 * TODOLIST todayから追加
 	 */
 	@PostMapping("/add_schedule")
@@ -253,6 +291,33 @@ public class ScheduleController {
 	/**
 	 * TODOLIST todayから削除
 	 */
+	@RequestMapping("/deleteScheduleToday")
+	public ModelAndView deleteScheduleToday(
+			@RequestParam("code") Integer code,
+			ModelAndView mv) {
+
+		addscheduleRepository.deleteById(code);
+
+		//今日の日付
+		LocalDate today = (LocalDate) session.getAttribute("today");
+
+		//ログインしているユーザ情報
+		User_info user = (User_info) session.getAttribute("userInfo");
+
+		//uidとDATEを条件にスケジュールを検索
+		List<AddSchedule> schedule_today_list = addscheduleRepository.findByUidAndDate(user.getId(), today);
+
+		mv.addObject("schedule_today", schedule_today_list);
+
+		mv.setViewName("main");
+		return mv;
+	}
 }
+
+
+
+
+
+
 
 

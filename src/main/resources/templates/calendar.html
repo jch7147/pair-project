@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>カレンダー</title>
-<script src="script.js"></script>
+<link href="css/calendar.css" rel="stylesheet">
 </head>
 <body>
 
@@ -22,14 +22,14 @@
 	<!-- スケジュールを追加 -->
 	<form action="/addSchedule">
 		<div>
-			<input type="date" name="date">
+			<input type="date" name="date" required>
 		</div>
 		<div>
 			<input type="text" name="plan" required><br>
 		</div>
 		<input type="submit" value="追加">
 	</form>
-    <span th:text="${message}" style="color: red"></span>
+	<span th:text="${message}" style="color: red"></span>
 	<span th:text="${message1}" style="color: red"></span>
 
 	<br>
@@ -38,31 +38,32 @@
 
 	<br>
 	<table border="1" th:if="${check == true}">
-			<tr>
-				<th>plan</th>
-				<th>date</th>
-				<th>DELETE</th>
-			</tr>
-			<tr th:each="add:${schedule_ymd}">
-				<td th:text="${add.plan}"></td>
-				<td th:text="${add.date}"></td>
-				<td>
-					<form action="/schedule/delete/calendar">
-						<input type="hidden" name="code" th:value="${add.code}">
-						<input type="hidden" name="date" th:value="${add.date}">
-						<input type="submit" value="削除">
-					</form>
-				</td>
-			</tr>
-		</table>
-    <span th:text="${message2}" style="color: red"></span>
-</body>
-<script th:inline="javascript">
-	const week = [ "日", "月", "火", "水", "木", "金", "土" ];
+		<tr>
+			<th>plan</th>
+			<th>date</th>
+			<th>DELETE</th>
+		</tr>
+		<tr th:each="add:${schedule_ymd}">
+			<td th:text="${add.plan}"></td>
+			<td th:text="${add.date}"></td>
+			<td>
+				<form action="/schedule/delete/calendar">
+					<input type="hidden" name="code" th:value="${add.code}"> <input
+						type="hidden" name="date" th:value="${add.date}"> <input
+						type="submit" value="削除">
+				</form>
+			</td>
+		</tr>
+	</table>
+	<span th:text="${message2}" style="color: red"></span>
+	<script th:inline="javascript">
+	const week = ["日", "月", "火", "水", "木", "金", "土"];
 	const today = new Date();
+
 	/*<![CDATA[*/
 	const currentDay = new Date(/*[[${yyyy}]]*/,/*[[${MM - 1}]]*/,/*[[${dd}]]*/);
 	/*]]>*/
+
 
 	// 月末だとずれる可能性があるため、1日固定で取得
 	var showDate = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -90,7 +91,7 @@
 		var year = date.getFullYear();
 		var month = date.getMonth();
 		document.querySelector('#header').innerHTML = year + "年 " + (month + 1)
-				+ "月";
+			+ "月";
 
 		var calendar = createProcess(year, month);
 		document.querySelector('#calendar').innerHTML = calendar;
@@ -132,10 +133,10 @@
 					d = d.length == 1 ? "0" + d : d;
 
 					// 1行目で1日まで先月の日付を設定
-					calendar += "<td>" + "<a href='/dateSchedule?ymd="
-							+ (y + "-" + m + "-" + d) + "'>"
-							+ (lastMonthEndDate - startDayOfWeek + j + 1)
-							+ "</a></td>";
+					calendar += "<td>" + "<a class='prev' href='/dateSchedule?ymd="
+						+ (y + "-" + m + "-" + d) + "'>"
+						+ (lastMonthEndDate - startDayOfWeek + j + 1)
+						+ "</a></td>";
 				} else if (count >= endDate) {
 					// 最終行で最終日以降、翌月の日付を設定
 					count++;
@@ -147,9 +148,9 @@
 					m = m.length == 1 ? "0" + m : m;
 					d = d.length == 1 ? "0" + d : d;
 
-					calendar += "<td>" + "<a href='/dateSchedule?ymd="
-							+ (y + "-" + m + "-" + d) + "'>"
-							+ (count - endDate) + "</a></td>";
+					calendar += "<td>" + "<a class='next' href='/dateSchedule?ymd="
+						+ (y + "-" + m + "-" + d) + "'>"
+						+ (count - endDate) + "</a></td>";
 				} else {
 					// 当月の日付を曜日に照らし合わせて設定
 					count++;
@@ -161,16 +162,16 @@
 					m = m.length == 1 ? "0" + m : m;
 					d = d.length == 1 ? "0" + d : d;
 					if (year == today.getFullYear()
-							&& month == (today.getMonth())
-							&& count == today.getDate()) {
+						&& month == (today.getMonth())
+						&& count == today.getDate()) {
 
-						calendar += "<td>" + "<a href='/dateSchedule?ymd="
-								+ (y + "-" + m + "-" + d) + "'>" + count
+						calendar += "<td class='today'>" + "<a class='day' href='/dateSchedule?ymd="
+								+ (y + "-" + m + "-" + d) + "' >" + count
 								+ "</a></td>";
 					} else {
-						calendar += "<td>" + "<a href='/dateSchedule?ymd="
-								+ (y + "-" + m + "-" + d) + "'>" + count
-								+ "</a></td>";
+						calendar += "<td>" + "<a class='day' href='/dateSchedule?ymd="
+							+ (y + "-" + m + "-" + d) + "'>" + count
+							+ "</a></td>";
 					}
 				}
 			}
@@ -178,5 +179,7 @@
 		}
 		return calendar;
 	}
-</script>
+	</script>
+</body>
+
 </html>

@@ -7,11 +7,30 @@
 <body>
     <form action="/searchSchedule" method="get">
 	<div>
-		期間：<input type="date" name="lowDate" th:value="${lowDate}" style="font-size: 3px;">～ <input
-			type="date" name="highDate" th:value="${highDate}" style="font-size: 3px;"> <input
+		期間：<input type="date" name="lowDate" th:value="${lowDate}" style="font-size: 3px;" required>～ <input
+			type="date" name="highDate" th:value="${highDate}" style="font-size: 3px;" required> <input
 			type="submit" value="検索">
 	</div>
     </form>
+    <br>
+
+    <form action="/sortingSchedule">
+    <div>
+    <input type="hidden" name="date">
+    <input type="hidden" name="sort" value="asc">
+    <input type="submit" value="昇順">
+    </div>
+    </form>
+
+    <form action="/sortingSchedule">
+    <div>
+    <input type="hidden" name="date">
+    <input type="hidden" name="sort" value="desc">
+    <input type="submit" value="降順">
+    </div>
+    </form>
+
+
     <span th:text="${message3}" style="color: red"></span>
 	<div>
 		<table border="1" th:if="${check == false}">
