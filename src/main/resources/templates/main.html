@@ -13,15 +13,13 @@
 
 </head>
 <body>
-	<header>
-	<a id="bird" href="main.html"><img src="/images/bird.png" width="50px" height="50px"></a>
+	<header class="main_header">
 		<h1>
 			WELCOME <span th:text="${session.name}"></span>
 		</h1>
 	</header>
 
-<main>
-	<div>
+	<div class="dday">
 		<form action="/compute">
 			<input type="text" name="test" placeholder="試験・資格名"><br>
 			<input type="date" name="xday"> <input type="submit"
@@ -32,10 +30,13 @@
 	<br>
 	<a href="/calendar">カレンダー</a>
 	<br>
-	<br>
 
-	<div class="todo">
-		<div class="todo_header">
+	<a id="logo_bird" href="show_todo"><img src="/images/bird.png" width="50px" height="50px"></a>
+
+<!-- TIMER_TODOここから-->
+	<main class="timer_todo">
+		<div class="timer_todo_header">
+
 			<!-- TIMERの中の日付 -->
 			<h2 th:text="${session.today}"></h2>
 
@@ -45,8 +46,8 @@
 			</h1>
 		</div>
 
-		<!-- STARTが押されたら -->
-		<div class="todo_timer">
+<!-- TIMER_TODO_タイマー機能 -->
+		<div class="timer_todo_timer">
 			<h2>勉強した時間</h2>
 
 			<!-- TIMER HOUR:MINUTES:SECONDS -->
@@ -61,10 +62,9 @@
 
 		</div>
 
-		<!-- TODO with TIMER -->
-		<div class="todo_container_time">
+<!-- TIMER_TODO_追加 -->
+		<div class="timer_todo_add">
 
-			<!-- タイマーつきのTODOに追加 -->
 			<div>
 				<form action="/add_todo" method="post">
 					<input type="text" name="todo" placeholder="Make TODOLIST">
@@ -72,22 +72,21 @@
 				</form>
 			</div>
 
-			<!-- タイマーつきのTODOのLIST -->
-			<div>
+<!-- TIMER_TODO_リスト -->
+			<div class="timer_todo_list">
 				<table border="1">
-					<tr class="todo_timer_list_head">
-
+					<tr>
 						<th colspan="2">..TODO..</th>
 						<th colspan="2">TIME</th>
-
 					</tr>
-					<tr class="todo_timer_list_body" th:each="todo : ${todo_list}">
+
+					<tr th:each="todo : ${todo_list}">
 
 						<td><button class="btn_start" th:value="${todo.code}">START</button></td>
 
 						<td th:text="${todo.todo}"></td>
 
-						<td ><span class="time_todo" th:text="${todo.time}"></span></td>
+						<td ><span th:text="${todo.time}"></span></td>
 
 						<td>
 						<form action="/delete_todo" >
@@ -99,27 +98,28 @@
 				</table>
 			</div>
 		</div>
+	</main>
 
-		<!-- TODO withOUT TIMER -->
-		<div class="todo_container_schedule">
-			<!-- タイマー無しのTODOに追加 -->
-			<div>
+<!-- SCHEDULE_TODO_ここから -->
+		<div class="schedule_todo">
+<!-- SCHEDULE_TODO_追加 -->
+			<div class="schedule_todo_add">
 				<form action="/add_schedule" method="post">
 					<input type="text" name="plan" placeholder="スケジュールを追加">
 					<input type="submit" value="ADD">
 				</form>
 			</div>
 
-			<!-- タイマー無しのTODOのLIST -->
-			<div>
+<!-- SCHEDULE_TODO_リスト -->
+			<div class="schedule_todo_list">
 				<table border="1">
 
-					<tr class="todo_schedule_list_head">
+					<tr>
 						<th colspan="1">今日やるべきこと</th>
 						<th colspan="1">削除</th>
 					</tr>
 
-					<tr class="todo_schedule_list_body" th:each="schedule : ${schedule_today}">
+					<tr th:each="schedule : ${schedule_today}">
 
 						<td th:text="${schedule.plan}"></td>
 
@@ -130,8 +130,8 @@
 			</div>
 		</div>
 
-	</div>
-</main>
+
+
 	<!-- TIMER JavaScript -->
 	<script src="/timer.js"></script>
 </body>

@@ -24,9 +24,6 @@ public class AccountController {
 	UserRepository userRepository;
 
 	@Autowired
-	JobsRepository jobsRepository;
-
-	@Autowired
 	HistoryRepository historyRepository;
 
 	@Autowired
@@ -103,12 +100,6 @@ public class AccountController {
 	@PostMapping("/signup")
 	public ModelAndView moveToSignUp(ModelAndView mv) {
 
-		//Jobsカテゴリを呼び出す
-		List<Jobs> job = jobsRepository.findAll();
-
-		//jobsのレコードを格納
-		mv.addObject("job", job);
-
 		//signup.htmlに移動
 		mv.setViewName("/signup");
 
@@ -120,7 +111,6 @@ public class AccountController {
 	public ModelAndView makeAccount(
 			@RequestParam("name") String name,
 			@RequestParam("age") int age,
-			@RequestParam("job") int job,
 			@RequestParam("email") String email,
 			@RequestParam("password") String password,
 			@RequestParam("answer") String answer,
@@ -136,7 +126,7 @@ public class AccountController {
 
 		} else {
 			// パラメータからオブジェクトを生成
-			User_info userNew = new User_info(job, name, age, email, password, answer);
+			User_info userNew = new User_info(name, age, email, password, answer);
 
 			// customerテーブルへの登録
 			userRepository.saveAndFlush(userNew);
@@ -225,7 +215,7 @@ public class AccountController {
 
 			User_info user = (User_info) session.getAttribute("user_byEmail");
 
-			User_info user_changepw = new User_info(user.getId(), user.getJob_code(), user.getName(), user.getAge(),
+			User_info user_changepw = new User_info(user.getId(), user.getName(), user.getAge(),
 					user.getEmail(), password1, user.getAnswer());
 
 			userRepository.saveAndFlush(user_changepw);

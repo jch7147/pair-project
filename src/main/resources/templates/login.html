@@ -3,28 +3,35 @@
 <head>
 <meta charset="UTF-8" />
 <link rel="shortcut icon" href="/images/bird.png">
+<link th:href="@{css/login.css}" rel="stylesheet">
 <title>Welcome to MINEMINE</title>
 </head>
 <body>
-	<h1>MINEMINE</h1>
-	<br>
-	<h3>Welcome to MINEMINE</h3>
-	<h3>If you have MINEMINE Account,</h3>
-	<h3>login with your email</h3>
+	<header class="login_header">
+		<h1 class="login_header_title">MINEMINE</h1>
+		<br>
+		<p class="login_header_text">Welcome to MINEMINE</p>
+		<p class="login_header_text">If you have MINEMINE Account,</p>
+		<p class="login_header_text">login with your email</p>
+	</header>
 
-	<span th:text="${message}" style="color:red"></span>
 
-	<form action="/login" method="post">
-		<input type="email" name="email" placeholder="Email"> <br>
-		<input type="password" name="password" placeholder="Password"><br>
-		<input type="submit" value="LOGIN"><br>
-	</form>
 
-	<form action="/signup" method="post">
-		<input type="submit" value="SIGN UP">
-	</form>
+	<main class="login">
+		<span th:text="${message}" style="color: red"></span>
 
-	<a href="/forgot">forgot password?</a>
+		<form class="login_form" action="/login" method="post">
+			<input class="login_form_input" type="email" name="email" placeholder="Email"> <br>
+			<input class="login_form_input" type="password" name="password" placeholder="Password"><br>
+			<input class="btn" type="submit" value="LOGIN"><br>
+		</form>
+
+		<form action="/signup" method="post">
+			<input class="btn" type="submit" value="SIGN UP">
+		</form>
+
+		<a id="find_password" href="/forgot">forgot password?</a>
+	</main>
 
 </body>
 </html>

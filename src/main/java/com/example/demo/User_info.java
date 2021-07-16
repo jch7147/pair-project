@@ -12,7 +12,6 @@ public class User_info {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	private int job_code;
 	private String name;
 	private int age;
 	private String email;
@@ -23,8 +22,7 @@ public class User_info {
 
 	}
 
-	public User_info(int job_code, String name, int age, String email, String password, String answer) {
-		this.job_code = job_code;
+	public User_info( String name, int age, String email, String password, String answer) {
 		this.name = name;
 		this.age = age;
 		this.email = email;
@@ -32,9 +30,8 @@ public class User_info {
 		this.answer = answer;
 	}
 
-	public User_info(int id, int job_code, String name, int age, String email, String password, String answer) {
+	public User_info(int id, String name, int age, String email, String password, String answer) {
 		this.id = id;
-		this.job_code = job_code;
 		this.name = name;
 		this.age = age;
 		this.email = email;
@@ -57,14 +54,6 @@ public class User_info {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public int getJob_code() {
-		return job_code;
-	}
-
-	public void setJob_code(int job_code) {
-		this.job_code = job_code;
 	}
 
 	public String getName() {

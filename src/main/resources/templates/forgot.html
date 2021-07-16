@@ -3,27 +3,31 @@
 <head>
 <meta charset="UTF-8" />
 <link rel="shortcut icon" href="/images/bird.png">
+<link th:href="@{css/forgot.css}" rel="stylesheet">
 <title>Welcome to MINEMINE</title>
 </head>
 <body>
-	<h1>MINEMINE</h1>
+<header class="forgot_header">
+	<h1 class="forgot_header_title">MINEMINE</h1>
 	<br>
-	<h3>Welcome to MINEMINE</h3>
-	<h3>Answer the question</h3>
+	<p class="forgot_header_text">Oh dear... forgot password?</p>
+	<p class="forgot_header_text">Fill in the blank below and renew password</p>
+</header>
 
+<main class="forgot_form">
 	<span th:text="${message}" style="color: red"></span>
 
-	<form action="/confirmation" method="post">
-	    <label for="email">Eamil:</label>
-		<input id="email" type="email" name="email" required>
+	<form class="forgot_form_body" action="/confirmation" method="post">
+	    <label for="email">Your Eamil</label>
+		<input class="forgot_form_body_input" id="email" type="email" name="email" required placeholder="Email">
 		<br>
 
-		<label for="answer">What's your favorite food?</label>
-		<input type="text" name="answer" placeholder="answer"><br>
+		<label for="answer">Identification Question</label>
+		<input class="forgot_form_body_input" type="text" name="answer" placeholder="What is your favorite food?"><br>
 
-		<input type="submit" value="confirmation"><br>
+		<input class="btn" type="submit" value="confirmation"><br>
 	</form>
-
+</main>
 
 </body>
 </html>

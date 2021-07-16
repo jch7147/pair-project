@@ -27,10 +27,6 @@ $(function() {
 	});
 });
 
-//buttonStart.onclick = function() {
-//	clearInterval(intervalId);
-//	intervalId = setInterval(operateTimer, 1000);
-//};
 
 $(function() {
 	$("#btn_stop").click(function() {
@@ -49,31 +45,6 @@ $(function() {
 		location.href="/time_stop?time="+ h + ":" + m + ":" + s +"&start_value=" + start_value;
 	});
 });
-
-//$(function() {
-//	$("#btn_stop").click(function() {
-//		//var selectNo_ = $(this).val();
-	//	//var selectNo_ = $(".time_todo").val();
-//
-//		clearInterval(intervalId);
-//		var h = appendHours.innerHTML;
-//		var m = appendHours.innerHTML;
-//		var s = appendSeconds.innerHTML;
-//
-//		$(".time_todo").text(h + ":" + m + ":" + s);
-//
-//		location.href="/time_stop?time="+ h + ":" + m + ":" + s +"&start_value=" + start_value;
-//	});
-//});
-
-//buttonStop.onclick = function() {
-//	clearInterval(intervalId);
-//	var h = appendHours.innerHTML;
-//	var m = appendHours.innerHTML;
-//	var s = appendSeconds.innerHTML;
-//	var i = appendTime_todo.nodeValue;
-//	appendTime_todo.innerHTML = h + ":" + m + ":" + s;
-//};
 
 buttonReset.onclick = function() {
 	clearInterval(intervalId);

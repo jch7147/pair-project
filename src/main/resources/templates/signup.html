@@ -3,49 +3,47 @@
 <head>
 <meta charset="UTF-8">
 <link rel="shortcut icon" href="/images/bird.png">
+<link th:href="@{css/signup.css}" rel="stylesheet">
 <title>Welcome to MINEMINE</title>
 </head>
 <body>
 
-	<h1>MINEMINE</h1>
+<header class="signup_header">
+	<h1 class="signup_header_title">MINEMINE</h1>
 	<br>
-	<h3>Welcome to MINEMINE</h3>
-	<h3>Please enter the information</h3>
-	<h3>to create MINEMINE account</h3>
-	<br>
+	<p class="signup_header_text">Welcome to MINEMINE</p>
+	<p class="signup_header_text">Create your MINEMINE Account</p>
+</header>
 
+<main class="signup_form">
 	<span th:text="${message}" style="color:red"></span>
 
-	<form action="/signup_new" method="post">
-		<label for="name">Name (4 to 8 characters):</label>
-		<input id="name" type="text" name="name" required  minlength="4" maxlength="8">
+	<form class="signup_form_body" action="/signup_new" method="post">
+	<div class="signup_form_firstline">
+		<!-- <label for="name">Name (3 to 8 characters):</label> -->
+		<input class="signup_form_input" id="name" type="text" name="name" required  minlength="3" maxlength="8" placeholder="Name (3 to 8 characters)">
 		<br>
 
-		<label for="age">Age:</label>
-		<input id="age" type="text" name="age" required>
+		<!-- <label for="age">Age:</label> -->
+		<input class="signup_form_input" id="age" type="text" name="age" required placeholder="Your Age">
+		<br>
+	</div>
+		<!-- <label for="email">Eamil:</label> -->
+		<input class="signup_form_input" id="email" type="email" name="email" required placeholder="Your Email">
 		<br>
 
-		<label for="job">Job:</label>
-		<select id="job" name="job">
-			 <option th:each="j : ${job}" th:value="${j.code}" th:text="${j.job}"></option>
-		</select>
+		<!-- <label for="password">Password (minimum 6 characters):</label> -->
+		<input class="signup_form_input" id="password" type="text" name="password" required minlength="6" placeholder="New Password (minimum 6 characters)">
 		<br>
 
-		<label for="email">Eamil:</label>
-		<input id="email" type="email" name="email" required>
+	<div class="signup_form_lastline">
+		<label for="answer">Identification Question</label>
+		<input class="signup_form_input" id="answer" type="text" name="answer" required placeholder="What is your favorite food?">
 		<br>
-
-		<label for="password">password (minimum 6 characters):</label>
-		<input id="password" type="text" name="password" required minlength="6">
-		<br>
-
-		<label for="answer">question:What's your favorite food?</label>
-		<input id="answer" type="text" name="answer" required>
-		<br>
-
-		<input type="submit" value="make account">
+	</div>
+		<input class="btn" type="submit" value="Sign Up">
 	</form>
-
+</main>
 
 
 
