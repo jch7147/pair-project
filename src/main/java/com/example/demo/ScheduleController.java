@@ -354,10 +354,29 @@ public class ScheduleController {
 		//todoの内容を..
 		mv.addObject("todo_list", todo_list);
 
+		//予定がある日にマークが出るようにjsに送るやつ
+		List<AddSchedule> list = addscheduleRepository.findByUid(user.getId());
+
+		List<UserStudyTime> user_studytime_info = studytimetotalRepository.findByUid(user.getId());
+
+		////                             ////
+		//userstudytimeテーブルから呼び出す//
+		////            ↓↓             ////
+
+		List<UserStudyTime> user_study_time_info_ = studytimetotalRepository.findByUidAndDate(user.getId(), today);
+
+		mv.addObject("user_study_time_info", user_study_time_info_);
+		mv.addObject("list_study", user_studytime_info);
+		mv.addObject("list", list);
+		mv.addObject("yyyy", today.getYear());
+		mv.addObject("MM", today.getMonthValue());
+		mv.addObject("dd", today.getDayOfMonth());
+
 		mv.setViewName("main");
 
 		return mv;
 	}
+
 
 	/**
 	 * TODOLIST todayから削除

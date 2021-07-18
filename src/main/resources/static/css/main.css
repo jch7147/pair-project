@@ -594,3 +594,6 @@ input:checked +label{
 	justify-content:flex-end;
 }
 
+.goToReview{
+	color:white;
+}

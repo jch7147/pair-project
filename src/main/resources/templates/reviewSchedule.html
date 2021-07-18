@@ -2,56 +2,74 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Review Schedule</title>
+<link href="css/reviewSchedule.css" rel="stylesheet">
 </head>
 <body>
-    <form action="/searchSchedule" method="get">
-	<div>
-		期間：<input type="date" name="lowDate" th:value="${lowDate}" style="font-size: 3px;" required>～ <input
-			type="date" name="highDate" th:value="${highDate}" style="font-size: 3px;" required> <input
-			type="submit" value="検索">
+	<header class="reviewSchedule_header">
+		<h1 class="reviewSchedule_header_title">Review Schedule</h1>
+	</header>
+	<div class="container">
+		<video width="100%" height="auto" autoplay loop muted>
+			<source src="background/rain.mp4" type="video/mp4">
+			Sorry, your browser does not support HTML5 video.
+		</video>
 	</div>
-    </form>
-    <br>
+	<main class="reviewSchedule">
+		<div class="left">
+			<a id="bird" href="show_todo"><img src="/images/bird.png"
+				width="50px" height="50px"></a>
+		</div>
+		<form action="/searchSchedule" method="get">
+			<div class="searchReviewSchedule">
+				期間：<input class="sorting_lowDate" type="date" name="lowDate" th:value="${lowDate}"
+					style="font-size: 3px;" required>～<input class="sorting_highDate" type="date"
+					name="highDate" th:value="${highDate}" style="font-size: 3px;"
+					required> <input class="reviewSchedule_btn" type="submit" value="検索">
+			</div>
+		</form>
+		<br>
+		<div class="sortingSchedule">
+			<form action="/sortingSchedule">
+				<div class="sortingSchedule">
+					<input type="hidden" name="date"> <input type="hidden"
+						name="sort" value="asc"> <input class="reviewSchedule__btn" type="submit" value="昇順">
+				</div>
+			</form>
 
-    <form action="/sortingSchedule">
-    <div>
-    <input type="hidden" name="date">
-    <input type="hidden" name="sort" value="asc">
-    <input type="submit" value="昇順">
-    </div>
-    </form>
+			<form action="/sortingSchedule">
+				<div class="sortingSchedule">
+					<input type="hidden" name="date"> <input type="hidden"
+						name="sort" value="desc"> <input class="reviewSchedule__btn" type="submit" value="降順">
+				</div>
+			</form>
+		</div>
 
-    <form action="/sortingSchedule">
-    <div>
-    <input type="hidden" name="date">
-    <input type="hidden" name="sort" value="desc">
-    <input type="submit" value="降順">
-    </div>
-    </form>
-
-
-    <span th:text="${message3}" style="color: red"></span>
-	<div>
-		<table border="1" th:if="${check == false}">
-			<tr>
-				<th>plan</th>
-				<th>date</th>
-				<th>DELETE</th>
-			</tr>
-			<tr th:each="add:${schedule_list}">
-				<td th:text="${add.plan}"></td>
-				<td th:text="${add.date}"></td>
-				<td>
+		<span th:text="${message3}" style="color: red"></span>
+		<div class="reviewSchedule_list" th:if="${check == false}">
+			<div class="reviewSchedule_list_title_box">
+				<div class="reviewSchedule_list_title">date</div>
+				<div class="reviewSchedule_list_title">plan</div>
+				<div class="reviewSchedule_list_title">DELETE</div>
+			</div>
+			<div class="reviewSchedule_list_form_body"
+				th:each="add:${schedule_list}">
+				<div class="reviewSchedule_list_form_body1">
+					<div th:text="${add.date}"></div>
+				</div>
+				<div class="reviewSchedule_list_form_body2">
+					<div th:text="${add.plan}"></div>
+				</div>
+				<div class="reviewSchedule_list_form_body3">
 					<form action="/schedule/delete/reviewSchedule">
-						<input type="hidden" name="code" th:value="${add.code}">
-						<input type="submit" value="削除">
+						<input type="hidden" name="code" th:value="${add.code}"> <input
+							 class="reviewSchedule__btn" type="submit" value="削除">
 					</form>
-				</td>
-			</tr>
-		</table>
-	</div>
-	<br>
-	<a href="main.html">戻る</a>
+				</div>
+			</div>
+		</div>
+
+		<br>
+	</main>
 </body>
 </html>
