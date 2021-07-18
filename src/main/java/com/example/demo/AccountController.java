@@ -67,10 +67,10 @@ public class AccountController {
 		}
 
 		//email,passwordで登録情報を探す
-		List<User_info> list = userRepository.findByEmailAndPassword(email, password);
+		List<User_info> list_email_pw = userRepository.findByEmailAndPassword(email, password);
 
 		//該当情報がなかったらエラーメッセージ
-		if (list.size() == 0) {
+		if (list_email_pw.size() == 0) {
 
 			mv.addObject("message", "Emailまたはパスワードが一致しませんでした");
 
@@ -78,7 +78,7 @@ public class AccountController {
 			return mv;
 		}
 
-		User_info user = list.get(0);
+		User_info user = list_email_pw.get(0);
 
 		session.setAttribute("userInfo", user);
 		session.setAttribute("name", user.getName());
@@ -88,6 +88,8 @@ public class AccountController {
 
 		//今日の日付をセッションに格納
 		session.setAttribute("today", today);
+
+
 
 		// 一覧表示画面にリダイレクト（画面遷移する）
 		mv.setViewName("redirect:/show_todo");

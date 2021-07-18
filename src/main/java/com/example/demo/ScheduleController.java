@@ -28,32 +28,6 @@ public class ScheduleController {
 	@Autowired
 	StudyTimeTotalRepository studytimetotalRepository;
 
-	//カレンダーページへ飛ぶ処理
-	@RequestMapping("/calendar")
-	public ModelAndView goCalender(
-			ModelAndView mv) {
-
-		LocalDate now = LocalDate.now();
-
-		//ログインしているユーザ情報
-		User_info user = (User_info) session.getAttribute("userInfo");
-
-		//予定がある日にマークが出るようにjsに送るやつ
-		List<AddSchedule> list = addscheduleRepository.findByUid(user.getId());
-
-		List<UserStudyTime> user_study_time_info = studytimetotalRepository.findByUid(user.getId());
-
-		mv.addObject("list_study",user_study_time_info);
-		mv.addObject("list", list);
-		mv.addObject("yyyy", now.getYear());
-		mv.addObject("MM", now.getMonthValue());
-		mv.addObject("dd", now.getDayOfMonth());
-		mv.addObject("check", false);
-		mv.setViewName("calendar");
-
-		return mv;
-	}
-
 	//カレンダーに追加する処理
 	@RequestMapping("/addSchedule")
 	public ModelAndView addSchedule(
@@ -81,17 +55,7 @@ public class ScheduleController {
 			mv.addObject("message1", "追加されました");
 		}
 
-		//予定がある日にマークが出るようにjsに送るやつ
-		List<AddSchedule> list = addscheduleRepository.findByUid(user.getId());
-
-		List<UserStudyTime> user_study_time_info = studytimetotalRepository.findByUid(user.getId());
-
-		mv.addObject("list_study",user_study_time_info);
-		mv.addObject("list", list);
-		mv.addObject("yyyy", schedule.getYear());
-		mv.addObject("MM", schedule.getMonthValue());
-		mv.addObject("dd", schedule.getDayOfMonth());
-		mv.setViewName("calendar");
+		mv.setViewName("redirect:/show_todo");
 		return mv;
 	}
 
@@ -210,12 +174,39 @@ public class ScheduleController {
 
 		List<UserStudyTime> user_study_time_info = studytimetotalRepository.findByUid(user.getId());
 
-		mv.addObject("list_study",user_study_time_info);
+		//今日の日付
+		LocalDate today = (LocalDate) session.getAttribute("today");
+
+		////              ////
+		//ToDoListを呼び出す//
+		////     ↓↓     ////
+
+		List<History> todo_list = historyRepository.findByUidAndDate(user.getId(), today);
+
+		mv.addObject("todo_list", todo_list);
+
+		////                  ////
+		//スケジュールを呼び出す//
+		////       ↓↓       ////
+
+		List<AddSchedule> schedule_today = addscheduleRepository.findByUidAndDate(user.getId(), today);
+
+		mv.addObject("schedule_today", schedule_today);
+
+		////                             ////
+		//userstudytimeテーブルから呼び出す//
+		////            ↓↓             ////
+
+		List<UserStudyTime> user_study_time_info_ = studytimetotalRepository.findByUidAndDate(user.getId(), today);
+
+		mv.addObject("user_study_time_info", user_study_time_info_);
+
+		mv.addObject("list_study", user_study_time_info);
 		mv.addObject("list", list);
 		mv.addObject("yyyy", schedule.getYear());
 		mv.addObject("MM", schedule.getMonthValue());
 		mv.addObject("dd", schedule.getDayOfMonth());
-		mv.setViewName("calendar");
+		mv.setViewName("main");
 		return mv;
 	}
 
@@ -260,12 +251,39 @@ public class ScheduleController {
 
 		List<UserStudyTime> user_studytime_info = studytimetotalRepository.findByUid(user.getId());
 
-		mv.addObject("list_study",user_studytime_info);
+		//今日の日付
+		LocalDate today = (LocalDate) session.getAttribute("today");
+
+		////              ////
+		//ToDoListを呼び出す//
+		////     ↓↓     ////
+
+		List<History> todo_list = historyRepository.findByUidAndDate(user.getId(), today);
+
+		mv.addObject("todo_list", todo_list);
+
+		////                  ////
+		//スケジュールを呼び出す//
+		////       ↓↓       ////
+
+		List<AddSchedule> schedule_today = addscheduleRepository.findByUidAndDate(user.getId(), today);
+
+		mv.addObject("schedule_today", schedule_today);
+
+		////                             ////
+		//userstudytimeテーブルから呼び出す//
+		////            ↓↓             ////
+
+		List<UserStudyTime> user_study_time_info_ = studytimetotalRepository.findByUidAndDate(user.getId(), today);
+
+		mv.addObject("user_study_time_info", user_study_time_info_);
+
+		mv.addObject("list_study", user_studytime_info);
 		mv.addObject("list", list);
 		mv.addObject("yyyy", schedule.getYear());
 		mv.addObject("MM", schedule.getMonthValue());
 		mv.addObject("dd", schedule.getDayOfMonth());
-		mv.setViewName("calendar");
+		mv.setViewName("main");
 		return mv;
 
 	}

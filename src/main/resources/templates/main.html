@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <link rel="shortcut icon" href="/images/bird.png">
 <link th:href="@{css/main.css}" rel="stylesheet">
+<link href="css/calendar.css" rel="stylesheet">
 <link type="text/css"
 	href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/ui-lightness/jquery-ui.css"
 	rel="stylesheet" />
@@ -45,6 +46,7 @@
      	 </div>
      	 <div class="menu-inner">
        		 <ul>
+       		 <a href="">CALENDAR</a>
          		 <li>Menu Item</li>
          		 <li>Menu Item</li>
           		<li>Menu Item</li>
@@ -93,7 +95,7 @@
 <main class="timer_todo">
 
 		<div class="timer_todo_timer">
-			<h2 class="timer_todo_timer_title">studying...</h2>
+			<h2 class="timer_todo_timer_title">Studying...</h2>
 
 			<h1 class="timer_todo_timer_time_box">
 				<span class="timer_todo_timer_time" id="hours">00</span>:
@@ -184,14 +186,221 @@
 	</div>
 </main>
 
+<footer class="calendar_box">
+	<!-- カレンダー -->
+	<div class="wrapper">
+		<h1 id="header"></h1>
+		<div id="next-prev-button">
+			<button id="prev" onclick="prev()">‹</button>
+			<button id="next" onclick="next()">›</button>
+		</div>
+		<div id="calendar"></div>
+	</div>
 
 	<br>
-	<a href="/calendar">カレンダー</a>
+
+
+	<!-- スケジュールを追加 -->
+	<form class="calendar_todo_add" action="/addSchedule">
+		<input class="calendar_todo_add_date" type="date" name="date" required>
+		<input class="calendar_todo_add_text" type="text" name="plan" required><br>
+		<input class="calendar_todo_add_btn" type="submit" value="追加">
+	</form>
+
+	<span th:text="${message}" style="color: red"></span>
+	<span th:text="${message1}" style="color: red"></span>
+
+	<br>
+	<a href="/reviewSchedule">review</a>
+
+
+	<br>
+	<table border="1" th:if="${check == true}">
+		<tr>
+			<th>plan</th>
+			<th>date</th>
+			<th>DELETE</th>
+		</tr>
+		<tr th:each="add:${schedule_ymd}">
+			<td th:text="${add.plan}"></td>
+			<td th:text="${add.date}"></td>
+			<td>
+				<form action="/schedule/delete/calendar">
+					<input type="hidden" name="code" th:value="${add.code}">
+					<input	type="hidden" name="date" th:value="${add.date}">
+					<input type="hidden" name="plan" th:value="${add.plan}">
+					 <input type="submit" value="削除">
+				</form>
+			</td>
+		</tr>
+	</table>
 	<br>
 
+	<table border="1" th:if="${check2 == true}">
+		<tr>
+			<th>date</th>
+			<th>time</th>
+		</tr>
+		<tr th:each="add:${study_schedule}">
+			<td th:text="${add.date}"></td>
+			<td th:text="${add.time}"></td>
+		</tr>
+	</table>
+	<span th:text="${message2}" style="color: red"></span>
+</footer>
 </main>
-	<!-- TIMER JavaScript -->
+
 	<script src="/timer.js"></script>
 	<script src="/menu.js"></script>
+	<script th:inline="javascript">
+	const week = ["日", "月", "火", "水", "木", "金", "土"];
+	const today = new Date();
+
+	/*<![CDATA[*/
+	const currentDay = new Date(/*[[${yyyy}]]*/,/*[[${MM - 1}]]*/,/*[[${dd}]]*/);
+
+	//console.log (schedule_list); // 大事 ブラウザで開発者ツールのコンソールに出力される
+	/*]]>*/
+
+	// 月末だとずれる可能性があるため、1日固定で取得
+	var showDate = new Date(today.getFullYear(), today.getMonth(), 1);
+
+	// 初期表示
+	window.onload = function() {
+		showProcess(currentDay, calendar);
+	};
+
+	// 前の月表示
+	function prev() {
+		showDate.setMonth(showDate.getMonth() - 1);
+		showProcess(showDate);
+	}
+
+	// 次の月表示
+	function next() {
+		showDate.setMonth(showDate.getMonth() + 1);
+		showProcess(showDate);
+	}
+
+	// カレンダー表示
+	function showProcess(date) {
+
+		var year = date.getFullYear();
+		var month = date.getMonth();
+		document.querySelector('#header').innerHTML = year + "年 " + (month + 1)
+			+ "月";
+
+		var calendar = createProcess(year, month);
+		document.querySelector('#calendar').innerHTML = calendar;
+
+
+	}
+
+	// カレンダー作成
+	function createProcess(year, month) {
+
+		//uidで検索したスケジュールの一覧（thymeleaf)
+		const schedule_list = /*[[${list}]]*/;
+		const study_list = /*[[${list_study}]]*/;
+
+		// 曜日
+		var calendar = "<table><tr>";
+		for (var i = 0; i < week.length; i++) {
+			calendar += "<th>" + week[i] + "</th>";
+		}
+		calendar += "</tr>";
+
+		var count = 0;
+		var startDayOfWeek = new Date(year, month, 1).getDay();
+		var endDate = new Date(year, month + 1, 0).getDate();
+		var lastMonthEndDate = new Date(year, month, 0).getDate();
+		var row = Math.ceil((startDayOfWeek + endDate) / week.length);
+
+		// 1行ずつ設定
+
+		for (var i = 0; i < row; i++) {
+
+			calendar += "<tr>";
+			// 1colum単位で設定
+			for (var j = 0; j < week.length; j++) {
+
+				var y = "";
+				var m = "";
+				var d = "";
+
+				if (i == 0 && j < startDayOfWeek) {
+					y = "" + year;
+					m = "" + month;
+					d = "" + (lastMonthEndDate - startDayOfWeek + j + 1);
+
+					m = m.length == 1 ? "0" + m : m;
+					d = d.length == 1 ? "0" + d : d;
+
+					// 1行目で1日まで先月の日付を設定
+					calendar += "<td>" + "<a class='prev' href='/dateSchedule?ymd="
+						+ (y + "-" + m + "-" + d) + "'>"
+						+ (lastMonthEndDate - startDayOfWeek + j + 1)
+						+ "</a></td>";
+				} else if (count >= endDate) {
+					// 最終行で最終日以降、翌月の日付を設定
+					count++;
+
+					y = "" + year;
+					m = "" + (month + 2);
+					d = "" + (count - endDate);
+
+					m = m.length == 1 ? "0" + m : m;
+					d = d.length == 1 ? "0" + d : d;
+
+					calendar += "<td>" + "<a class='next' href='/dateSchedule?ymd="
+						+ (y + "-" + m + "-" + d) + "'>"
+						+ (count - endDate) + "</a></td>";
+				} else {
+					// 当月の日付を曜日に照らし合わせて設定
+					count++;
+
+					y = "" + year;
+					m = "" + (month + 1);
+					d = "" + count;
+
+					m = m.length == 1 ? "0" + m : m;
+					d = d.length == 1 ? "0" + d : d;
+
+					var compa = y + "-" + m + "-" + d;
+			        var s = "";
+			     	for(var t = 0; t<schedule_list.length; t++){
+					  if(schedule_list[t].date == compa){
+						s = "<div class='schedule_dot'>●</div>";
+
+					  }
+			     	}
+
+			        var z = "";
+			     	for(var w = 0; w<study_list.length; w++){
+					  if(study_list[w].date == compa){
+						z = 'study_dot';
+
+					  }
+			     	}
+
+					if (year == today.getFullYear()
+						&& month == (today.getMonth())
+						&& count == today.getDate()) {
+
+						calendar += "<td class='today " + z +"'>" + "<a class='day' href='/dateSchedule?ymd="
+								+ (y + "-" + m + "-" + d) + "' >" + count
+								+ "</a>"+ s + "</td>";
+					} else {
+						calendar += "<td class='other_days " + z +"'>" +"<a class='day' href='/dateSchedule?ymd="
+							+ (y + "-" + m + "-" + d) + "'>" + count
+							+ "</a>"+ s  + "</td>";
+					}
+				}
+			}
+			calendar += "</tr>";
+		}
+		return calendar;
+	}
+	</script>
 </body>
 </html>

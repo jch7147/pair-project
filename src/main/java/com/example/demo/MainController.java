@@ -68,6 +68,18 @@ public class MainController {
 
 		mv.addObject("user_study_time_info", user_study_time_info);
 
+		//予定がある日にマークが出るようにjsに送るやつ
+		List<AddSchedule> list = addscheduleRepository.findByUid(user.getId());
+
+		List<UserStudyTime> user_study_time_info_ = studytimetotalRepository.findByUid(user.getId());
+
+		mv.addObject("list_study", user_study_time_info_);
+		mv.addObject("list", list);
+		mv.addObject("yyyy", today.getYear());
+		mv.addObject("MM", today.getMonthValue());
+		mv.addObject("dd", today.getDayOfMonth());
+		mv.addObject("check", false);
+
 		// top.htmlを表示する
 		mv.setViewName("main");
 
@@ -224,34 +236,32 @@ public class MainController {
 		return mv;
 	}
 
-		//試験日から逆算する処理をするページへ遷移
-		@RequestMapping("/compute")
-		public ModelAndView computing(
-				@RequestParam("test") String test,
-				@RequestParam("xday") String xday,
-				ModelAndView mv) {
+	//試験日から逆算する処理をするページへ遷移
+	@RequestMapping("/compute")
+	public ModelAndView computing(
+			@RequestParam("test") String test,
+			@RequestParam("xday") String xday,
+			ModelAndView mv) {
 
-			//今日の日付
-			LocalDate today = LocalDate.now();
+		//今日の日付
+		LocalDate today = LocalDate.now();
 
-			//type="date"で選択したString型をLocalDate型へ変換
-			LocalDate dday = LocalDate.parse(xday);
+		//type="date"で選択したString型をLocalDate型へ変換
+		LocalDate dday = LocalDate.parse(xday);
 
-			//残りの日数
-			Period period = Period.between(today, dday);
+		//残りの日数
+		Period period = Period.between(today, dday);
 
-			//残りの日数をセッションに格納
-			session.setAttribute("period", period.getDays());
+		//残りの日数をセッションに格納
+		session.setAttribute("period", period.getDays());
 
+		//資格・試験名を格納
+		session.setAttribute("test", test);
 
-			//資格・試験名を格納
-			session.setAttribute("test", test);
+		mv.setViewName("redirect:/show_todo");
 
-
-			mv.setViewName("redirect:/show_todo");
-
-			return mv;
-		}
+		return mv;
+	}
 	//
 	//	//試験日から逆算する処理
 	//	@RequestMapping("/work")
