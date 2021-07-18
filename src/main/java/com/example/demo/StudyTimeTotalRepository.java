@@ -10,5 +10,9 @@ import org.springframework.stereotype.Repository;
 public interface StudyTimeTotalRepository extends JpaRepository<UserStudyTime, Integer> {
 
 	//uidとtodayを条件に検索
-	List<UserStudyTime> findByUidAndDate (int uid, LocalDate date);
+	List<UserStudyTime> findByUidAndDate(int uid, LocalDate date);
+
+	//uid条件に検索
+	List<UserStudyTime> findByUid(int uid);
+
 }

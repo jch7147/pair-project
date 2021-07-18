@@ -48,11 +48,24 @@
 			<td th:text="${add.date}"></td>
 			<td>
 				<form action="/schedule/delete/calendar">
-					<input type="hidden" name="code" th:value="${add.code}"> <input
-						type="hidden" name="date" th:value="${add.date}"> <input
-						type="submit" value="削除">
+					<input type="hidden" name="code" th:value="${add.code}">
+					<input	type="hidden" name="date" th:value="${add.date}">
+					<input type="hidden" name="plan" th:value="${add.plan}">
+					 <input type="submit" value="削除">
 				</form>
 			</td>
+		</tr>
+	</table>
+	<br>
+
+	<table border="1" th:if="${check2 == true}">
+		<tr>
+			<th>date</th>
+			<th>time</th>
+		</tr>
+		<tr th:each="add:${study_schedule}">
+			<td th:text="${add.date}"></td>
+			<td th:text="${add.time}"></td>
 		</tr>
 	</table>
 	<span th:text="${message2}" style="color: red"></span>
@@ -62,8 +75,9 @@
 
 	/*<![CDATA[*/
 	const currentDay = new Date(/*[[${yyyy}]]*/,/*[[${MM - 1}]]*/,/*[[${dd}]]*/);
-	/*]]>*/
 
+	//console.log (schedule_list); // 大事 ブラウザで開発者ツールのコンソールに出力される
+	/*]]>*/
 
 	// 月末だとずれる可能性があるため、1日固定で取得
 	var showDate = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -95,10 +109,17 @@
 
 		var calendar = createProcess(year, month);
 		document.querySelector('#calendar').innerHTML = calendar;
+
+
 	}
 
 	// カレンダー作成
 	function createProcess(year, month) {
+
+		//uidで検索したスケジュールの一覧（thymeleaf)
+		const schedule_list = /*[[${list}]]*/;
+		const study_list = /*[[${list_study}]]*/;
+
 		// 曜日
 		var calendar = "<table><tr>";
 		for (var i = 0; i < week.length; i++) {
@@ -161,17 +182,35 @@
 
 					m = m.length == 1 ? "0" + m : m;
 					d = d.length == 1 ? "0" + d : d;
+
+					var compa = y + "-" + m + "-" + d;
+			        var s = "";
+			     	for(var t = 0; t<schedule_list.length; t++){
+					  if(schedule_list[t].date == compa){
+						s = "<div class='schedule_dot'>●</div>";
+
+					  }
+			     	}
+
+			        var z = "";
+			     	for(var w = 0; w<study_list.length; w++){
+					  if(study_list[w].date == compa){
+						z = 'study_dot';
+
+					  }
+			     	}
+
 					if (year == today.getFullYear()
 						&& month == (today.getMonth())
 						&& count == today.getDate()) {
 
-						calendar += "<td class='today'>" + "<a class='day' href='/dateSchedule?ymd="
+						calendar += "<td class='today " + z +"'>" + "<a class='day' href='/dateSchedule?ymd="
 								+ (y + "-" + m + "-" + d) + "' >" + count
-								+ "</a></td>";
+								+ "</a>"+ s + "</td>";
 					} else {
-						calendar += "<td>" + "<a class='day' href='/dateSchedule?ymd="
+						calendar += "<td class='other_days " + z +"'>" +"<a class='day' href='/dateSchedule?ymd="
 							+ (y + "-" + m + "-" + d) + "'>" + count
-							+ "</a></td>";
+							+ "</a>"+ s  + "</td>";
 					}
 				}
 			}

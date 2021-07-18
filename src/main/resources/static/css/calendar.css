@@ -47,8 +47,18 @@ td.today a.day {
     background-color: #ff4a2b;
     border-radius:50%;
 
-    color: #fff;
+    color: white;
 }
+
+/*予定ある日のマーク*/
+.schedule_dot {
+	color:red;
+}
+/*勉強した日のマーク*/
+.study_dot {
+	background-color:rgb(0, 255, 128);
+}
+
 /*日にち*/
 a.day{
   text-decoration: none;
