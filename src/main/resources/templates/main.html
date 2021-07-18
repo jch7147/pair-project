@@ -212,51 +212,54 @@
 
 
 	<!-- スケジュールを追加 -->
-	<form class="calendar_todo_add" action="/addSchedule">
-		<input class="calendar_todo_add_date" type="date" name="date" required>
-		<input class="calendar_todo_add_text" type="text" name="plan" required><br>
-		<input class="calendar_todo_add_btn" type="submit" value="追加">
-	</form>
+			<form class="calendar_todo_add" action="/addSchedule">
+				<input class="calendar_todo_add_date" type="date" name="date"
+					required> <input class="calendar_todo_add_text" type="text"
+					name="plan" required><br> <input
+					class="calendar_todo_add_btn" type="submit" value="追加">
+			</form>
 
-	<span th:text="${message}" style="color: red"></span>
-	<span th:text="${message1}" style="color: red"></span>
+			<span th:text="${message}" style="color: red"></span>
+			<span th:text="${message1}" style="color: red"></span> <br>
+		    <a href="/reviewSchedule">review</a> <br>
 
-	<br>
-	<a href="/reviewSchedule">review</a>
+			<div class="schedule_list" th:if="${check == true}">
+				<div class="schedule_list_title_box">
+					<div class="schedule_list_title">plan</div>
+					<div class="schedule_list_title">date</div>
+					<div class="schedule_list_title">DELETE</div>
+				</div>
+				<div class="schedule_list_form_body" th:each="add:${schedule_ymd}">
+					<div class="schedule_list_form_body1">
+						<div th:text="${add.plan}"></div>
+					</div>
+					<div class="schedule_list_form_body2">
+						<div th:text="${add.date}"></div>
+					</div>
+					<div class="schedule_list_form_body3">
+						<form action="/schedule/delete/calendar">
+							<input type="hidden" name="code" th:value="${add.code}">
+							<input type="hidden" name="date" th:value="${add.date}">
+							<input type="hidden" name="plan" th:value="${add.plan}">
+							<input type="submit" value="削除">
+						</form>
+					</div>
+				</div>
+			</div>
+			<br>
+
+			<div class="schedule_list" th:if="${check2 == true}">
+				<div class="schedule_list_title_box">
+					<div class="schedule_list_title">date</div>
+					<div class="schedule_list_title">time</div>
+				</div>
+				<div class="schedule_list_form_body" th:each="add:${study_schedule}">
+					<div th:text="${add.date}"></div>
+					<div th:text="${add.time}"></div>
+				</div>
+			</div>
 
 
-	<br>
-	<table border="1" th:if="${check == true}">
-		<tr>
-			<th>plan</th>
-			<th>date</th>
-			<th>DELETE</th>
-		</tr>
-		<tr th:each="add:${schedule_ymd}">
-			<td th:text="${add.plan}"></td>
-			<td th:text="${add.date}"></td>
-			<td>
-				<form action="/schedule/delete/calendar">
-					<input type="hidden" name="code" th:value="${add.code}">
-					<input	type="hidden" name="date" th:value="${add.date}">
-					<input type="hidden" name="plan" th:value="${add.plan}">
-					 <input type="submit" value="削除">
-				</form>
-			</td>
-		</tr>
-	</table>
-	<br>
-
-	<table border="1" th:if="${check2 == true}">
-		<tr>
-			<th>date</th>
-			<th>time</th>
-		</tr>
-		<tr th:each="add:${study_schedule}">
-			<td th:text="${add.date}"></td>
-			<td th:text="${add.time}"></td>
-		</tr>
-	</table>
 	<span th:text="${message2}" style="color: red"></span>
 </footer>
 </main>

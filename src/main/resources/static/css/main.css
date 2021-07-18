@@ -551,4 +551,44 @@ input:checked +label{
 	padding: 0px;
 }
 
+.schedule_list_title_box {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	width:350px;
+	border-bottom:1px solid whitesmoke;
+}
+
+.schedule_list_title{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width:175px;
+	height:40px;
+	font-size:16px;
+	color:whitesmoke;
+}
+
+.schedule_list_form_body {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-evenly;
+	width:350px;
+	border-bottom:1px solid whitesmoke;
+	color:whitesmoke;
+}
+
+.schedule_list_form_body1, .schedule_list_form_body2 {
+	display: flex;
+	align-items: center;
+	height:40px;
+	width:175px;
+}
+
+.schedule_list_form_body3 {
+	display:flex;
+	justify-content:flex-end;
+}
 
