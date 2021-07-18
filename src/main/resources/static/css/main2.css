@@ -1,0 +1,525 @@
+@charset "UTF-8";
+
+:root {
+	-bird-img: "/images/bird.png";
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	padding:0;
+	width: 100vw;
+	height: 300vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	overflow:auto;
+}
+
+.main {
+	position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main_header{
+	width:100vw;
+	display:flex;
+	justify-content:center;
+	align-items: center;
+}
+
+#header_pointer {
+	align-self:start;
+}
+
+.main_header_title {
+	color:whitesmoke;
+}
+
+.left_menu {
+	position:sticky;
+	align-self: flex-start;
+	top:15%;
+	left:5%;
+}
+
+.icons {
+	margin-top:20px;
+}
+/*
+.icons {
+	position:fixed;
+	align-self: flex-start;
+	top:90%;
+	left:4%;
+	width:180px;
+	display:flex;
+	justify-content: space-between;
+}
+*/
+
+.timer_todo {
+	position:absolute;
+	top:2%;
+	right: 5%;
+}
+
+.container {
+	position:fixed;
+	top:0px;
+	left:0px;
+	min-width:100%;
+	min-height:100%;
+	width:auto;
+	height:auto;
+	z-index:-1000;
+	overflow:auto;
+	background-attachment: scroll;
+}
+/********** MENU **********/
+#menu {
+  height: 100%;
+  position: fixed;
+  background-color: #fed057;
+  width: 300px;
+  transition: 1000ms all cubic-bezier(0.19, 1, 0.22, 1);
+  transform: translateX(-100%);
+  left: 60px;
+}
+
+#menu.expanded {
+  transform: translateX(0%);
+  left: 0px;
+}
+
+.menu-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+#blob {
+  top: 0;
+  z-index: -1;
+  right: 60px;
+  transform: translateX(100%);
+  height: 100%;
+  position: absolute;
+}
+
+#blob-path {
+  height: 100%;
+  fill: #fed057;
+}
+
+.hamburger {
+  right: 20px;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  margin-top: -10px;
+}
+
+.hamburger .line {
+  width: 100%;
+  height: 4px;
+  background-color: #fff;
+  position: absolute;
+}
+
+.hamburger .line:nth-child(2) {
+  top: 50%;
+  margin-top: -2px;
+}
+
+.hamburger .line:nth-child(3) {
+  bottom: 0;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+  width: 80%;
+  margin-left: 10%;
+  position: absolute;
+  top: 10px;
+}
+
+ul li {
+  color: #fff;
+  font-family: sans-serif;
+  padding: 20px 0;
+}
+
+/*
+#words {
+  position: absolute;
+  left: 50%;
+  color: #fff;
+  margin: 0;
+  font-size: 16px;
+  font-family: sans-serif;
+  font-weight: 100;
+}
+*/
+
+/********** BIRD **********/
+
+@keyframes bird {
+	0%{ transform:rotateZ(0);
+	}
+	30%{ transform:rotateZ(-45deg);
+	}
+	100%{ transform:rotateZ(0);
+	}
+}
+
+#bird {
+	animation: bird 2s ease-in-out infinite;
+}
+
+/************ LEFT-UI from HERE ************/
+.left_menu {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+
+/** DATE & TOTAL TIME **/
+.timer_todo_total_today {
+	color: whitesmoke;
+}
+
+.timer_todo_total_time {
+	color: whitesmoke;
+}
+
+/********** D-DAY **********/
+/***** D-DAY 入力*****/
+.d_day {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.d_day_input {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 150px;
+	margin-bottom: 20px;
+}
+
+.d_day_input_text {
+	border: none;
+	border: 1px solid rgba(0, 0, 0, 0.3);
+	border-radius: 5px;
+	padding: 7px 8px;
+	width: 150px;
+	font-size: 16px;
+}
+
+.d_day_input_date {
+	border: none;
+	border: 1px solid rgba(0, 0, 0, 0.3);
+	border-radius: 5px;
+	padding: 7px 8px;
+	width: 150px;
+	margin: -15px 0px;
+}
+
+.d_day_input_btn {
+	display: block;
+	width: 150px;
+	height: 35px;
+	border: none;
+	font-weight: 600;
+	border-radius: 5px;
+}
+
+.d_day_input_text:focus {
+	border-color: wheat;
+}
+
+.d_day_input_date:focus {
+	border-color: wheat;
+}
+
+.d_day_input_btn:hover {
+	background-color: wheat;
+}
+
+/***** D-DAY 表示 *****/
+.d_day_viewer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	border-radius: 20px;
+	width: 150px;
+	height: 150px;
+	background-color: rgba(0, 0, 0, 0.7);
+	color: whitesmoke;
+}
+
+.d_day_viewer_title {
+	display: block;
+	width: 150px;
+	height: 20px;
+	text-align: center;
+	font-size: 24px;
+	margin-bottom: -20px;
+}
+
+.d_day_viewer_day {
+	width: 150px;
+	height: 100px;
+	text-align: center;
+	background-color: whitesmoke;
+	color: rgb(50, 132, 226);
+	font-size: 48px;
+	padding: 20px 0px;
+	border-bottom-left-radius: 20px;
+	border-bottom-right-radius: 20px;
+	text-align: center;
+}
+
+/************ TIMER TODO from HERE ************/
+/********** Timer **********/
+.timer_todo {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 350px;
+}
+
+.timer_todo_timer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 20px;
+}
+
+.timer_todo_timer_title{
+	color:whitesmoke;
+}
+
+.timer_todo_timer_time_box {
+	color:whitesmoke;
+}
+
+.timer_todo_timer_btns {
+	display: flex;
+	justify-content: center;
+}
+
+#btn_stop, #btn_reset {
+	text-align: center;
+	width: 80px;
+	height: 50px;
+	border: none;
+	border-radius: 5px;
+	margin: 0px 5px;
+	padding: 0px;
+}
+
+/********** TIMER TODO LIST **********/
+/***** ADD TO LIST*****/
+.timer_todo_add {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	margin-bottom:100px;
+}
+
+.timer_todo_add_format {
+	margin-bottom: 10px;
+}
+
+.timer_todo_add_text {
+	border: none;
+	border: 1px solid rgba(0, 0, 0, 0.3);
+	border-radius: 5px;
+	padding: 7px 8px;
+	width: 200px;
+	font-size: 14px;
+}
+
+.timer_todo_add_btn {
+	text-align: center;
+	width: 55px;
+	height: 35px;
+	border: none;
+	border-radius: 5px;
+}
+
+
+/***** TODO LIST BODY *****/
+.timer_todo_list_form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width:350px;
+}
+
+.timer_todo_list_form_title_box {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	width:350px;
+	border-bottom:1px solid whitesmoke;
+}
+
+.timer_todo_list_form_title{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width:175px;
+	height:40px;
+	font-size:16px;
+	color:whitesmoke;
+}
+
+.timer_todo_list_form_body {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-evenly;
+	width:350px;
+	border-bottom:1px solid whitesmoke;
+	color:whitesmoke;
+}
+
+.timer_todo_list_form_body1, .timer_todo_list_form_body2 {
+	display: flex;
+	align-items: center;
+	height:40px;
+	width:175px;
+}
+
+.timer_todo_list_form_body2 {
+	display:flex;
+	justify-content:flex-end;
+}
+.timer_todo_list_form_start {
+	text-align:center;
+	width:40px;
+	margin-right:20px
+}
+
+.timer_todo_list_form_delete {
+	text-align:center;
+	width:40px;
+	margin-left:20px
+}
+
+.btn_start, .btn_delete {
+	text-align: center;
+	width: 30px;
+	height: 30px;
+	border: none;
+	border-radius: 5px;
+	padding: 0px;
+}
+
+/********** SCHEDULE TODO LIST **********/
+/***** ADD TO LIST *****/
+.schedule_todo_add {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.schedule_todo_add_format {
+	margin-bottom: 10px;
+}
+
+.schedule_todo_add_text {
+	border: none;
+	border: 1px solid rgba(0, 0, 0, 0.3);
+	border-radius: 5px;
+	padding: 7px 8px;
+	width: 200px;
+	font-size: 14px;
+}
+
+.schedule_todo_add_btn {
+	text-align: center;
+	width: 55px;
+	height: 35px;
+	border: none;
+	border-radius: 5px;
+}
+
+/***** TODO LIST BODY *****/
+.schedule_todo_list_form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.schedule_todo_list_form_title_box {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width:350px;
+	border-bottom:1px solid whitesmoke;
+}
+
+.schedule_todo_list_form_title{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 40px;
+	font-size:16px;
+	color:whitesmoke;
+}
+
+.schedule_todo_list_form_body {
+	display: flex;
+	align-items: center;
+	justify-content:space-between;
+	height: 40px;
+	font-size:16px;
+	width:350px;
+	border-bottom:1px solid whitesmoke;
+	color:whitesmoke;
+}
+
+input[type="checkbox"]{
+	width:30px;
+	height: 30px;
+	cursor:pointer;
+}
+
+input:checked +label{
+	color: tomato;
+}
+
+.schedule_btn_delete {
+	text-align: center;
+	width: 30px;
+	height: 30px;
+	border: none;
+	border-radius: 5px;
+	padding: 0px;
+}
+
+

@@ -13,137 +13,185 @@
 	src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
 <script type="text/javascript"
 	src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/i18n/jquery.ui.datepicker-ja.min.js"></script>
-
+<script src="https://kit.fontawesome.com/6478f529f2.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <title>MINEMINE</title>
 
 </head>
 <body>
 	<header class="main_header">
-		<h1>
+		<a id="header_pointer" name="header"></a>
+		<h1 class="main_header_title" >
 			WELCOME <span th:text="${session.name}"></span>
 		</h1>
 	</header>
 
+<div class="container">
+	<video width="100%" height="auto" autoplay loop muted>
+	<source src="background/rain.mp4" type="video/mp4">
+		Sorry, your browser does not support HTML5 video.
+	</video>
+</div>
 
-	<a id="logo_bird" href="show_todo"><img src="/images/bird.png"
+<main class="main">
+
+<div class="left_menu">
+
+	<div id="menu">
+      	<div class="hamburger">
+       	 	<div class="line"></div>
+        	<div class="line"></div>
+        	<div class="line"></div>
+     	 </div>
+     	 <div class="menu-inner">
+       		 <ul>
+         		 <li>Menu Item</li>
+         		 <li>Menu Item</li>
+          		<li>Menu Item</li>
+         		 <li>Menu Item</li>
+          		<li>Menu Item</li>
+         		 <li>Menu Item</li>
+       		 </ul>
+   	 	 </div>
+
+     		 <svg version="1.1" id="blob" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      		 	<path id="blob-path" d="M60,500H0V0h60c0,0,20,172,20,250S60,900,60,500z" />
+     		 </svg>
+ 	  </div>
+
+	<a id="bird" href="#header"><img src="/images/bird.png"
 		width="50px" height="50px"></a>
 
 	<!-- TIMER_TODOここから-->
-	<main class="timer_todo">
-		<div class="timer_todo_header">
-
-			<!-- TIMERの中の日付 -->
-			<h2 th:text="${session.today}"></h2>
-
-			<!-- TIMER HOUR:MINUTES:SECONDS TOTAL/DAY -->
-			<h1 th:each="time : ${user_study_time_info}">
+		<div class="timer_todo_total">
+			<h2 class="timer_todo_total_today" th:text="${session.today}"></h2>
+			<h1 class="timer_todo_total_time" th:each="time : ${user_study_time_info}">
 				<span th:text="${time.time}"></span>
 			</h1>
 		</div>
 
-		<!-- TIMER_TODO_タイマー機能 -->
-		<div class="timer_todo_timer">
-			<h2>勉強した時間</h2>
+		<div class="d_day">
+			<form class="d_day_input" action="/compute">
+				<input class="d_day_input_text" type="text" name="test" placeholder="Anniversary"><br>
+				<input class="d_day_input_date" type="date" name="xday"><br>
+				<input class="d_day_input_btn" type="submit" value="SAVE">
+			</form>
 
-			<!-- TIMER HOUR:MINUTES:SECONDS -->
-			<h1>
-				<span id="hours">00</span>: <span id="minutes">00</span>: <span
-					id="seconds">00</span>
-			</h1>
-
-			<button id="btn_stop">STOP</button>
-			<button id="btn_reset">RESET</button>
-
+			<div th:if="${session.test} != null" class="d_day_viewer">
+				<h2 class="d_day_viewer_title" th:text="${session.test}"></h2>
+				<h1 class="d_day_viewer_day" th:text="${session.period}"></h1>
+			</div>
 		</div>
 
-		<!-- TIMER_TODO_追加 -->
+	<div class="icons">
+		<a href="https://google.com" target="_blank"><img src="/images/google.png" width="50px" height="50px"></a>
+		<a id="icon_mail" href="https://mailtap.securemx.jp/" target="_blank"><img src="/images/mail.png" width="50px" height="50px"></a>
+		<a href="https://github.com" target="_blank"><img src="/images/github.png" width="50px" height="50px"></a>
+	</div>
+</div>
+
+<main class="timer_todo">
+
+		<div class="timer_todo_timer">
+			<h2 class="timer_todo_timer_title">studying...</h2>
+
+			<h1 class="timer_todo_timer_time_box">
+				<span class="timer_todo_timer_time" id="hours">00</span>:
+				<span class="timer_todo_timer_time" id="minutes">00</span>:
+				<span class="timer_todo_timer_time" id="seconds">00</span>
+			</h1>
+			<div class="timer_todo_timer_btns">
+				<button id="btn_stop">STOP</button>
+				<button id="btn_reset">RESET</button>
+			</div>
+		</div>
+
+	<!-- TIMER_TODO_追加 -->
 		<div class="timer_todo_add">
 
-			<div>
-				<form action="/add_todo" method="post">
-					<input type="text" name="todo" placeholder="Make TODOLIST">
-					<input type="submit" value="ADD">
+				<form class="timer_todo_add_format" action="/add_todo" method="post">
+					<input class="timer_todo_add_text" type="text" name="todo" placeholder="Save TODO">
+					<input class="timer_todo_add_btn" type="submit" value="ADD">
 				</form>
-			</div>
 
-			<!-- TIMER_TODO_リスト -->
+	<!-- TIMER_TODO_リスト -->
 			<div class="timer_todo_list">
-				<table border="1">
-					<tr>
-						<th colspan="2">..TODO..</th>
-						<th colspan="2">TIME</th>
-					</tr>
 
-					<tr th:each="todo : ${todo_list}">
+				<div class="timer_todo_list_form">
+					<div class="timer_todo_list_form_title_box">
+						<div class="timer_todo_list_form_title" >MISSION</div>
+						<div class="timer_todo_list_form_title" >TIME</div>
+					</div>
 
-						<td><button class="btn_start" th:value="${todo.code}">START</button></td>
+					<div class="timer_todo_list_form_body" th:each="todo : ${todo_list}">
 
-						<td th:text="${todo.todo}"></td>
+						<div class="timer_todo_list_form_body1">
+							<div class="timer_todo_list_form_start"><button class="btn_start" th:value="${todo.code}">▷</button></div>
 
-						<td><span th:text="${todo.time}"></span></td>
+							<div class="timer_todo_list_form_mission" th:text="${todo.todo}"></div>
+						</div>
 
-						<td>
-							<form action="/delete_todo">
-								<input type="hidden" name="todo_code" th:value="${todo.code}">
-								<input type="submit" value="X">
-							</form>
-						</td>
-					</tr>
-				</table>
+						<div class="timer_todo_list_form_body2">
+							<div class="timer_todo_list_form_time1"><span th:text="${todo.time}"></span></div>
+
+							<div class="timer_todo_list_form_delete">
+								<form class="btn_delete" action="/delete_todo">
+									<input type="hidden" name="todo_code" th:value="${todo.code}">
+									<input class="btn_delete" type="submit" value="X">
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
-	</main>
+
 
 	<!-- SCHEDULE_TODO_ここから -->
 	<div class="schedule_todo">
 		<!-- SCHEDULE_TODO_追加 -->
 		<div class="schedule_todo_add">
-			<form action="/add_schedule" method="post">
-				<input type="text" name="plan" placeholder="スケジュールを追加"> <input
-					type="submit" value="ADD">
+			<form class="schedule_todo_add_format" action="/add_schedule" method="post">
+				<input class="schedule_todo_add_text" type="text" name="plan" placeholder="Save Schedule">
+				<input class="schedule_todo_add_btn" type="submit" value="ADD">
 			</form>
 		</div>
 
 		<!-- SCHEDULE_TODO_リスト -->
-		<div class="schedule_todo_list">
-			<table border="1">
+		<div class="schedule_todo_list_form">
 
-				<tr>
-					<th colspan="1">今日やるべきこと</th>
-					<th colspan="1">削除</th>
-				</tr>
+			<div class="schedule_todo_list_form">
 
-				<tr th:each="schedule : ${schedule_today}">
+				<div class="schedule_todo_list_form_title_box">
+					<div class="schedule_todo_list_form_title">Schedule Check List</div>
+				</div>
 
-					<td th:text="${schedule.plan}"></td>
+				<div class="schedule_todo_list_form_body" th:each="schedule : ${schedule_today}">
 
-					<td>
+					<input class="schedule_todo_list_form_plan" type="checkbox" id="th:text='${schedule.plan}'" name="th:text='${schedule.plan}'">
+					<label for="th:text='${schedule.plan}'" th:text='${schedule.plan}'></label>
+
+					<div class="schedule_todo_list_form_delete">
 						<form action="/deleteScheduleToday">
 							<input type="hidden" name="code" th:value="${schedule.code}">
-							<input type="submit" value="X">
+							<input class="schedule_btn_delete" type="submit" value="X">
 						</form>
-					</td>
+					</div>
+				</div>
+			</div>
 
-				</tr>
-
-			</table>
 		</div>
 	</div>
+</main>
 
-	<div class="dday">
-		<form action="/compute">
-			<input type="text" name="test" placeholder="試験・資格名"><br>
-			<input type="date" name="xday"> <input type="submit"
-				value="決定">
-		</form>
-	</div>
 
 	<br>
 	<a href="/calendar">カレンダー</a>
 	<br>
 
-
+</main>
 	<!-- TIMER JavaScript -->
 	<script src="/timer.js"></script>
+	<script src="/menu.js"></script>
 </body>
 </html>

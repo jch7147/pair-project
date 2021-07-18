@@ -4,6 +4,7 @@ import java.sql.Time;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.Period;
 import java.util.List;
 import java.util.Optional;
 
@@ -223,37 +224,34 @@ public class MainController {
 		return mv;
 	}
 
-	//	//試験日から逆算する処理をするページへ遷移
-	//	@RequestMapping("/compute")
-	//	public ModelAndView computing(
-	//			@RequestParam("xday") String xday,
-	//			@RequestParam("test") String test,
-	//			ModelAndView mv) {
-	//
-	//		//今日の日付
-	//		LocalDate today = LocalDate.now();
-	//
-	//		//type="date"で選択したString型をLocalDate型へ変換
-	//		LocalDate dday = LocalDate.parse(xday);
-	//
-	//		//残りの日数
-	//		Period period = Period.between(today, dday);
-	//
-	//		//残りの日数をセッションに格納
-	//		session.setAttribute("period", period.getDays());
-	//
-	//		//指定した日付をセッションに格納
-	//		session.setAttribute("xday", xday);
-	//
-	//		//資格・試験名を格納
-	//		session.setAttribute("test", test);
-	//
-	//		mv.addObject("today", today);
-	//
-	//		mv.setViewName("compute");
-	//
-	//		return mv;
-	//	}
+		//試験日から逆算する処理をするページへ遷移
+		@RequestMapping("/compute")
+		public ModelAndView computing(
+				@RequestParam("test") String test,
+				@RequestParam("xday") String xday,
+				ModelAndView mv) {
+
+			//今日の日付
+			LocalDate today = LocalDate.now();
+
+			//type="date"で選択したString型をLocalDate型へ変換
+			LocalDate dday = LocalDate.parse(xday);
+
+			//残りの日数
+			Period period = Period.between(today, dday);
+
+			//残りの日数をセッションに格納
+			session.setAttribute("period", period.getDays());
+
+
+			//資格・試験名を格納
+			session.setAttribute("test", test);
+
+
+			mv.setViewName("redirect:/show_todo");
+
+			return mv;
+		}
 	//
 	//	//試験日から逆算する処理
 	//	@RequestMapping("/work")
