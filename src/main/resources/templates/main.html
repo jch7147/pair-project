@@ -45,14 +45,28 @@
         	<div class="line"></div>
      	 </div>
      	 <div class="menu-inner">
+
+
+
        		 <ul>
-       		 <a href="">CALENDAR</a>
-         		 <li>Menu Item</li>
-         		 <li>Menu Item</li>
-          		<li>Menu Item</li>
-         		 <li>Menu Item</li>
-          		<li>Menu Item</li>
-         		 <li>Menu Item</li>
+         		 <li><img id="bird_cage" src="/images/cage.png" width="50%" height="50%"></li>
+         		 <li><a href="#header_pointer">TOP</a></li>
+         		 <li><a href="#calendar_pointer">CALENDAR</a></li>
+          		 <li><a href="">LOG-OUT</a></li>
+          		 <li></li>
+          		 <li>
+          		 <figcaption>Listen to the Rain Drops</figcaption>
+  					<audio id="music_player" controls loop autoplay>
+  						<source src="/music/rain.mp3" type="audio/mp3">
+           			 Your browser does not support the
+           				 <code>audio</code> element.
+	    			</audio>
+	    		</li>
+          		 <li><div class="icons">
+		<a href="https://google.com" target="_blank"><img src="/images/google.png" width="50px" height="50px"></a>
+		<a id="icon_mail" href="https://mailtap.securemx.jp/" target="_blank"><img src="/images/mail.png" width="50px" height="50px"></a>
+		<a href="https://github.com" target="_blank"><img src="/images/github.png" width="50px" height="50px"></a>
+	</div></li>
        		 </ul>
    	 	 </div>
 
@@ -61,7 +75,7 @@
      		 </svg>
  	  </div>
 
-	<a id="bird" href="#header"><img src="/images/bird.png"
+	<a id="bird" href="#header_pointer"><img src="/images/bird.png"
 		width="50px" height="50px"></a>
 
 	<!-- TIMER_TODOここから-->
@@ -85,11 +99,7 @@
 			</div>
 		</div>
 
-	<div class="icons">
-		<a href="https://google.com" target="_blank"><img src="/images/google.png" width="50px" height="50px"></a>
-		<a id="icon_mail" href="https://mailtap.securemx.jp/" target="_blank"><img src="/images/mail.png" width="50px" height="50px"></a>
-		<a href="https://github.com" target="_blank"><img src="/images/github.png" width="50px" height="50px"></a>
-	</div>
+
 </div>
 
 <main class="timer_todo">
@@ -189,9 +199,10 @@
 <footer class="calendar_box">
 	<!-- カレンダー -->
 	<div class="wrapper">
-		<h1 id="header"></h1>
+<a href="" name="calendar_pointer">
 		<div id="next-prev-button">
 			<button id="prev" onclick="prev()">‹</button>
+			<h1 id="header"></a></h1>
 			<button id="next" onclick="next()">›</button>
 		</div>
 		<div id="calendar"></div>

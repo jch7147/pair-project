@@ -9,13 +9,17 @@
 	height:600px;
 	position:absolute;
 	top:50%;
-	right:17.5%;
+	right:14%;
 }
 
 .wrapper{
-	max-width:800px;
+	max-width:900px;
     margin: 0 auto;
     color: #666;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
 }
 #header {
     text-align: center;
@@ -26,12 +30,15 @@
 
 /*カレンダー*/
 #calendar {
+	justify-content:center;
     text-align: center;
     width: 900px;
 }
 
 table {
     border-collapse: collapse;
+    margin-left:95px;
+    border:none;
 }
 
 th {
@@ -40,14 +47,30 @@ th {
 }
 
 th, td {
-    border: 1px solid #ddd;
+    border: none;
     padding-top: 10px;
     padding-bottom: 10px;
     text-align: center;
 	width:100px;
 	height:70px;
 	font-size:20px;
+	background-color: rgba(0,0,0,0.5);
 }
+
+tr:nth-child(even){
+	border-top:1px solid grey;
+	border-bottom:1px solid grey;
+}
+
+tr:last-child {
+	border-bottom:none;
+}
+
+td:nth-child(even){
+	border-left:1px solid grey;
+	border-right:1px solid grey;
+}
+
 /*日曜日*/
 td:first-child a.day {
     color: tomato;
@@ -101,7 +124,10 @@ a.next{
 }
 
 #next-prev-button {
-    position: relative;
+	width:800px;
+	display:flex;
+	justify-content:space-between;
+	align-items:center;
 }
 
 #next-prev-button button {
@@ -119,16 +145,15 @@ a.next{
 }
 
 #prev {
-    float: left;
-    margin-right:20px;;
+    margin-right:20px;
 }
 
 #next {
-    float: right;
     margin-left:20px;;
 }
 
 /****** Add schedule from calendar ******/
+
 .calendar_todo_add {
 	display: flex;
 	justify-content: center;

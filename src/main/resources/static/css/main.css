@@ -51,6 +51,15 @@ body {
 }
 
 .icons {
+	margin-left:10px;
+}
+
+#icon_mail {
+	margin: 0px 10px;
+}
+
+/*
+.icons {
 	position:fixed;
 	align-self: flex-start;
 	top:90%;
@@ -58,8 +67,8 @@ body {
 	width:180px;
 	display:flex;
 	justify-content: space-between;
-	z-index: -2;
 }
+*/
 
 .timer_todo {
 	position:absolute;
@@ -79,6 +88,14 @@ body {
 	overflow:auto;
 	background-attachment: scroll;
 }
+
+#music_player {
+	width:200px;
+}
+
+figcaption {
+	margin-left:10px;
+}
 /********** MENU **********/
 #menu {
   height: 100%;
@@ -88,6 +105,7 @@ body {
   transition: 1000ms all cubic-bezier(0.19, 1, 0.22, 1);
   transform: translateX(-100%);
   left: 60px;
+  margin-right:20px;
 }
 
 #menu.expanded {
@@ -154,6 +172,15 @@ ul li {
   padding: 20px 0;
 }
 
+ul li a {
+  text-decoration:none;
+  font-size:24px;
+}
+
+ul li a:visited {
+	text-decoration:none;
+}
+
 #words {
   position: absolute;
   left: 50%;
@@ -176,6 +203,11 @@ ul li {
 
 #bird {
 	animation: bird 2s ease-in-out infinite;
+}
+
+#bird_cage {
+	margin-left:60px;
+	margin-top:-10px;
 }
 
 /************ LEFT-UI from HERE ************/
