@@ -236,6 +236,108 @@ public class MainController {
 		return mv;
 	}
 
+	@RequestMapping("/logout")
+	public ModelAndView showAlert(ModelAndView mv) {
+
+		//ログインしているユーザ情報
+		User_info user = (User_info) session.getAttribute("userInfo");
+
+		//今日の日付
+		LocalDate today = (LocalDate) session.getAttribute("today");
+
+		LocalDate yesterday = today.minusDays(1);
+
+		List<History> todo_list = historyRepository.findByUidAndDate(user.getId(), today);
+
+		List<History> todo_list_yesterday = historyRepository.findByUidAndDate(user.getId(), yesterday);
+
+		Time time_total = Time.valueOf("00:00:00");
+
+		LocalTime localTimeTotal = time_total.toLocalTime();
+
+		for (int t = 0; t < todo_list.size(); t++) {
+
+			LocalTime localTimeHistory = todo_list.get(t).getTime().toLocalTime();
+
+			localTimeTotal = localTimeTotal.plus(Duration.ofHours(localTimeHistory.getHour()));
+			localTimeTotal = localTimeTotal.plus(Duration.ofMinutes(localTimeHistory.getMinute()));
+			localTimeTotal = localTimeTotal.plus(Duration.ofSeconds(localTimeHistory.getSecond()));
+		}
+
+		LocalTime localTimeTotal_yesterday = time_total.toLocalTime();
+
+//		for (int t = 0; t < todo_list.size(); t++) {
+//			if (todo_list_yesterday.get(0) == null) {
+//				LocalTime localTimeHistory = time_total.toLocalTime();
+//
+//				localTimeTotal_yesterday = localTimeTotal_yesterday.plus(Duration.ofHours(localTimeHistory.getHour()));
+//				localTimeTotal_yesterday = localTimeTotal_yesterday.plus(Duration.ofMinutes(localTimeHistory.getMinute()));
+//				localTimeTotal_yesterday = localTimeTotal_yesterday.plus(Duration.ofSeconds(localTimeHistory.getSecond()));
+//			} else {
+//				LocalTime localTimeHistory = todo_list_yesterday.get(t).getTime().toLocalTime();
+//
+//				localTimeTotal_yesterday = localTimeTotal_yesterday.plus(Duration.ofHours(localTimeHistory.getHour()));
+//				localTimeTotal_yesterday = localTimeTotal_yesterday.plus(Duration.ofMinutes(localTimeHistory.getMinute()));
+//				localTimeTotal_yesterday = localTimeTotal_yesterday.plus(Duration.ofSeconds(localTimeHistory.getSecond()));
+//			}
+//		}
+
+		if (todo_list_yesterday != null) {
+			for (int t = 0; t < todo_list.size(); t++) {
+				LocalTime localTimeHistory = todo_list_yesterday.get(t).getTime().toLocalTime();
+
+				localTimeTotal_yesterday = localTimeTotal_yesterday.plus(Duration.ofHours(localTimeHistory.getHour()));
+				localTimeTotal_yesterday = localTimeTotal_yesterday.plus(Duration.ofMinutes(localTimeHistory.getMinute()));
+				localTimeTotal_yesterday = localTimeTotal_yesterday.plus(Duration.ofSeconds(localTimeHistory.getSecond()));
+			}
+		}
+
+		int today_h = localTimeTotal.getHour();
+		int today_m = localTimeTotal.getMinute();
+		int today_s = localTimeTotal.getSecond();
+		int today_total = (today_h * 3600) + (today_m * 60) + today_s;
+
+		int yesterday_h = localTimeTotal_yesterday.getHour();
+		int yesterday_m = localTimeTotal_yesterday.getMinute();
+		int yesterday_s = localTimeTotal_yesterday.getSecond();
+		int yesterday_total = (yesterday_h * 3600) + (yesterday_m * 60) + yesterday_s;
+
+		int time_gap = today_total - yesterday_total;
+		session.setAttribute("time_gap", time_gap);
+
+		if (today_total > yesterday_total) {
+			int time_good = today_total - yesterday_total;
+
+			int good_hour = (time_good - (time_good % 3600))/3600;
+			int good_minute = ((time_good - (good_hour * 3600))-(time_good - (good_hour * 3600))%60)/60 ;
+			int good_second = time_good - good_hour*3600 - good_minute*60 ;
+
+			session.setAttribute("ghour", good_hour);
+			session.setAttribute("gminute", good_minute);
+			session.setAttribute("gsecond", good_second);
+
+			session.setAttribute("logout_msg", "longer than yesterday");
+			session.setAttribute("logout_msg2", "You did a great job!");
+		}
+		else if (yesterday_total > today_total) {
+			int time_bad = yesterday_total - today_total;
+
+			int bad_hour = (time_bad - (time_bad % 3600))/3600;
+			int bad_minute = ((time_bad - (bad_hour * 3600))-(time_bad - (bad_hour * 3600))%60)/60 ;
+			int bad_second = time_bad - bad_hour*3600 - bad_minute*60 ;
+			session.setAttribute("bhour", bad_hour);
+			session.setAttribute("bminute", bad_minute);
+			session.setAttribute("bsecond", bad_second);
+
+			session.setAttribute("logout_msg", "shorter than yesterday");
+			session.setAttribute("logout_msg2", "Let's try better!");
+		}
+
+		mv.setViewName("redirect:/show_todo");
+
+		return mv;
+	}
+
 	//試験日から逆算する処理をするページへ遷移
 	@RequestMapping("/compute")
 	public ModelAndView computing(

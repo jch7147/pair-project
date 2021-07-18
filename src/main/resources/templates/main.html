@@ -52,11 +52,11 @@
          		 <li><img id="bird_cage" src="/images/cage.png" width="50%" height="50%"></li>
          		 <li><a href="#header_pointer">TOP</a></li>
          		 <li><a href="#calendar_pointer">CALENDAR</a></li>
-          		 <li><a href="">LOG-OUT</a></li>
+          		 <li><a href="/logout">LOG-OUT</a></li>
           		 <li></li>
           		 <li>
           		 <figcaption>Listen to the Rain Drops</figcaption>
-  					<audio id="music_player" controls loop autoplay>
+  					<audio id="music_player" controls loop>
   						<source src="/music/rain.mp3" type="audio/mp3">
            			 Your browser does not support the
            				 <code>audio</code> element.
@@ -98,9 +98,28 @@
 				<h1 class="d_day_viewer_day" th:text="${session.period}"></h1>
 			</div>
 		</div>
-
-
 </div>
+
+	<div th:if="${session.time_gap != null}" class="logout-alert">
+		<div class="logout-date" th:text="${session.today}"></div>
+			<div th:if="${session.time_gap} > 0" class="logout-text_box">
+				<div tclass="logout-text">You studied</div>
+				<span th:text="${session.ghour}"></span>:
+				<span th:text="${session.gminute}"></span>:
+				<span th:text="${session.gsecond}"></span>
+				<div class="logout-text" th:text="${session.logout_msg}"></div>
+				<div class="logout-text" th:text="${session.logout_msg2}"></div>
+			</div>
+			<div th:if="${session.time_gap} < 0" class="logout-text_box">
+				<div tclass="logout-text">You studied</div>
+				<span th:text="${session.bhour}"></span>:
+				<span th:text="${session.bminute}"></span>:
+				<span th:text="${session.bsecond}"></span>
+				<div class="logout-text" th:text="${session.logout_msg}"></div>
+				<div class="logout-text" th:text="${session.logout_msg2}"></div>
+			</div>
+	</div>
+
 
 <main class="timer_todo">
 

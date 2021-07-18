@@ -6,6 +6,7 @@
 
 * {
 	box-sizing: border-box;
+	font-family:"Margaret", serif;
 }
 
 body {
@@ -175,6 +176,7 @@ ul li {
 ul li a {
   text-decoration:none;
   font-size:24px;
+  font-weight:600;
 }
 
 ul li a:visited {
@@ -311,7 +313,7 @@ ul li a:visited {
 	height: 100px;
 	text-align: center;
 	background-color: whitesmoke;
-	color: rgb(50, 132, 226);
+	color: #ff4242;
 	font-size: 48px;
 	padding: 20px 0px;
 	border-bottom-left-radius: 20px;
