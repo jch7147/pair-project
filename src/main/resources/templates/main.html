@@ -17,7 +17,14 @@
 <script src="https://kit.fontawesome.com/6478f529f2.js" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <title>MINEMINE</title>
-
+<script th:inline="javascript">
+ $(function(){
+	var pos = /*[[${pos}]]*/;
+    if(pos == "calendar"){
+         location.hash = "cal";
+    }
+ });
+</script>
 </head>
 <body>
 	<header class="main_header">
@@ -220,22 +227,25 @@
 	</div>
 </main>
 
-<footer class="calendar_box">
-	<!-- カレンダー -->
-	<div class="wrapper">
-<a href="" name="calendar_pointer">
-		<div id="next-prev-button">
-			<button id="prev" onclick="prev()">‹</button>
-			<h1 id="header"></a></h1>
-			<button id="next" onclick="next()">›</button>
-		</div>
-		<div id="calendar"></div>
-	</div>
-
-	<br>
+<<footer class="calendar_box">
+		<div id="cal"></div>
+			<!-- カレンダー -->
+			<div class="wrapper">
+				<a href="" name="calendar_pointer">
+					<div id="next-prev-button">
+				</a>
+				<button id="prev" onclick="prev()">‹</button>
+				<h1 id="header"></h1>
+				<button id="next" onclick="next()">›</button>
+			</div>
 
 
-	<!-- スケジュールを追加 -->
+
+			<div id="calendar"></div>
+			</div>
+
+			<br>
+			<!-- スケジュールを追加 -->
 			<form class="calendar_todo_add" action="/addSchedule">
 				<input class="calendar_todo_add_date" type="date" name="date"
 					required> <input class="calendar_todo_add_text" type="text"

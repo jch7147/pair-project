@@ -55,7 +55,47 @@ public class ScheduleController {
 			mv.addObject("message1", "追加されました");
 		}
 
-		mv.setViewName("redirect:/show_todo");
+		//今日の日付
+		LocalDate today = (LocalDate) session.getAttribute("today");
+
+		////              ////
+		//ToDoListを呼び出す//
+		////     ↓↓     ////
+
+		List<History> todo_list = historyRepository.findByUidAndDate(user.getId(), today);
+
+		mv.addObject("todo_list", todo_list);
+
+		////                  ////
+		//スケジュールを呼び出す//
+		////       ↓↓       ////
+
+		List<AddSchedule> schedule_today = addscheduleRepository.findByUidAndDate(user.getId(), today);
+
+		mv.addObject("schedule_today", schedule_today);
+
+		////                             ////
+		//userstudytimeテーブルから呼び出す//
+		////            ↓↓             ////
+
+		List<UserStudyTime> user_study_time_info = studytimetotalRepository.findByUidAndDate(user.getId(), today);
+
+		mv.addObject("user_study_time_info", user_study_time_info);
+
+		//予定がある日にマークが出るようにjsに送るやつ
+		List<AddSchedule> list = addscheduleRepository.findByUid(user.getId());
+
+		List<UserStudyTime> user_study_time_info_ = studytimetotalRepository.findByUid(user.getId());
+
+		mv.addObject("list_study", user_study_time_info_);
+		mv.addObject("list", list);
+		mv.addObject("yyyy", today.getYear());
+		mv.addObject("MM", today.getMonthValue());
+		mv.addObject("dd", today.getDayOfMonth());
+		mv.addObject("check", false);
+		mv.addObject("pos","calendar");
+
+		mv.setViewName("main");
 		return mv;
 	}
 
@@ -74,7 +114,7 @@ public class ScheduleController {
 
 		//もしレビューが空なら「レビューなし」メッセージを送る
 		if (schedule_list.size() == 0) {
-			mv.addObject("message3", "レビューは空です。");
+			mv.addObject("message3", "予定はありません。");
 			mv.addObject("check", true);
 		} else {
 			mv.addObject("schedule_list", schedule_list);
@@ -108,7 +148,7 @@ public class ScheduleController {
 			mv.addObject("schedule_list", schedule_);
 			mv.addObject("check", false);
 		} else if (schedule_.size() == 0) {
-			mv.addObject("message3", "レビューは空です。");
+			mv.addObject("message3", schedule_l + "から" + schedule_h + "間の予定はありません。");
 			mv.addObject("check", true);
 		}
 
@@ -133,7 +173,7 @@ public class ScheduleController {
 		List<AddSchedule> schedule_list_select = addscheduleRepository.findByUid(user.getId());
 
 		if (schedule_list_select.size() == 0) {
-			mv.addObject("message3", "レビューは空です。");
+			mv.addObject("message3", "予定はありません。");
 		} else {
 			mv.addObject("schedule_list", schedule_list_select);
 			mv.addObject("check", false);
@@ -149,7 +189,6 @@ public class ScheduleController {
 	public ModelAndView deleteCalendar(
 			@RequestParam("code") int code,
 			@RequestParam("date") String date,
-			@RequestParam("plan") String plan,
 			ModelAndView mv) {
 
 		LocalDate schedule = LocalDate.parse(date);
@@ -160,13 +199,24 @@ public class ScheduleController {
 		User_info user = (User_info) session.getAttribute("userInfo");
 
 		//uidでtodoリスト検索
-		List<AddSchedule> schedule_list = addscheduleRepository.findByUidAndPlanAndDate(user.getId(), plan, schedule);
+		List<AddSchedule> schedule_list = addscheduleRepository.findByUidAndDate(user.getId(), schedule);
 
 		if (schedule_list.size() == 0) {
-			mv.addObject("message2", "予定はありません。");
+			mv.addObject("message2", schedule + "の予定はありません。");
 		} else {
 			mv.addObject("schedule_ymd", schedule_list);
 			mv.addObject("check", true);
+		}
+
+		//指定した日に勉強していれば合計時間を出す
+		List<UserStudyTime> user_study_time_info_ = studytimetotalRepository.findByUidAndDate(user.getId(), schedule);
+
+		//指定した日にちにのデータベースが空だったらメッセージを、あれば表示
+		if (user_study_time_info_.size() == 0) {
+			mv.addObject("message3", "");
+		} else {
+			mv.addObject("study_schedule", user_study_time_info_);
+			mv.addObject("check2", true);
 		}
 
 		//予定がある日にマークが出るようにjsに送るやつ
@@ -197,9 +247,9 @@ public class ScheduleController {
 		//userstudytimeテーブルから呼び出す//
 		////            ↓↓             ////
 
-		List<UserStudyTime> user_study_time_info_ = studytimetotalRepository.findByUidAndDate(user.getId(), today);
+		List<UserStudyTime> user_study_time_info__ = studytimetotalRepository.findByUidAndDate(user.getId(), today);
 
-		mv.addObject("user_study_time_info", user_study_time_info_);
+		mv.addObject("user_study_time_info", user_study_time_info__);
 
 		mv.addObject("list_study", user_study_time_info);
 		mv.addObject("list", list);
@@ -229,7 +279,7 @@ public class ScheduleController {
 
 		//指定した日にちにのデータベースが空だったらメッセージを、あれば表示
 		if (schedule_ymd.size() == 0) {
-			mv.addObject("message2", "予定はありません。");
+			mv.addObject("message2", schedule + "の予定はありません。");
 		} else {
 			mv.addObject("schedule_ymd", schedule_ymd);
 			mv.addObject("check", true);
@@ -312,7 +362,7 @@ public class ScheduleController {
 
 		//もしレビューが空なら「レビューなし」メッセージを送る
 		if (schedule_list.size() == 0) {
-			mv.addObject("message3", "レビューは空です。");
+			mv.addObject("message3", "予定はありません。");
 			mv.addObject("check", true);
 		} else {
 			mv.addObject("schedule_list", schedule_list);
@@ -377,7 +427,6 @@ public class ScheduleController {
 		return mv;
 	}
 
-
 	/**
 	 * TODOLIST todayから削除
 	 */
@@ -397,8 +446,17 @@ public class ScheduleController {
 		//uidとDATEを条件にスケジュールを検索
 		List<AddSchedule> schedule_today_list = addscheduleRepository.findByUidAndDate(user.getId(), today);
 
-		mv.addObject("schedule_today", schedule_today_list);
+		//予定がある日にマークが出るようにjsに送るやつ
+		List<AddSchedule> list = addscheduleRepository.findByUid(user.getId());
 
+		List<UserStudyTime> user_studytime_info = studytimetotalRepository.findByUid(user.getId());
+
+		mv.addObject("schedule_today", schedule_today_list);
+		mv.addObject("list_study", user_studytime_info);
+		mv.addObject("list", list);
+		mv.addObject("yyyy", today.getYear());
+		mv.addObject("MM", today.getMonthValue());
+		mv.addObject("dd", today.getDayOfMonth());
 		mv.setViewName("main");
 		return mv;
 	}

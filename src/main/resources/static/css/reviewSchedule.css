@@ -83,10 +83,16 @@ body {
 
 .sortingSchedule{
 	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top:10px;
+}
+
+.sortingSchedule1{
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	margin-top:20px;
+	margin-top:10px;
 }
 
 .reviewSchedule_header{
@@ -154,10 +160,20 @@ body {
 	background-color:#fed057;
 }
 
-.reviewSchedule__btn{
+.reviewSchedule__btn1{
 	text-align: center;
 	width: 45px;
 	height: 35px;
 	border: solid;
 	border-radius: 5px;
+	display:flex;
+}
+
+.reviewSchedule__btn2{
+	text-align: center;
+	width: 45px;
+	height: 35px;
+	border: solid;
+	border-radius: 5px;
+	justify-content:flex-end;
 }
