@@ -236,7 +236,7 @@ public class MainController {
 		return mv;
 	}
 
-	@RequestMapping("/logout")
+	@RequestMapping("/logout_alert")
 	public ModelAndView showAlert(ModelAndView mv) {
 
 		//ログインしているユーザ情報
@@ -266,31 +266,15 @@ public class MainController {
 
 		LocalTime localTimeTotal_yesterday = time_total.toLocalTime();
 
-//		for (int t = 0; t < todo_list.size(); t++) {
-//			if (todo_list_yesterday.get(0) == null) {
-//				LocalTime localTimeHistory = time_total.toLocalTime();
-//
-//				localTimeTotal_yesterday = localTimeTotal_yesterday.plus(Duration.ofHours(localTimeHistory.getHour()));
-//				localTimeTotal_yesterday = localTimeTotal_yesterday.plus(Duration.ofMinutes(localTimeHistory.getMinute()));
-//				localTimeTotal_yesterday = localTimeTotal_yesterday.plus(Duration.ofSeconds(localTimeHistory.getSecond()));
-//			} else {
-//				LocalTime localTimeHistory = todo_list_yesterday.get(t).getTime().toLocalTime();
-//
-//				localTimeTotal_yesterday = localTimeTotal_yesterday.plus(Duration.ofHours(localTimeHistory.getHour()));
-//				localTimeTotal_yesterday = localTimeTotal_yesterday.plus(Duration.ofMinutes(localTimeHistory.getMinute()));
-//				localTimeTotal_yesterday = localTimeTotal_yesterday.plus(Duration.ofSeconds(localTimeHistory.getSecond()));
-//			}
-//		}
-
-		if (todo_list_yesterday != null) {
-			for (int t = 0; t < todo_list.size(); t++) {
+		//if (todo_list_yesterday.size() != 0) {
+			for (int t = 0; t < todo_list_yesterday.size(); t++) {
 				LocalTime localTimeHistory = todo_list_yesterday.get(t).getTime().toLocalTime();
 
 				localTimeTotal_yesterday = localTimeTotal_yesterday.plus(Duration.ofHours(localTimeHistory.getHour()));
 				localTimeTotal_yesterday = localTimeTotal_yesterday.plus(Duration.ofMinutes(localTimeHistory.getMinute()));
 				localTimeTotal_yesterday = localTimeTotal_yesterday.plus(Duration.ofSeconds(localTimeHistory.getSecond()));
 			}
-		}
+
 
 		int today_h = localTimeTotal.getHour();
 		int today_m = localTimeTotal.getMinute();
@@ -338,6 +322,17 @@ public class MainController {
 		return mv;
 	}
 
+	@RequestMapping("/logout")
+	public ModelAndView computing(ModelAndView mv) {
+
+		session.invalidate();
+
+		mv.setViewName("login");
+
+		return mv;
+	}
+
+
 	//試験日から逆算する処理をするページへ遷移
 	@RequestMapping("/compute")
 	public ModelAndView computing(
@@ -364,25 +359,7 @@ public class MainController {
 
 		return mv;
 	}
-	//
-	//	//試験日から逆算する処理
-	//	@RequestMapping("/work")
-	//	public ModelAndView work(
-	//			@RequestParam("pages") int pages,
-	//			@RequestParam("laps") int laps,
-	//			@RequestParam("date") int date,
-	//			ModelAndView mv) {
-	//
-	//		//ページ数×周回数でトータル勉強量
-	//		int total_study = pages * laps;
-	//
-	//		//総ページ数÷日数
-	//		int study_day = total_study / date;
-	//
-	//		mv.addObject("study_day", study_day);
-	//		mv.setViewName("compute");
-	//		return mv;
-	//	}
+
 
 	private Time sumUpStudyTime() {
 		////                ////

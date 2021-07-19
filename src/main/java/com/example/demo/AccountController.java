@@ -59,7 +59,7 @@ public class AccountController {
 		// 空の場合にエラーメッセージを出す。
 		if (email == null || email.length() == 0 || password == null || password.length() == 0) {
 
-			mv.addObject("message", "メールアドレス又はパスワードを入力してください");
+			mv.addObject("message", "Emailまたはパスワードを入力してください");
 
 			mv.setViewName("login");
 

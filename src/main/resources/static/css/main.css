@@ -45,7 +45,7 @@ body {
 }
 
 .left_menu {
-	position:sticky;
+	position:fixed;
 	align-self: flex-start;
 	top:15%;
 	left:5%;
@@ -58,18 +58,6 @@ body {
 #icon_mail {
 	margin: 0px 10px;
 }
-
-/*
-.icons {
-	position:fixed;
-	align-self: flex-start;
-	top:90%;
-	left:4%;
-	width:180px;
-	display:flex;
-	justify-content: space-between;
-}
-*/
 
 .timer_todo {
 	position:absolute;
@@ -97,6 +85,44 @@ body {
 figcaption {
 	margin-left:10px;
 }
+/********** LOGOUT **********/
+
+.logout-alert {
+	position:absolute;
+	top:5%;
+	display:flex;
+	flex-direction:column;
+	justify-content:center;
+	align-items:center;
+	text-align:center;
+	background-color: rgba(0,0,0,0.5);
+	border-radius:20px;
+	width:320px;
+	height:240px;
+}
+
+.logout-text {
+	font-size:24px;
+	color:whitesmoke;
+}
+
+.logout-text-time-box {
+	font-size:28px;
+	font-weight:600;
+	color:#c0c0c0;
+}
+
+.logout-text-time {
+	color:tomato;
+}
+
+.logout-a {
+	text-decoration:none;
+	font-size:24px;
+	color:#c6fc7c;
+}
+
+
 /********** MENU **********/
 #menu {
   height: 100%;
@@ -105,6 +131,7 @@ figcaption {
   width: 300px;
   transition: 1000ms all cubic-bezier(0.19, 1, 0.22, 1);
   transform: translateX(-100%);
+  top:0;
   left: 60px;
   margin-right:20px;
 }
@@ -171,12 +198,14 @@ ul li {
   color: #fff;
   font-family: sans-serif;
   padding: 20px 0;
+  margin: -5px 0px;
 }
 
 ul li a {
   text-decoration:none;
   font-size:24px;
   font-weight:600;
+
 }
 
 ul li a:visited {
@@ -273,6 +302,9 @@ ul li a:visited {
 	border: none;
 	font-weight: 600;
 	border-radius: 5px;
+	background-color:#0bb5f4;
+	color:whitesmoke;
+	box-shadow:2px 2px 2px rgba(0,0,0,0.5);
 }
 
 .d_day_input_text:focus {
@@ -283,8 +315,8 @@ ul li a:visited {
 	border-color: wheat;
 }
 
-.d_day_input_btn:hover {
-	background-color: wheat;
+.d_day_input_btn:active {
+	background-color: #1d71e2;
 }
 
 /***** D-DAY 表示 *****/
@@ -361,8 +393,12 @@ ul li a:visited {
 	border-radius: 5px;
 	margin: 0px 5px;
 	padding: 0px;
+	box-shadow:2px 2px 2px rgba(0,0,0,0.5);
 }
 
+#btn_stop{
+	background-color:#c6fc7c;
+}
 /********** TIMER TODO LIST **********/
 /***** ADD TO LIST*****/
 .timer_todo_add {
@@ -370,7 +406,7 @@ ul li a:visited {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	margin-bottom:100px;
+	margin-bottom:300px;
 }
 
 .timer_todo_add_format {
@@ -464,6 +500,13 @@ ul li a:visited {
 	border: none;
 	border-radius: 5px;
 	padding: 0px;
+	font-weight:600;
+}
+
+.btn_start {
+	background-color:tomato;
+	color:whitesmoke;
+	box-shadow:2px 2px 2px rgba(0,0,0,0.5);
 }
 
 /********** SCHEDULE TODO LIST **********/
@@ -594,6 +637,3 @@ input:checked +label{
 	justify-content:flex-end;
 }
 
-.goToReview{
-	color:white;
-}

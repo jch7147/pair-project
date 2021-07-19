@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <link rel="shortcut icon" href="/images/bird.png">
-<link th:href="@{css/main.css}" rel="stylesheet">
-<link href="css/calendar.css" rel="stylesheet">
+<link th:href="@{/css/main.css}" rel="stylesheet">
+<link href="/css/calendar.css" rel="stylesheet">
 <link type="text/css"
 	href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/ui-lightness/jquery-ui.css"
 	rel="stylesheet" />
@@ -29,7 +29,7 @@
 
 <div class="container">
 	<video width="100%" height="auto" autoplay loop muted>
-	<source src="background/rain.mp4" type="video/mp4">
+	<source src="/background/rain.mp4" type="video/mp4">
 		Sorry, your browser does not support HTML5 video.
 	</video>
 </div>
@@ -52,8 +52,8 @@
          		 <li><img id="bird_cage" src="/images/cage.png" width="50%" height="50%"></li>
          		 <li><a href="#header_pointer">TOP</a></li>
          		 <li><a href="#calendar_pointer">CALENDAR</a></li>
-          		 <li><a href="/logout">LOG-OUT</a></li>
-          		 <li></li>
+          		 <li><a href="/reviewSchedule">SCHEDULE</a></li>
+          		 <li><a href="/logout_alert">LOG-OUT</a></li>
           		 <li>
           		 <figcaption>Listen to the Rain Drops</figcaption>
   					<audio id="music_player" controls loop>
@@ -100,26 +100,31 @@
 		</div>
 </div>
 
+<!-- logout process -->
 	<div th:if="${session.time_gap != null}" class="logout-alert">
-		<div class="logout-date" th:text="${session.today}"></div>
-			<div th:if="${session.time_gap} > 0" class="logout-text_box">
-				<div tclass="logout-text">You studied</div>
-				<span th:text="${session.ghour}"></span>:
-				<span th:text="${session.gminute}"></span>:
-				<span th:text="${session.gsecond}"></span>
-				<div class="logout-text" th:text="${session.logout_msg}"></div>
-				<div class="logout-text" th:text="${session.logout_msg2}"></div>
-			</div>
-			<div th:if="${session.time_gap} < 0" class="logout-text_box">
-				<div tclass="logout-text">You studied</div>
-				<span th:text="${session.bhour}"></span>:
-				<span th:text="${session.bminute}"></span>:
-				<span th:text="${session.bsecond}"></span>
-				<div class="logout-text" th:text="${session.logout_msg}"></div>
-				<div class="logout-text" th:text="${session.logout_msg2}"></div>
-			</div>
-	</div>
 
+		<div th:if="${session.time_gap} > 0" class="logout-text-box">
+			<div class="logout-text">You studied</div>
+			<div class="logout-text-time-box">
+				<span class="logout-text-time" th:text="${session.ghour}"></span>:
+				<span class="logout-text-time" th:text="${session.gminute}"></span>:
+				<span class="logout-text-time" th:text="${session.gsecond}"></span>
+			</div>
+			<div class="logout-text" th:text="${session.logout_msg}"></div>
+			<div class="logout-text" th:text="${session.logout_msg2}"></div>
+		</div>
+
+		<div th:if="${session.time_gap} < 0" class="logout-text-box">
+			<div class="logout-text">You studied</div>
+			<span class="logout-text-time" th:text="${session.bhour}"></span>:
+			<span class="logout-text-time" th:text="${session.bminute}"></span>:
+			<span class="logout-text-time" th:text="${session.bsecond}"></span>
+			<div class="logout-text" th:text="${session.logout_msg}"></div>
+			<div class="logout-text" th:text="${session.logout_msg2}"></div>
+		</div>
+
+		<a class="logout-a" href="/logout">See you next time</a>
+	</div>
 
 <main class="timer_todo">
 
@@ -157,7 +162,7 @@
 					<div class="timer_todo_list_form_body" th:each="todo : ${todo_list}">
 
 						<div class="timer_todo_list_form_body1">
-							<div class="timer_todo_list_form_start"><button class="btn_start" th:value="${todo.code}">▷</button></div>
+							<div class="timer_todo_list_form_start"><button class="btn_start" th:value="${todo.code}">▶</button></div>
 
 							<div class="timer_todo_list_form_mission" th:text="${todo.todo}"></div>
 						</div>
@@ -240,7 +245,6 @@
 
 			<span th:text="${message}" style="color: red"></span>
 			<span th:text="${message1}" style="color: red"></span> <br>
-		    <a class="goToReview "href="/reviewSchedule">review</a> <br>
 
 			<div class="schedule_list" th:if="${check == true}">
 				<div class="schedule_list_title_box">
@@ -267,6 +271,8 @@
 			</div>
 			<br>
 
+		<span th:text="${message2}" style="color: red"></span>
+
 			<div class="schedule_list" th:if="${check2 == true}">
 				<div class="schedule_list_title_box">
 					<div class="schedule_list_title">date</div>
@@ -278,8 +284,6 @@
 				</div>
 			</div>
 
-
-	<span th:text="${message2}" style="color: red"></span>
 </footer>
 </main>
 
