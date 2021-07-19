@@ -22,30 +22,25 @@
 		</div>
 		<form action="/searchSchedule" method="get">
 			<div class="searchReviewSchedule">
-				期間：<input class="sorting_lowDate" type="date" name="lowDate" th:value="${lowDate}"
-					style="font-size: 3px;" required>～<input class="sorting_highDate" type="date"
-					name="highDate" th:value="${highDate}" style="font-size: 3px;"
-					required> <input class="reviewSchedule_btn" type="submit" value="検索">
+					FROM: <input class="sorting_Date" type="date" name="lowDate" th:value="${lowDate}" style="font-size: 3px;" required>
+					UNTIL: <input class="sorting_Date" type="date" name="highDate" th:value="${highDate}" style="font-size: 3px;" required>
+					<input class="reviewSchedule_btn" type="submit" value="検索">
 			</div>
 		</form>
 		<br>
 		<div class="sortingSchedule">
 			<form action="/sortingSchedule">
-				<div class="sortingSchedule1">
 					<input type="hidden" name="date"> <input type="hidden"
 						name="sort" value="asc"> <input class="reviewSchedule__btn1" type="submit" value="昇順">
-				</div>
 			</form>
 
 			<form action="/sortingSchedule">
-				<div class="sortingSchedule1">
 					<input type="hidden" name="date"> <input type="hidden"
 						name="sort" value="desc"> <input class="reviewSchedule__btn2" type="submit" value="降順">
-				</div>
 			</form>
 		</div>
 
-		<span th:text="${message3}" style="color: red"></span>
+		<span class="review_message" th:text="${message3}" style="color: red"></span>
 		<div class="reviewSchedule_list" th:if="${check == false}">
 			<div class="reviewSchedule_list_title_box">
 				<div class="reviewSchedule_list_title">date</div>

@@ -227,7 +227,7 @@
 	</div>
 </main>
 
-<<footer class="calendar_box">
+<footer class="calendar_box">
 		<div id="cal"></div>
 			<!-- カレンダー -->
 			<div class="wrapper">
@@ -253,8 +253,8 @@
 					class="calendar_todo_add_btn" type="submit" value="追加">
 			</form>
 
-			<span th:text="${message}" style="color: red"></span>
-			<span th:text="${message1}" style="color: red"></span> <br>
+			<span th:if="${message != null}" class="schedule_message1" th:text="${message}" style="color: red"></span>
+			<span th:if="${message1 != null}" class="schedule_message2" th:text="${message1}" style="color: red"></span> <br>
 
 			<div class="schedule_list" th:if="${check == true}">
 				<div class="schedule_list_title_box">
@@ -281,7 +281,7 @@
 			</div>
 			<br>
 
-		<span th:text="${message2}" style="color: red"></span>
+		<span th:if="${message2 != null}" class="schedule_message3" th:text="${message2}" style="color: red"></span>
 
 			<div class="schedule_list" th:if="${check2 == true}">
 				<div class="schedule_list_title_box">

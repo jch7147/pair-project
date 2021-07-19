@@ -38,28 +38,21 @@ body {
 	justify-content: center;
 	align-items: center;
 	margin-top:20px;
+	font-size:16px;
 }
 
-.sorting_lowDate{
+.sorting_Date{
 	border: none;
 	border: 1px solid rgba(0, 0, 0, 0.3);
 	border-radius: 5px;
 	padding: 7px 8px;
 	width: 150px;
 	height:30px;
-	font-size: 30px;
+	font-size: 16px;
+	margin: 0px 10px;
 }
 
-.sorting_highDate {
-	border: none;
-	border: 1px solid rgba(0, 0, 0, 0.3);
-	border-radius: 5px;
-	padding: 7px 8px;
-	width: 150px;
-	height:30px;
-	font-size: 30px;
-	margin: 0px 20px;
-}
+
 
 .reviewSchedule {
 	position: relative;
@@ -83,16 +76,9 @@ body {
 
 .sortingSchedule{
 	display: flex;
-	justify-content: center;
+	justify-content: space-between;
 	align-items: center;
-	margin-top:10px;
-}
-
-.sortingSchedule1{
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin-top:10px;
+	width:500px;
 }
 
 .reviewSchedule_header{
@@ -148,32 +134,38 @@ body {
 	justify-content:flex-end;
 }
 
+
 .reviewSchedule_btn{
 	display: block;
 	width: 50px;
 	height: 30px;
-	border: solid;
-	font-weight: 600;
+	border: none;
 	border-radius: 5px;
 	font-size: 16px;
 	color:black;
-	background-color:#fed057;
+	background-color: whitesmoke;
 }
 
 .reviewSchedule__btn1{
 	text-align: center;
-	width: 45px;
+	width: 240px;
 	height: 35px;
-	border: solid;
+	border: none;
 	border-radius: 5px;
-	display:flex;
 }
 
 .reviewSchedule__btn2{
 	text-align: center;
-	width: 45px;
+	width:240px;
 	height: 35px;
-	border: solid;
+	border: none;
 	border-radius: 5px;
-	justify-content:flex-end;
+}
+
+.review_message{
+	padding: 0.5em 1em;
+    margin: 2em 0;
+    color: tomato;
+    background: whitesmoke;
+    border-radius: 20px;
 }

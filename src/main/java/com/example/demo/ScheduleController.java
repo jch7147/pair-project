@@ -256,6 +256,7 @@ public class ScheduleController {
 		mv.addObject("yyyy", schedule.getYear());
 		mv.addObject("MM", schedule.getMonthValue());
 		mv.addObject("dd", schedule.getDayOfMonth());
+		mv.addObject("pos","calendar");
 		mv.setViewName("main");
 		return mv;
 	}
@@ -333,6 +334,7 @@ public class ScheduleController {
 		mv.addObject("yyyy", schedule.getYear());
 		mv.addObject("MM", schedule.getMonthValue());
 		mv.addObject("dd", schedule.getDayOfMonth());
+		mv.addObject("pos","calendar");
 		mv.setViewName("main");
 		return mv;
 

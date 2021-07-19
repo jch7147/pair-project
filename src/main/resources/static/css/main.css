@@ -637,3 +637,26 @@ input:checked +label{
 	justify-content:flex-end;
 }
 
+.schedule_message1 {
+    padding: 0.5em 1em;
+    margin: 2em 0;
+    color: tomato;
+    background: whitesmoke;
+    border-radius: 20px;
+}
+
+.schedule_message2 {
+    padding: 0.5em 1em;
+    margin: 2em 0;
+    color: tomato;
+    background: whitesmoke;
+    border-radius: 20px;
+}
+
+.schedule_message3 {
+    padding: 0.5em 1em;
+    margin: 2em 0;
+    color: tomato;
+    background: whitesmoke;
+    border-radius: 20px;
+}
