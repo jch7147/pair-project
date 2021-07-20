@@ -13,7 +13,7 @@ body {
 	margin: 0;
 	padding:0;
 	width: 100vw;
-	height: 400vh;
+	height: 350vh;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -224,11 +224,11 @@ ul li a:visited {
 /********** BIRD **********/
 
 @keyframes bird {
-	0%{ transform:rotateZ(0);
+	0%{ transform:translateY(0px);
 	}
-	30%{ transform:rotateZ(-45deg);
+	50%{ transform:translateY(-30px);
 	}
-	100%{ transform:rotateZ(0);
+	100%{ transform:translateY(0px);
 	}
 }
 
@@ -617,25 +617,14 @@ input:checked +label{
 
 .schedule_list_form_body {
 	display: flex;
-	flex-direction: row;
 	align-items: center;
 	justify-content: space-evenly;
 	width:350px;
+	height:40px;
 	border-bottom:1px solid whitesmoke;
 	color:whitesmoke;
 }
 
-.schedule_list_form_body1, .schedule_list_form_body2 {
-	display: flex;
-	align-items: center;
-	height:40px;
-	width:175px;
-}
-
-.schedule_list_form_body3 {
-	display:flex;
-	justify-content:flex-end;
-}
 
 .schedule_message1 {
     padding: 0.5em 1em;

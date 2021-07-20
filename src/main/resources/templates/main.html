@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="shortcut icon" href="/images/bird.png">
+<link rel="shortcut icon" href="/images/frog.png">
 <link th:href="@{/css/main.css}" rel="stylesheet">
 <link href="/css/calendar.css" rel="stylesheet">
 <link type="text/css"
@@ -16,7 +16,7 @@
 	src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/i18n/jquery.ui.datepicker-ja.min.js"></script>
 <script src="https://kit.fontawesome.com/6478f529f2.js" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<title>MINEMINE</title>
+<title>これ、つカエル。</title>
 <script th:inline="javascript">
  $(function(){
 	var pos = /*[[${pos}]]*/;
@@ -82,7 +82,7 @@
      		 </svg>
  	  </div>
 
-	<a id="bird" href="#header_pointer"><img src="/images/bird.png"
+	<a id="bird" href="#header_pointer"><img src="/images/frog.png"
 		width="50px" height="50px"></a>
 
 	<!-- TIMER_TODOここから-->
@@ -258,8 +258,8 @@
 
 			<div class="schedule_list" th:if="${check == true}">
 				<div class="schedule_list_title_box">
-					<div class="schedule_list_title">plan</div>
-					<div class="schedule_list_title">date</div>
+					<div class="schedule_list_title">PLAN</div>
+					<div class="schedule_list_title">DATE</div>
 					<div class="schedule_list_title">DELETE</div>
 				</div>
 				<div class="schedule_list_form_body" th:each="add:${schedule_ymd}">
@@ -285,8 +285,8 @@
 
 			<div class="schedule_list" th:if="${check2 == true}">
 				<div class="schedule_list_title_box">
-					<div class="schedule_list_title">date</div>
-					<div class="schedule_list_title">time</div>
+					<div class="schedule_list_title">DATE</div>
+					<div class="schedule_list_title">TIME</div>
 				</div>
 				<div class="schedule_list_form_body" th:each="add:${study_schedule}">
 					<div th:text="${add.date}"></div>
