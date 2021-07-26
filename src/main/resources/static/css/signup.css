@@ -67,7 +67,7 @@ body {
 #password {
 	margin-top: -25px;
 }
-#name, #age {
+#name, #birthday {
 	width: 200px;
 }
 
@@ -86,3 +86,28 @@ body {
 .btn:hover {
 	background-color:wheat;
 }
+
+.red{
+	color:#FF0000;
+	font-size: 20px;
+	font-weight:500;
+}
+
+.orange{
+	color: orange;
+	font-size: 20px;
+	font-weight:500;
+}
+
+.green{
+	color:#2D98F3;
+	font-size: 20px;
+	font-weight:500;
+}
+
+.blue{
+	color:limegreen;
+	font-size: 20px;
+	font-weight:500;
+}
+

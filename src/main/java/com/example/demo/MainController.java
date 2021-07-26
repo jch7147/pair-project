@@ -32,6 +32,9 @@ public class MainController {
 	@Autowired
 	StudyTimeTotalRepository studytimetotalRepository;
 
+	@Autowired
+	CountdownRepository countdownRepository;
+
 	/**
 	 * 一覧表示画面
 	 */
@@ -72,6 +75,29 @@ public class MainController {
 		List<AddSchedule> list = addscheduleRepository.findByUid(user.getId());
 
 		List<UserStudyTime> user_study_time_info_ = studytimetotalRepository.findByUid(user.getId());
+
+		////    ////
+		//countdown_dayテーブルから呼び出す//
+		////            ↓↓             ////
+
+		List<Countdown> countdown_today = countdownRepository.findByUid(user.getId());
+
+		if (countdown_today.size() != 0) {
+			//countdownテーブルに情報を登録するためのインスタンス
+			Countdown countdown_new = countdown_today.get(0);
+
+			LocalDate xday = countdown_new.getXday();
+			String test = countdown_new.getTest();
+
+			//残りの日数
+			Period period = Period.between(today, xday);
+
+			//残りの日数をセッションに格納
+			session.setAttribute("period", period.getDays());
+
+			//資格・試験名を格納
+			session.setAttribute("test", test);
+		}
 
 		mv.addObject("list_study", user_study_time_info_);
 		mv.addObject("list", list);
@@ -195,7 +221,6 @@ public class MainController {
 
 		mv.addObject("user_study_time_info", user_study_time_info);
 
-		//mv.addObject("flug",0);
 		mv.setViewName("redirect:/show_todo");
 
 		return mv;
@@ -267,14 +292,13 @@ public class MainController {
 		LocalTime localTimeTotal_yesterday = time_total.toLocalTime();
 
 		//if (todo_list_yesterday.size() != 0) {
-			for (int t = 0; t < todo_list_yesterday.size(); t++) {
-				LocalTime localTimeHistory = todo_list_yesterday.get(t).getTime().toLocalTime();
+		for (int t = 0; t < todo_list_yesterday.size(); t++) {
+			LocalTime localTimeHistory = todo_list_yesterday.get(t).getTime().toLocalTime();
 
-				localTimeTotal_yesterday = localTimeTotal_yesterday.plus(Duration.ofHours(localTimeHistory.getHour()));
-				localTimeTotal_yesterday = localTimeTotal_yesterday.plus(Duration.ofMinutes(localTimeHistory.getMinute()));
-				localTimeTotal_yesterday = localTimeTotal_yesterday.plus(Duration.ofSeconds(localTimeHistory.getSecond()));
-			}
-
+			localTimeTotal_yesterday = localTimeTotal_yesterday.plus(Duration.ofHours(localTimeHistory.getHour()));
+			localTimeTotal_yesterday = localTimeTotal_yesterday.plus(Duration.ofMinutes(localTimeHistory.getMinute()));
+			localTimeTotal_yesterday = localTimeTotal_yesterday.plus(Duration.ofSeconds(localTimeHistory.getSecond()));
+		}
 
 		int today_h = localTimeTotal.getHour();
 		int today_m = localTimeTotal.getMinute();
@@ -292,9 +316,9 @@ public class MainController {
 		if (today_total > yesterday_total) {
 			int time_good = today_total - yesterday_total;
 
-			int good_hour = (time_good - (time_good % 3600))/3600;
-			int good_minute = ((time_good - (good_hour * 3600))-(time_good - (good_hour * 3600))%60)/60 ;
-			int good_second = time_good - good_hour*3600 - good_minute*60 ;
+			int good_hour = (time_good - (time_good % 3600)) / 3600;
+			int good_minute = ((time_good - (good_hour * 3600)) - (time_good - (good_hour * 3600)) % 60) / 60;
+			int good_second = time_good - good_hour * 3600 - good_minute * 60;
 
 			session.setAttribute("ghour", good_hour);
 			session.setAttribute("gminute", good_minute);
@@ -302,13 +326,12 @@ public class MainController {
 
 			session.setAttribute("logout_msg", "longer than yesterday");
 			session.setAttribute("logout_msg2", "You did a great job!");
-		}
-		else if (yesterday_total > today_total) {
+		} else if (yesterday_total > today_total) {
 			int time_bad = yesterday_total - today_total;
 
-			int bad_hour = (time_bad - (time_bad % 3600))/3600;
-			int bad_minute = ((time_bad - (bad_hour * 3600))-(time_bad - (bad_hour * 3600))%60)/60 ;
-			int bad_second = time_bad - bad_hour*3600 - bad_minute*60 ;
+			int bad_hour = (time_bad - (time_bad % 3600)) / 3600;
+			int bad_minute = ((time_bad - (bad_hour * 3600)) - (time_bad - (bad_hour * 3600)) % 60) / 60;
+			int bad_second = time_bad - bad_hour * 3600 - bad_minute * 60;
 			session.setAttribute("bhour", bad_hour);
 			session.setAttribute("bminute", bad_minute);
 			session.setAttribute("bsecond", bad_second);
@@ -332,7 +355,6 @@ public class MainController {
 		return mv;
 	}
 
-
 	//試験日から逆算する処理をするページへ遷移
 	@RequestMapping("/compute")
 	public ModelAndView computing(
@@ -340,11 +362,23 @@ public class MainController {
 			@RequestParam("xday") String xday,
 			ModelAndView mv) {
 
-		//今日の日付
-		LocalDate today = LocalDate.now();
+		//ログインしているユーザ情報
+		User_info user = (User_info) session.getAttribute("userInfo");
+
+		//ログインしているuidの過去の情報を削除
+		countdownRepository.deleteByUid(user.getId());
 
 		//type="date"で選択したString型をLocalDate型へ変換
 		LocalDate dday = LocalDate.parse(xday);
+
+		//countdownテーブルに情報を登録するためのインスタンス
+		Countdown countdown_new = new Countdown(user.getId(), test, dday);
+
+		//todo_planテーブルにtodoの情報を登録
+		countdownRepository.saveAndFlush(countdown_new);
+
+		//今日の日付
+		LocalDate today = LocalDate.now();
 
 		//残りの日数
 		Period period = Period.between(today, dday);
@@ -359,7 +393,6 @@ public class MainController {
 
 		return mv;
 	}
-
 
 	private Time sumUpStudyTime() {
 		////                ////

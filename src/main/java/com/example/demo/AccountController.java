@@ -89,6 +89,17 @@ public class AccountController {
 		//今日の日付をセッションに格納
 		session.setAttribute("today", today);
 
+		//時間の初期値userNew_studytime.get(0).
+		Time time_initial = Time.valueOf("00:00:00");
+
+
+		List<UserStudyTime> user_find = studytimetotalRepository.findByUidAndDate(user.getId(),today);
+
+		if (user_find.size()== 0) {
+			UserStudyTime user_study_time = new UserStudyTime(user.getId(), today, time_initial);
+
+			studytimetotalRepository.saveAndFlush(user_study_time);
+		}
 
 
 		// 一覧表示画面にリダイレクト（画面遷移する）
@@ -112,7 +123,7 @@ public class AccountController {
 	@PostMapping("/signup_new")
 	public ModelAndView makeAccount(
 			@RequestParam("name") String name,
-			@RequestParam("age") int age,
+			@RequestParam("birthday") String birthday,
 			@RequestParam("email") String email,
 			@RequestParam("password") String password,
 			@RequestParam("answer") String answer,
@@ -121,6 +132,10 @@ public class AccountController {
 		//email情報が一致するユーザ情報を探す（既にアカウントがあるかどうか確認）
 		List<User_info> list = userRepository.findByEmail(email);
 
+		//<input type="date">で指定したString型をLocalDate型へ変換
+		LocalDate birth_day = LocalDate.parse(birthday);
+
+
 		if (list.size() != 0) {
 			mv.addObject("message", "すでに登録されてあるemailです");
 			mv.setViewName("signup");
@@ -128,7 +143,7 @@ public class AccountController {
 
 		} else {
 			// パラメータからオブジェクトを生成
-			User_info userNew = new User_info(name, age, email, password, answer);
+			User_info userNew = new User_info(name, email, password, answer, birth_day);
 
 			// customerテーブルへの登録
 			userRepository.saveAndFlush(userNew);
@@ -151,10 +166,7 @@ public class AccountController {
 
 		UserStudyTime user_study_time = new UserStudyTime(userId, today, time_initial);
 
-		UserStudyTime user_study_time_ = new UserStudyTime(user_study_time.getCode(), userId, today,
-				time_initial);
-
-		studytimetotalRepository.saveAndFlush(user_study_time_);
+		studytimetotalRepository.saveAndFlush(user_study_time);
 
 		mv.addObject("message", "登録が完了しました");
 
@@ -217,8 +229,8 @@ public class AccountController {
 
 			User_info user = (User_info) session.getAttribute("user_byEmail");
 
-			User_info user_changepw = new User_info(user.getId(), user.getName(), user.getAge(),
-					user.getEmail(), password1, user.getAnswer());
+			User_info user_changepw = new User_info(user.getId(), user.getName(),
+					user.getEmail(), password1, user.getAnswer(), user.getBirthday());
 
 			userRepository.saveAndFlush(user_changepw);
 

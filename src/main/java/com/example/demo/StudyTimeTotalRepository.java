@@ -15,4 +15,7 @@ public interface StudyTimeTotalRepository extends JpaRepository<UserStudyTime, I
 	//uid条件に検索
 	List<UserStudyTime> findByUid(int uid);
 
+	//日付で検索
+	List<UserStudyTime> findByDate(LocalDate date);
+
 }

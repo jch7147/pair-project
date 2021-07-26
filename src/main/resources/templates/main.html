@@ -70,7 +70,7 @@
 	    			</audio>
 	    		</li>
           		 <li><div class="icons">
-		<a href="https://google.com" target="_blank"><img src="/images/google.png" width="50px" height="50px"></a>
+		<a href="https://google.co.jp" target="_blank"><img src="/images/google.png" width="50px" height="50px"></a>
 		<a id="icon_mail" href="https://mailtap.securemx.jp/" target="_blank"><img src="/images/mail.png" width="50px" height="50px"></a>
 		<a href="https://github.com" target="_blank"><img src="/images/github.png" width="50px" height="50px"></a>
 	</div></li>
@@ -211,8 +211,11 @@
 
 				<div class="schedule_todo_list_form_body" th:each="schedule : ${schedule_today}">
 
-					<input class="schedule_todo_list_form_plan" type="checkbox" id="th:text='${schedule.plan}'" name="th:text='${schedule.plan}'">
-					<label for="th:text='${schedule.plan}'" th:text='${schedule.plan}'></label>
+					<form action="/schedule_checked">
+						<input class="schedule_todo_list_form_plan check_todo" type="checkbox" id="th:text='${schedule.plan}'" name="todo_checkbox">
+						<label for="th:text='${schedule.plan}'" th:text='${schedule.plan}'></label>
+						<input type="hidden" name="code" th:value="${schedule.code}">
+					</form>
 
 					<div class="schedule_todo_list_form_delete">
 						<form action="/deleteScheduleToday">
@@ -226,7 +229,18 @@
 		</div>
 	</div>
 </main>
+<script>
+const checkbox = document.querySelectorAll(".check_todo");
+const form = checkbox.parentElement;
 
+for (var i = 0; i < checkbox.length; i++){
+	checkbox[i].addEventListener("click", send_check());
+}
+
+function send_check() {
+  form.submit();
+}
+</script>
 <footer class="calendar_box">
 		<div id="cal"></div>
 			<!-- カレンダー -->
@@ -250,7 +264,7 @@
 				<input class="calendar_todo_add_date" type="date" name="date"
 					required> <input class="calendar_todo_add_text" type="text"
 					name="plan" required><br> <input
-					class="calendar_todo_add_btn" type="submit" value="追加">
+					class="calendar_todo_add_btn" type="submit" value="ADD">
 			</form>
 
 			<span th:if="${message != null}" class="schedule_message1" th:text="${message}" style="color: red"></span>
@@ -274,7 +288,7 @@
 							<input type="hidden" name="code" th:value="${add.code}">
 							<input type="hidden" name="date" th:value="${add.date}">
 							<input type="hidden" name="plan" th:value="${add.plan}">
-							<input type="submit" value="削除">
+							<input type="submit" value="DELETE">
 						</form>
 					</div>
 				</div>
@@ -334,8 +348,8 @@
 
 		var year = date.getFullYear();
 		var month = date.getMonth();
-		document.querySelector('#header').innerHTML = year + "年 " + (month + 1)
-			+ "月";
+		document.querySelector('#header').innerHTML = year + "/ " + (month + 1)
+			+ "";
 
 		var calendar = createProcess(year, month);
 		document.querySelector('#calendar').innerHTML = calendar;

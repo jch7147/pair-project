@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import java.time.LocalDate;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,41 +15,33 @@ public class User_info {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String name;
-	private int age;
 	private String email;
 	private String password;
 	private String answer;
+	private LocalDate birthday;
 
 	public User_info() {
 
 	}
 
-	public User_info( String name, int age, String email, String password, String answer) {
+	public User_info( String name, String email, String password, String answer, LocalDate birthday) {
 		this.name = name;
-		this.age = age;
 		this.email = email;
 		this.password = password;
 		this.answer = answer;
+		this.birthday = birthday;
 	}
 
-	public User_info(int id, String name, int age, String email, String password, String answer) {
+	public User_info(int id, String name, String email, String password, String answer, LocalDate birthday) {
 		this.id = id;
 		this.name = name;
-		this.age = age;
 		this.email = email;
 		this.password = password;
 		this.answer = answer;
+		this.birthday = birthday;
 	}
 
-	//setter & getter
-	public String getAnswer() {
-		return answer;
-	}
-
-	public void setAnswer(String answer) {
-		this.answer = answer;
-	}
-
+    //setter & getter
 	public int getId() {
 		return id;
 	}
@@ -64,12 +58,12 @@ public class User_info {
 		this.name = name;
 	}
 
-	public int getAge() {
-		return age;
+	public LocalDate getBirthday() {
+		return birthday;
 	}
 
-	public void setAge(int age) {
-		this.age = age;
+	public void setBirthday(LocalDate birthday) {
+		this.birthday = birthday;
 	}
 
 	public String getEmail() {
@@ -86,6 +80,14 @@ public class User_info {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getAnswer() {
+		return answer;
+	}
+
+	public void setAnswer(String answer) {
+		this.answer = answer;
 	}
 
 }

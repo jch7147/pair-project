@@ -25,19 +25,19 @@
 			<div class="searchReviewSchedule">
 					FROM: <input class="sorting_Date" type="date" name="lowDate" th:value="${lowDate}" style="font-size: 3px;" required>
 					UNTIL: <input class="sorting_Date" type="date" name="highDate" th:value="${highDate}" style="font-size: 3px;" required>
-					<input class="reviewSchedule_btn" type="submit" value="検索">
+					<input class="reviewSchedule_btn" type="submit" value="SEARCH">
 			</div>
 		</form>
 		<br>
 		<div class="sortingSchedule">
 			<form action="/sortingSchedule">
 					<input type="hidden" name="date"> <input type="hidden"
-						name="sort" value="asc"> <input class="reviewSchedule__btn1" type="submit" value="昇順">
+						name="sort" value="asc"> <input class="reviewSchedule__btn1" type="submit" value="UP">
 			</form>
 
 			<form action="/sortingSchedule">
 					<input type="hidden" name="date"> <input type="hidden"
-						name="sort" value="desc"> <input class="reviewSchedule__btn2" type="submit" value="降順">
+						name="sort" value="desc"> <input class="reviewSchedule__btn2" type="submit" value="DOWN">
 			</form>
 		</div>
 
@@ -59,7 +59,7 @@
 				<div class="reviewSchedule_list_form_body3">
 					<form action="/schedule/delete/reviewSchedule">
 						<input type="hidden" name="code" th:value="${add.code}"> <input
-							 class="reviewSchedule__btn" type="submit" value="削除">
+							 class="reviewSchedule__btn" type="submit" value="DELETE">
 					</form>
 				</div>
 			</div>

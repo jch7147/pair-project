@@ -48,11 +48,11 @@ public class ScheduleController {
 
 		//もし同じ日にち＆＆同じ内容のスケジュールを追加したら「もうある」メッセージを送る
 		if (list_check.size() != 0) {
-			mv.addObject("message", "既に追加してあります。");
+			mv.addObject("message", "already added it");
 		} else {
 			//todo_planテーブルにtodoの情報を登録
 			addscheduleRepository.saveAndFlush(schedule_new);
-			mv.addObject("message1", "追加されました");
+			mv.addObject("message1", "added");
 		}
 
 		//今日の日付
@@ -114,7 +114,7 @@ public class ScheduleController {
 
 		//もしレビューが空なら「レビューなし」メッセージを送る
 		if (schedule_list.size() == 0) {
-			mv.addObject("message3", "予定はありません。");
+			mv.addObject("message3", "no appointments");
 			mv.addObject("check", true);
 		} else {
 			mv.addObject("schedule_list", schedule_list);
@@ -148,7 +148,7 @@ public class ScheduleController {
 			mv.addObject("schedule_list", schedule_);
 			mv.addObject("check", false);
 		} else if (schedule_.size() == 0) {
-			mv.addObject("message3", schedule_l + "から" + schedule_h + "間の予定はありません。");
+			mv.addObject("message3", "no plans of " + schedule_l +  " to "  + schedule_h);
 			mv.addObject("check", true);
 		}
 
@@ -173,7 +173,7 @@ public class ScheduleController {
 		List<AddSchedule> schedule_list_select = addscheduleRepository.findByUid(user.getId());
 
 		if (schedule_list_select.size() == 0) {
-			mv.addObject("message3", "予定はありません。");
+			mv.addObject("message3", "no appointments");
 		} else {
 			mv.addObject("schedule_list", schedule_list_select);
 			mv.addObject("check", false);
@@ -202,7 +202,7 @@ public class ScheduleController {
 		List<AddSchedule> schedule_list = addscheduleRepository.findByUidAndDate(user.getId(), schedule);
 
 		if (schedule_list.size() == 0) {
-			mv.addObject("message2", schedule + "の予定はありません。");
+			mv.addObject("message2", "no plans for " + schedule);
 		} else {
 			mv.addObject("schedule_ymd", schedule_list);
 			mv.addObject("check", true);
@@ -280,7 +280,7 @@ public class ScheduleController {
 
 		//指定した日にちにのデータベースが空だったらメッセージを、あれば表示
 		if (schedule_ymd.size() == 0) {
-			mv.addObject("message2", schedule + "の予定はありません。");
+			mv.addObject("message2", "no plans for " +schedule);
 		} else {
 			mv.addObject("schedule_ymd", schedule_ymd);
 			mv.addObject("check", true);
@@ -364,7 +364,7 @@ public class ScheduleController {
 
 		//もしレビューが空なら「レビューなし」メッセージを送る
 		if (schedule_list.size() == 0) {
-			mv.addObject("message3", "予定はありません。");
+			mv.addObject("message3", "no appointments");
 			mv.addObject("check", true);
 		} else {
 			mv.addObject("schedule_list", schedule_list);

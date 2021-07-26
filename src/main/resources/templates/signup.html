@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <link rel="shortcut icon" href="/images/frog.png">
 <link th:href="@{css/signup.css}" rel="stylesheet">
+<script type="text/javascript"
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <title>Welcome to tuKAERU</title>
 </head>
 <body>
@@ -25,7 +27,7 @@
 		<br>
 
 		<!-- <label for="age">Age:</label> -->
-		<input class="signup_form_input" id="age" type="text" name="age" required placeholder="Your Age">
+		<input class="signup_form_input" id="birthday" type="date"  name="birthday" required>
 		<br>
 	</div>
 		<!-- <label for="email">Eamil:</label> -->
@@ -33,8 +35,10 @@
 		<br>
 
 		<!-- <label for="password">Password (minimum 6 characters):</label> -->
-		<input class="signup_form_input" id="password" type="text" name="password" required minlength="6" placeholder="New Password (minimum 6 characters)">
+        <input class="signup_form_input" name="password" id="password" type="password" placeholder="Type Your Password here"/>
+        <span id="result"></span>
 		<br>
+
 
 	<div class="signup_form_lastline">
 		<label for="answer">Identification Question</label>
@@ -46,6 +50,6 @@
 </main>
 
 
-
+<script src="/passwordsCheck.js"></script>
 </body>
 </html>
